@@ -2,16 +2,24 @@
 <search>
   <entry>
     <title>first</title>
-    <url>/2021/07/22/first/</url>
-    <content><![CDATA[<h1 id="个人笔记"><a href="#个人笔记" class="headerlink" title="个人笔记"></a>个人笔记</h1><h2 id="这是一篇文章"><a href="#这是一篇文章" class="headerlink" title="这是一篇文章"></a>这是一篇文章</h2><span id="more"></span>
+    <url>/2021/07/24/first/</url>
+    <content><![CDATA[<h1 id="python网络爬虫"><a href="#python网络爬虫" class="headerlink" title="python网络爬虫"></a>python网络爬虫</h1><h2 id="这是一篇文章关于python网络爬虫的个人笔记，"><a href="#这是一篇文章关于python网络爬虫的个人笔记，" class="headerlink" title="这是一篇文章关于python网络爬虫的个人笔记，"></a>这是一篇文章关于python网络爬虫的个人笔记，</h2><span id="more"></span>
 
-<h3 id="什么也没有"><a href="#什么也没有" class="headerlink" title="什么也没有"></a>什么也没有</h3>]]></content>
+<h1 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h1><h2 id="1-urllib库-—内置"><a href="#1-urllib库-—内置" class="headerlink" title="1.urllib库  —内置"></a>1.urllib库  —内置</h2><h3 id="urlopen函数-—在urllib-request模块中"><a href="#urlopen函数-—在urllib-request模块中" class="headerlink" title="urlopen函数 —在urllib.request模块中"></a>urlopen函数 —在urllib.request模块中</h3><p>创建一个表示远程url的类文件对象，然后像本地文件一样操作这类文件对象来获取远程数据。</p>
+<p>url: 请求的url<br>data: 请求的data，如果设置了该参数，为post请求<br>返回值: 返回值是一个http.client.HTTPResponse对象，<br>该对象是一个类文件句柄对象。有read(size),readline,readlines,getcode等方法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line">resp = request.urlopen(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(resp.read())</span><br><span class="line"><span class="built_in">print</span>(resp.getcode())</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="2-requests库-—第三方库"><a href="#2-requests库-—第三方库" class="headerlink" title="2.requests库  —第三方库"></a>2.requests库  —第三方库</h2>]]></content>
       <categories>
-        <category>笔记</category>
+        <category>python</category>
       </categories>
       <tags>
-        <tag>导航</tag>
-        <tag>分享</tag>
+        <tag>网络爬虫</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>

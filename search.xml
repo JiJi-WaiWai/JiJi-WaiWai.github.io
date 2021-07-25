@@ -1,40 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>网络爬虫</title>
-    <url>/2021/07/24/first/</url>
-    <content><![CDATA[<p>python网络爬虫</p>
-<p>这是一篇文章关于python网络爬虫的个人笔记，</p>
-<span id="more"></span>
-
-<h1 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h1><h2 id="1-urllib库-—内置"><a href="#1-urllib库-—内置" class="headerlink" title="1.urllib库  —内置"></a>1.urllib库  —内置</h2><h3 id="urlopen函数"><a href="#urlopen函数" class="headerlink" title="urlopen函数"></a>urlopen函数</h3><p>创建一个表示远程url的类文件对象，然后像本地文件一样操作这类文件对象来获取远程数据。在urllib.request模块中</p>
-<p>url: 请求的url<br>data: 请求的data，如果设置了该参数，为post请求<br>返回值: 返回值是一个http.client.HTTPResponse对象，<br>该对象是一个类文件句柄对象。有read(size),readline,readlines,getcode等方法</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line">resp = request.urlopen(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(resp.read())</span><br><span class="line"><span class="built_in">print</span>(resp.getcode())</span><br></pre></td></tr></table></figure>
-
-<h3 id="urlretrieve函数"><a href="#urlretrieve函数" class="headerlink" title="urlretrieve函数"></a>urlretrieve函数</h3><p>将网页上的某个文件保存到本地,在urllib.request模块中</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line">request.urlretrieve(url, file_name)</span><br></pre></td></tr></table></figure>
-
-<h3 id="urlencode函数：编码"><a href="#urlencode函数：编码" class="headerlink" title="urlencode函数：编码"></a>urlencode函数：编码</h3><p>urlencode可以把字典数据转化成url<em><strong>编码</strong></em>的数据，在urllib.parse模块中。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line">data = &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;猪八戒&quot;</span>, <span class="string">&quot;age&quot;</span>:<span class="number">18</span>, <span class="string">&quot;gender&quot;</span>:<span class="string">&quot;男&quot;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>( parse.urlencode(data) )</span><br><span class="line"></span><br><span class="line"><span class="comment">#name=%E7%8C%AA%E5%85%AB%E6%88%92&amp;age=18&amp;gender=%E7%94%B7       打印结果</span></span><br></pre></td></tr></table></figure>
-
-<p><em>注</em>：urlencode对字典编码，quote对字符串编码</p>
-<h3 id="parse-qs函数：解码"><a href="#parse-qs函数：解码" class="headerlink" title="parse_qs函数：解码"></a>parse_qs函数：解码</h3><p>可以将经过编码后的url参数进行<em><strong>解码</strong></em>，在urllib.parse模块中。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line">data = <span class="string">&quot;name=%E7%8C%AA%E5%85%AB%E6%88%92&amp;age=18&amp;gender=%E7%94%B7&quot;</span></span><br><span class="line"><span class="built_in">print</span>( parse.parse_qs(data) )</span><br><span class="line"></span><br><span class="line"><span class="comment">#&#123;&#x27;name&#x27;: [&#x27;猪八戒&#x27;], &#x27;age&#x27;: [&#x27;18&#x27;], &#x27;gender&#x27;: [&#x27;男&#x27;]&#125;           打印结果</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="urlparse和urlsplit函数：解析url"><a href="#urlparse和urlsplit函数：解析url" class="headerlink" title="urlparse和urlsplit函数：解析url"></a>urlparse和urlsplit函数：解析url</h3><p>对url各个组成部分进行分割</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://www.baidu.com/index.html;user?id=S#comment&quot;</span></span><br><span class="line">result = parse.urlparse(url)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"><span class="comment">#打印结果:</span></span><br><span class="line"><span class="comment">#ParseResult(scheme=&#x27;http&#x27;, netloc=&#x27;www.baidu.com&#x27;, path=&#x27;/index.html&#x27;, params=&#x27;user&#x27;, query=&#x27;id=S&#x27;, fragment=&#x27;comment&#x27;)</span></span><br><span class="line">result2 = parse.urlsplit(url)</span><br><span class="line"><span class="built_in">print</span>(result2)</span><br><span class="line"><span class="comment">#打印结果:</span></span><br><span class="line"><span class="comment">#SplitResult(scheme=&#x27;http&#x27;, netloc=&#x27;www.baidu.com&#x27;, path=&#x27;/index.html;user&#x27;, query=&#x27;id=S&#x27;, fragment=&#x27;comment&#x27;)</span></span><br><span class="line"><span class="built_in">print</span>(result.scheme)      <span class="comment">#http</span></span><br><span class="line"><span class="built_in">print</span>(result.netloc)      <span class="comment">#www.baidu.com</span></span><br></pre></td></tr></table></figure>
-
-<p><em>注</em>：urlparse函数和urlsplit函数用法基本一样，唯一的区别是urlparse有params属性，而urlsplit没有。</p>
-<h2 id="2-requests库-—第三方库"><a href="#2-requests库-—第三方库" class="headerlink" title="2.requests库  —第三方库"></a>2.requests库  —第三方库</h2>]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>网络爬虫</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2021/07/21/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -52,5 +18,66 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>网络爬虫</title>
+    <url>/2021/07/24/first/</url>
+    <content><![CDATA[<p>python网络爬虫</p>
+<p>这是一篇文章关于python网络爬虫的个人笔记，</p>
+<p>爬爬爬，到处爬</p>
+<span id="more"></span>
+
+<h1 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h1><h2 id="urllib库-—内置"><a href="#urllib库-—内置" class="headerlink" title="urllib库  —内置"></a>urllib库  —内置</h2><h3 id="urlopen函数"><a href="#urlopen函数" class="headerlink" title="urlopen函数"></a>urlopen函数</h3><p>创建一个表示远程url的类文件对象，然后像本地文件一样操作这类文件对象来获取远程数据。在urllib.request模块中</p>
+<p>url: 请求的url<br>data: 请求的data，如果设置了该参数，为post请求<br>返回值: 返回值是一个http.client.HTTPResponse对象，<br>该对象是一个类文件句柄对象。有read(size),readline,readlines,getcode等方法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line">resp = request.urlopen(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(resp.read())</span><br><span class="line"><span class="built_in">print</span>(resp.getcode())</span><br></pre></td></tr></table></figure>
+
+<h3 id="urlretrieve函数"><a href="#urlretrieve函数" class="headerlink" title="urlretrieve函数"></a>urlretrieve函数</h3><p>将网页上的某个文件保存到本地,在urllib.request模块中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line">request.urlretrieve(url, file_name)</span><br></pre></td></tr></table></figure>
+
+<h3 id="urlencode函数：编码"><a href="#urlencode函数：编码" class="headerlink" title="urlencode函数：编码"></a>urlencode函数：编码</h3><p>urlencode可以把字典数据转化成url<em><strong>编码</strong></em>的数据，在urllib.parse模块中。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line">data = &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;猪八戒&quot;</span>, <span class="string">&quot;age&quot;</span>:<span class="number">18</span>, <span class="string">&quot;gender&quot;</span>:<span class="string">&quot;男&quot;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>( parse.urlencode(data) )</span><br><span class="line"></span><br><span class="line"><span class="comment">#name=%E7%8C%AA%E5%85%AB%E6%88%92&amp;age=18&amp;gender=%E7%94%B7       打印结果</span></span><br></pre></td></tr></table></figure>
+
+<p><em>注</em>：urlencode对字典编码，quote对字符串编码</p>
+<h3 id="parse-qs函数：解码"><a href="#parse-qs函数：解码" class="headerlink" title="parse_qs函数：解码"></a>parse_qs函数：解码</h3><p>可以将经过编码后的url参数进行<em><strong>解码</strong></em>，在urllib.parse模块中。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line">data = <span class="string">&quot;name=%E7%8C%AA%E5%85%AB%E6%88%92&amp;age=18&amp;gender=%E7%94%B7&quot;</span></span><br><span class="line"><span class="built_in">print</span>( parse.parse_qs(data) )</span><br><span class="line"></span><br><span class="line"><span class="comment">#&#123;&#x27;name&#x27;: [&#x27;猪八戒&#x27;], &#x27;age&#x27;: [&#x27;18&#x27;], &#x27;gender&#x27;: [&#x27;男&#x27;]&#125;           打印结果</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="urlparse和urlsplit函数：解析url"><a href="#urlparse和urlsplit函数：解析url" class="headerlink" title="urlparse和urlsplit函数：解析url"></a>urlparse和urlsplit函数：解析url</h3><p>对url各个组成部分进行分割，在urllib.parse模块中。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://www.baidu.com/index.html;user?id=S#comment&quot;</span></span><br><span class="line">result = parse.urlparse(url)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"><span class="comment">#打印结果:</span></span><br><span class="line"><span class="comment">#ParseResult(scheme=&#x27;http&#x27;, netloc=&#x27;www.baidu.com&#x27;, path=&#x27;/index.html&#x27;, params=&#x27;user&#x27;, query=&#x27;id=S&#x27;, fragment=&#x27;comment&#x27;)</span></span><br><span class="line">result2 = parse.urlsplit(url)</span><br><span class="line"><span class="built_in">print</span>(result2)</span><br><span class="line"><span class="comment">#打印结果:</span></span><br><span class="line"><span class="comment">#SplitResult(scheme=&#x27;http&#x27;, netloc=&#x27;www.baidu.com&#x27;, path=&#x27;/index.html;user&#x27;, query=&#x27;id=S&#x27;, fragment=&#x27;comment&#x27;)</span></span><br><span class="line"><span class="built_in">print</span>(result.scheme)      <span class="comment">#http</span></span><br><span class="line"><span class="built_in">print</span>(result.netloc)      <span class="comment">#www.baidu.com</span></span><br></pre></td></tr></table></figure>
+
+<p><em>注</em>：urlparse函数和urlsplit函数用法基本一样，唯一的区别是urlparse有params属性，而urlsplit没有。</p>
+<h3 id="request-Request类：网络请求，可添加请求头，请求参数"><a href="#request-Request类：网络请求，可添加请求头，请求参数" class="headerlink" title="request.Request类：网络请求，可添加请求头，请求参数"></a>request.Request类：网络请求，可添加请求头，请求参数</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://www.baidu.com&quot;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like    Gecko) Chrome/91.0.4472.164 Mobile Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">rq = request.Request(url, headers=headers)   <span class="comment">#重点，添加请求头信息，User-Agent</span></span><br><span class="line">resp = request.urlopen(rq)</span><br><span class="line"><span class="built_in">print</span>(resp.read().decode(<span class="string">&quot;utf-8&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="ProxyHandler处理器（代理设置）：封ip问题"><a href="#ProxyHandler处理器（代理设置）：封ip问题" class="headerlink" title="ProxyHandler处理器（代理设置）：封ip问题"></a>ProxyHandler处理器（代理设置）：封ip问题</h3><p>代理原理：在请求网站之前，先请求代理服务器，然后让代理服务器去请求目标网站，代理服务器拿到目标网站数据后，再转发给我们的代码。</p>
+<p><a href="http://httpbin.org/">http://httpbin.org</a>  —这个网站方便查看http请求的一些参数</p>
+<p>常用的代理有：</p>
+<ul>
+<li>快代理：<a href="https://www.kuaidaili.com/">https://www.kuaidaili.com/</a></li>
+<li>代理云</li>
+</ul>
+<p>在代码中使用代理：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://httpbin.org/ip&quot;</span></span><br><span class="line"><span class="comment">#创建handler</span></span><br><span class="line">handler = request.ProxyHandler(&#123;<span class="string">&quot;http&quot;</span>:<span class="string">&quot;58.56.149.198:53281&quot;</span>&#125;)</span><br><span class="line"><span class="comment">#创建opener</span></span><br><span class="line">opener = request.build_opener(handler)</span><br><span class="line"><span class="comment">#使用opener发送请求</span></span><br><span class="line">resp = opener.<span class="built_in">open</span>(url)</span><br><span class="line"><span class="built_in">print</span>( resp.read() )</span><br></pre></td></tr></table></figure>
+
+<h3 id="cookies"><a href="#cookies" class="headerlink" title="cookies:"></a>cookies:</h3><p>某些网站为了辨别用户身份，进行session跟踪而存储在用户本地终端上的数据</p>
+<h4 id="模拟cookies访问网站方法一："><a href="#模拟cookies访问网站方法一：" class="headerlink" title="模拟cookies访问网站方法一："></a>模拟cookies访问网站方法一：</h4><p>用浏览器访问网站后，手动抓包，将cookie信息复制，放到代码的请求头上</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://www.zhihu.com/&quot;</span></span><br><span class="line">headers = &#123;  </span><br><span class="line"><span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like    Gecko) Chrome/91.0.4472.164 Mobile Safari/537.36&quot;</span>,</span><br><span class="line"><span class="string">&quot;cookie&quot;</span>: <span class="string">&#x27;_zap=5b69d7ff-9b3f-468b-b891-103b2029d8a3;..#复制的cookie内容太多，省略不写</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">rq = request.Request(url, headers=headers)</span></span><br><span class="line"><span class="string">resp = request.urlopen(rq)</span></span><br><span class="line"><span class="string">print(resp.read().decode(&quot;utf-8&quot;))</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="模拟cookies访问网站方法二："><a href="#模拟cookies访问网站方法二：" class="headerlink" title="模拟cookies访问网站方法二："></a>模拟cookies访问网站方法二：</h4><p>http.cookiejar模块，主要有CookieJar，FileCookieJar，MozillaCookieJar，LWPCookieJar四个类</p>
+<p>CookieJar：将cookie保存在内存中</p>
+<p>FileCookieJar，MozillaCookieJar，LWPCookieJar：将cookie保存在文件中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">from</span> http.cookiejar <span class="keyword">import</span> CookieJar</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"><span class="comment">#1，登入</span></span><br><span class="line">cookiejar = CookieJar()</span><br><span class="line">handler = request.HTTPCookieProcessor(cookiejar)  <span class="comment">#创建handler</span></span><br><span class="line">opener = request.build_opener(handler)            <span class="comment">#创建opener</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#opener发送请求前，准备登入的url,请求头,请求参数(需要编码)</span></span><br><span class="line">post_url = <span class="string">&quot;https://i.meishi.cc/login_t.php?username=17370466454&amp;login_type=1&amp;password=575389&quot;</span></span><br><span class="line">post_headers = &#123;</span><br><span class="line"><span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Mobile Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">post_data = parse.urlencode(&#123;</span><br><span class="line">    <span class="string">&quot;username&quot;</span>: <span class="string">&quot;17370466454&quot;</span>,</span><br><span class="line">    <span class="string">&quot;login_type&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;password&quot;</span>: <span class="string">&quot;575389&quot;</span></span><br><span class="line">&#125;)    </span><br><span class="line"><span class="comment">#request.Request()里的data只能接收字节，所以data=post_data.encode(&quot;utf-8&quot;)</span></span><br><span class="line">post_rq = request.Request(url=post_url, headers=post_headers, data=post_data.encode(<span class="string">&quot;utf-8&quot;</span>))</span><br><span class="line"><span class="comment">#opener访问网站后，网站的cookie暂时保存在内存opener中</span></span><br><span class="line">opener.<span class="built_in">open</span>(post_rq)</span><br><span class="line"></span><br><span class="line"><span class="comment">#2，访问，opener已经带有cookie访问网站</span></span><br><span class="line">url = <span class="string">&quot;https://meishij.net/&quot;</span></span><br><span class="line">headers = &#123;</span><br><span class="line"><span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Mobile Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">rq = request.Request(url, headers=headers)</span><br><span class="line">resp = opener.<span class="built_in">open</span>(rq)</span><br><span class="line"><span class="built_in">print</span>(resp.read().decode(<span class="string">&quot;utf-8&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="cookies的保存"><a href="#cookies的保存" class="headerlink" title="cookies的保存"></a>cookies的保存</h4><p>以MozillaCookieJar类为例</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">from</span> http.cookiejar <span class="keyword">import</span> MozillaCookieJar</span><br><span class="line"></span><br><span class="line">cookies = MozillaCookieJar(<span class="string">&quot;cookies.txt&quot;</span>)  <span class="comment">#保存cookies的文件</span></span><br><span class="line">handler = request.HTTPCookieProcessor(cookies)</span><br><span class="line">opener = request.build_opener(handler)</span><br><span class="line">url = <span class="string">&quot;https://www.baidu.com&quot;</span></span><br><span class="line">headers = &#123;</span><br><span class="line"><span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Mobile Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">rq = request.Request(url, headers=headers)</span><br><span class="line">opener.<span class="built_in">open</span>(rq)</span><br><span class="line">cookies.save()   <span class="comment">#保存cookies</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#cookies.save( ignore_discard=False, ignore_expires=False )  默认</span></span><br><span class="line"><span class="comment">#ignore_discard=True       即使cookies即将被丢失也要保存起来</span></span><br><span class="line"><span class="comment">#ignore_expires=True	   如果cookies已经过期也将它保存，并且文件已存在时将覆盖</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="requests库-—第三方库"><a href="#requests库-—第三方库" class="headerlink" title="requests库  —第三方库"></a>requests库  —第三方库</h2>]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>网络爬虫</tag>
+        <tag>python</tag>
+      </tags>
   </entry>
 </search>

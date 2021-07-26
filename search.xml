@@ -71,7 +71,62 @@
 
 
 
-<h2 id="requests库-—第三方库"><a href="#requests库-—第三方库" class="headerlink" title="requests库  —第三方库"></a>requests库  —第三方库</h2>]]></content>
+<h2 id="requests库-—第三方库"><a href="#requests库-—第三方库" class="headerlink" title="requests库  —第三方库"></a>requests库  —第三方库</h2><p>让HTTP服务人类</p>
+<h3 id="安装和文档地址"><a href="#安装和文档地址" class="headerlink" title="安装和文档地址:"></a>安装和文档地址:</h3><ul>
+<li><p>pip安装：pip install requests</p>
+</li>
+<li><p>中文文档：<a href="https://docs.python-requests.org/zh_CN/latest/index.html">https://docs.python-requests.org/zh_CN/latest/index.html</a></p>
+</li>
+<li><p>github地址：<a href="https://github.com/requests/requests">https://github.com/requests/requests</a></p>
+</li>
+</ul>
+<h3 id="发送get请求："><a href="#发送get请求：" class="headerlink" title="发送get请求："></a>发送get请求：</h3><p>response = requests.get(url, headers=headers, params=params)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&#x27;https://www.baidu.com/s&#x27;</span></span><br><span class="line">headers = &#123;</span><br><span class="line"><span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Mobile Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">&quot;wd&quot;</span>:<span class="string">&quot;中国&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">response = requests.get(url, headers=headers, params=params)  <span class="comment">#发送get请求</span></span><br><span class="line"><span class="built_in">print</span>(response)</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br><span class="line"><span class="built_in">print</span>(response.content)</span><br><span class="line"><span class="built_in">print</span>(response.content.decode(<span class="string">&quot;utf-8&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="发送post请求："><a href="#发送post请求：" class="headerlink" title="发送post请求："></a>发送post请求：</h3><p>方法与上面的<em><strong>发送get请求</strong></em>用法差不多：</p>
+<p>response = requests.post(url, headers=headers, data=data)</p>
+<h3 id="response-content和response-text区别："><a href="#response-content和response-text区别：" class="headerlink" title="response.content和response.text区别："></a>response.content和response.text区别：</h3><p>1，response.content：直接从网站上抓取数据，没有经过解码，所以是bytes类型，其实硬盘和网络上传输的字符串类型都是bytes类型。</p>
+<p>2，response.text：是str数据类型，把response.content经行自动解码的结果，自动解码可能会出现乱码的情况，所以需要自己手动解码：response.content.decode(“utf-8”)。</p>
+<h3 id="使用代理："><a href="#使用代理：" class="headerlink" title="使用代理："></a>使用代理：</h3><p>resp = requests.get(url, proxies=代理信息)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">proxy = &#123;</span><br><span class="line">    <span class="string">&quot;http&quot;</span>:<span class="string">&quot;116.196.88.86:3128&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">&quot;http://httpbin.org/ip&quot;</span></span><br><span class="line">resp = requests.get(url, proxies=proxy)</span><br><span class="line"><span class="built_in">print</span>(resp.text)</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理cookie"><a href="#处理cookie" class="headerlink" title="处理cookie:"></a>处理cookie:</h3><h4 id="查看cookies"><a href="#查看cookies" class="headerlink" title="查看cookies"></a>查看cookies</h4><p>响应中如果包含cookie，可以通过cookies属性查看cookie：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://www.baidu.com&quot;</span></span><br><span class="line">resp = requests.get(url)</span><br><span class="line"><span class="built_in">print</span>(resp.cookies)</span><br><span class="line"><span class="built_in">print</span>(resp.cookies.get_dict())   <span class="comment">#字典型的coookie</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="模拟cookies访问网站方法一：-1"><a href="#模拟cookies访问网站方法一：-1" class="headerlink" title="模拟cookies访问网站方法一："></a>模拟cookies访问网站方法一：</h4><p>用浏览器访问网站后，手动抓包，将cookie信息复制，放到代码的请求头上</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://www.zhihu.com/&quot;</span></span><br><span class="line">headers = &#123;</span><br><span class="line"><span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Mobile Safari/537.36&quot;</span>,</span><br><span class="line"><span class="string">&#x27;cookie&#x27;</span>: <span class="string">&#x27;_zap=5b69d7ff-9b3f-468b-b891-103b2029d8&#x27;</span>   <span class="comment">#复制的cookie内容太多，省略</span></span><br><span class="line">&#125;</span><br><span class="line">resp = requests.get(url, headers=headers)</span><br><span class="line"><span class="built_in">print</span>(resp.text)</span><br></pre></td></tr></table></figure>
+
+<h4 id="模拟cookies访问网站方法二：使用session，共享cookie"><a href="#模拟cookies访问网站方法二：使用session，共享cookie" class="headerlink" title="模拟cookies访问网站方法二：使用session，共享cookie"></a>模拟cookies访问网站方法二：使用session，共享cookie</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment">#1，登入,准备好需要登入的网站，参数，请求头</span></span><br><span class="line">post_url = <span class="string">&quot;&quot;</span>      <span class="comment">#登入的网站</span></span><br><span class="line">post_data = &#123;&#125;     <span class="comment">#登入的参数，账号密码</span></span><br><span class="line">post_headers = &#123;&#125;  <span class="comment">#登入需要的请求头</span></span><br><span class="line"><span class="comment">#创建session，用session发送请求</span></span><br><span class="line">session = requests.session()</span><br><span class="line">session.post(url=post_url, data=post_data, headers=post_headers)</span><br><span class="line"><span class="comment">#2，session中已带有cookie访问网站</span></span><br><span class="line">url = <span class="string">&quot;https://m.meishij.net/&quot;</span></span><br><span class="line">resp = session.get(url)</span><br><span class="line"><span class="built_in">print</span>(resp.text)</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理不信任的ssl证书："><a href="#处理不信任的ssl证书：" class="headerlink" title="处理不信任的ssl证书："></a>处理不信任的ssl证书：</h3><p>对于哪些被信任的SSL证书的网站，如<a href="https://www.baidu.com/%EF%BC%8C%E7%9B%B4%E6%8E%A5%E8%AE%BF%E9%97%AE%E5%8F%AF%E4%BB%A5%E6%AD%A3%E5%B8%B8%E8%BF%94%E5%9B%9E%E5%93%8D%E5%BA%94%E3%80%82">https://www.baidu.com/，直接访问可以正常返回响应。</a></p>
+<p>而不被信任的SSL证书的网站无法正常返回响应。requests请求是需要把verify=False。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://inv-veri.chinatax.gov.cn/&quot;</span></span><br><span class="line">resp = requests.get(url, verify=<span class="literal">False</span>)   <span class="comment">#verify=False</span></span><br><span class="line"><span class="built_in">print</span>(resp.text)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
       <categories>
         <category>python</category>
       </categories>

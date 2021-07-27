@@ -104,29 +104,140 @@
 
 
 
+<h1 id="数据解析"><a href="#数据解析" class="headerlink" title="数据解析"></a>数据解析</h1><p>数据解析，即数据提取，爬取的所有信息中将需要的信息提取出来。</p>
+<h2 id="XPath语法和lxml模块"><a href="#XPath语法和lxml模块" class="headerlink" title="XPath语法和lxml模块"></a>XPath语法和lxml模块</h2><h3 id="什么是XPath"><a href="#什么是XPath" class="headerlink" title="什么是XPath"></a>什么是XPath</h3><p>xpath（XML Path Language）是一门在xml和html文档中查找信息的语言，可用来在XML和HTML文档中对元素和属性经行遍历</p>
+<h3 id="XPath开发工具"><a href="#XPath开发工具" class="headerlink" title="XPath开发工具"></a>XPath开发工具</h3><p>Chrome插件XPath Helper</p>
+<p>Firefox插件Try XPath</p>
+<h3 id="XPath节点"><a href="#XPath节点" class="headerlink" title="XPath节点"></a>XPath节点</h3><p>在XPath中，有七类类型的节点：元素，属性，文本，命名空间，处理指令，注释，文档(根)节点。XML文档是被作为节点树来对待的。树的根被称为文档节点或者根节点。</p>
+<h3 id="XPath基本语法："><a href="#XPath基本语法：" class="headerlink" title="XPath基本语法："></a>XPath基本语法：</h3><h4 id="路径表达式："><a href="#路径表达式：" class="headerlink" title="路径表达式："></a>路径表达式：</h4><table>
+<thead>
+<tr>
+<th align="left">表达式</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">nodename</td>
+<td align="left">选取此节点的所有子节点。</td>
+</tr>
+<tr>
+<td align="left">/</td>
+<td align="left">从根节点选取（取子节点）。</td>
+</tr>
+<tr>
+<td align="left">//</td>
+<td align="left">从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置（取子孙节点）。</td>
+</tr>
+<tr>
+<td align="left">.</td>
+<td align="left">选取当前节点。</td>
+</tr>
+<tr>
+<td align="left">..</td>
+<td align="left">选取当前节点的父节点。</td>
+</tr>
+<tr>
+<td align="left">@</td>
+<td align="left">选取属性。</td>
+</tr>
+</tbody></table>
+<h4 id="谓语："><a href="#谓语：" class="headerlink" title="谓语："></a>谓语：</h4><table>
+<thead>
+<tr>
+<th align="left">路径表达式</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">/bookstore/book[1]</td>
+<td align="left">选取属于 bookstore 子元素的第一个 book 元素。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[last()]</td>
+<td align="left">选取属于 bookstore 子元素的最后一个 book 元素。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[last()-1]</td>
+<td align="left">选取属于 bookstore 子元素的倒数第二个 book 元素。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[position()&lt;3]</td>
+<td align="left">选取最前面的两个属于 bookstore 元素的子元素的 book 元素。</td>
+</tr>
+<tr>
+<td align="left">//title[@lang]</td>
+<td align="left">选取所有拥有名为 lang 的属性的 title 元素。</td>
+</tr>
+<tr>
+<td align="left">//title[@lang=’eng’]</td>
+<td align="left">选取所有 title 元素，且这些元素拥有值为 eng 的 lang 属性。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[price&gt;35.00]</td>
+<td align="left">选取 bookstore 元素的所有 book 元素，且其中的 price 元素的值须大于 35.00。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book[price&gt;35.00]//title</td>
+<td align="left">选取 bookstore 元素中的 book 元素的所有 title 元素，且其中的 price 元素的值须大于 35.00。</td>
+</tr>
+</tbody></table>
+<h4 id="通配符："><a href="#通配符：" class="headerlink" title="通配符："></a>通配符：</h4><table>
+<thead>
+<tr>
+<th align="left">通配符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">*</td>
+<td align="left">匹配任何元素节点。</td>
+</tr>
+<tr>
+<td align="left">@*</td>
+<td align="left">匹配任何属性节点。</td>
+</tr>
+<tr>
+<td align="left">node()</td>
+<td align="left">匹配任何类型的节点。</td>
+</tr>
+</tbody></table>
+<h4 id="选取若干路径："><a href="#选取若干路径：" class="headerlink" title="选取若干路径："></a>选取若干路径：</h4><table>
+<thead>
+<tr>
+<th align="left">路径表达式</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">//book/title | //book/price</td>
+<td align="left">选取 book 元素的所有 title 和 price 元素。</td>
+</tr>
+<tr>
+<td align="left">//title | //price</td>
+<td align="left">选取文档中的所有 title 和 price 元素。</td>
+</tr>
+<tr>
+<td align="left">/bookstore/book/title | //price</td>
+<td align="left">选取属于 bookstore 元素的 book 元素的所有 title 元素，以及文档中所有的 price 元素。</td>
+</tr>
+</tbody></table>
+<h3 id="lxml库："><a href="#lxml库：" class="headerlink" title="lxml库："></a>lxml库：</h3><p>安装：pip install lxml</p>
+<p>lxml python 官方文档：<a href="https://lxml.de/index.html">https://lxml.de/index.html</a></p>
+<p>基本使用：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#随便定义的html文本举例</span></span><br><span class="line">text = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;html lang=&quot;en&quot;&gt;</span></span><br><span class="line"><span class="string">&lt;head&gt;</span></span><br><span class="line"><span class="string">	&lt;meta charset=&quot;UTF-8&quot;&gt;</span></span><br><span class="line"><span class="string">	&lt;title&gt;Document&lt;/title&gt;</span></span><br><span class="line"><span class="string">	&lt;script type=&quot;text/javascript&quot; src=&quot;./js/vue.js&quot;&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">	&lt;div id=&quot;app&quot;&gt;</span></span><br><span class="line"><span class="string">		&lt;input type=&quot;text&quot;&gt;</span></span><br><span class="line"><span class="string">		&lt;p&gt;&lt;a href=&#x27;www.baidu.com&#x27;&gt;hello&lt;/a&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">	&lt;/div&gt;</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"><span class="comment">#将字符串解析为html文档</span></span><br><span class="line">HTML = etree.HTML(text)</span><br><span class="line"><span class="built_in">print</span>(HTML)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将html列化为字符串</span></span><br><span class="line">result = etree.tostring(HTML).decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment">#从文件中读取html代码</span></span><br><span class="line">html = etree.parse(<span class="string">&quot;hello.html&quot;</span>)</span><br><span class="line">result = etree.tostring(html).decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
 
+<h3 id="在lxml中使用xpath语法："><a href="#在lxml中使用xpath语法：" class="headerlink" title="在lxml中使用xpath语法："></a>在lxml中使用xpath语法：</h3><p>文件路径：hello.html</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;item-0&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;link0.html&quot;</span>&gt;</span>first item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;item-1&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;link1.html&quot;</span>&gt;</span>second item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;item-inactive&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;link2.html&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;bold&quot;</span>&gt;</span>third item<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;item-1&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;link3.html&quot;</span>&gt;</span>forth item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">&quot;item-0&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;link4.html&quot;</span>&gt;</span>fifth item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p>练习语法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#在lxml中使用xpath</span></span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">html = etree.parse(<span class="string">&quot;hello.html&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1,获取所有li标签</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(etree.tostring(i))</span><br><span class="line">    </span><br><span class="line"><span class="comment">#2，获取所有li标签下的class属性值</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li/@class&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3,获取li标签下href为&quot;link0.html&quot;的a标签</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li/a[@href=&#x27;link0.html&#x27;]&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4,获取li标签下所有span标签</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li//span&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment">#5,获取li标签下的a标签的所有class属性</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li/a//@class&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6,获取最后一个li的a的href属性对应的值</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li[last()]/a/@href&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7,获取倒数第二个li元素的内容</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li[last()-1]/a&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result[<span class="number">0</span>].text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 8,获取倒是第二个li元素的内容的第二种方式</span></span><br><span class="line">result = html.xpath(<span class="string">&quot;//li[last()-1]/a/text()&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<h3 id="xpath实战-爬取笑话网站："><a href="#xpath实战-爬取笑话网站：" class="headerlink" title="xpath实战-爬取笑话网站："></a>xpath实战-爬取笑话网站：</h3><p>网站：<a href="https://xiaohua.zol.com.cn/new/">https://xiaohua.zol.com.cn/new/</a></p>
+<p>详情：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line"><span class="string">&quot;user-agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">&quot;https://xiaohua.zol.com.cn/&quot;</span>   </span><br><span class="line">joke = []     <span class="comment">#存放joke的容器</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#解析每一页笑话</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_page</span>(<span class="params">page_url</span>):</span></span><br><span class="line">    resp = requests.get(page_url, headers=headers)</span><br><span class="line">    text = resp.text</span><br><span class="line">    html = etree.HTML(text)</span><br><span class="line">    detail_url_list = html.xpath(<span class="string">&quot;//ul[@class=&#x27;article-list&#x27;]/li[@class=&#x27;article-summary&#x27;]//a[@class=&#x27;all-read&#x27;]/@href&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> detail_url <span class="keyword">in</span> detail_url_list:</span><br><span class="line">        detail_url = url+detail_url</span><br><span class="line">        parse_detail(detail_url)</span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#解析详情页笑话</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span>(<span class="params">detail_url</span>):</span></span><br><span class="line">    resp = requests.get(detail_url, headers=headers)</span><br><span class="line">    text = resp.text</span><br><span class="line">    html = etree.HTML(text)</span><br><span class="line">    joke_title = html.xpath(<span class="string">&quot;//h1[@class=&#x27;article-title&#x27;]/text()&quot;</span>)[<span class="number">0</span>]</span><br><span class="line">    joke_content = <span class="string">&#x27;&#x27;</span>.join(html.xpath(<span class="string">&quot;//div[@class=&#x27;article-text&#x27;]//text()&quot;</span>)).strip()</span><br><span class="line">    joke.append(&#123;</span><br><span class="line">        <span class="string">&quot;joke_title&quot;</span>: joke_title,</span><br><span class="line">        <span class="string">&quot;joke_content&quot;</span>: joke_content</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;joke_title&#125;</span>笑话下载完毕！&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#主流程</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">4</span>):      <span class="comment">##1，2，3页笑话</span></span><br><span class="line">        page_url = <span class="string">f&quot;https://xiaohua.zol.com.cn/new/<span class="subst">&#123;i&#125;</span>.html&quot;</span>    </span><br><span class="line">        parse_page(page_url)</span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;joke.json&quot;</span>, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        <span class="comment">#json.dump函数，将内存的数据保存到文件中</span></span><br><span class="line">        <span class="comment">#如果ensure_ascii没有设置为False，那么保存到json文件中文会存储为Unicode字符串</span></span><br><span class="line">        json.dump(joke, fp, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span>*<span class="number">30</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;所有笑话加载完毕！&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#执行</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
+<p><em><strong>注</strong></em>：测试时，for循环中应添加break终止循环。代码运行时，添加time.sleep(2)，避免数据抓取过于频繁。</p>
+<h2 id="BeautifulSoup4库"><a href="#BeautifulSoup4库" class="headerlink" title="BeautifulSoup4库"></a>BeautifulSoup4库</h2><h2 id="正则表达式和re模块"><a href="#正则表达式和re模块" class="headerlink" title="正则表达式和re模块"></a>正则表达式和re模块</h2>]]></content>
       <categories>
         <category>python</category>
       </categories>

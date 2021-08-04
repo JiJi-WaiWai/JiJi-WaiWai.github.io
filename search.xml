@@ -404,6 +404,236 @@
 <p>2，获取数据时，大多数要用非贪婪模式。</p>
 <p>3，如果正则写得不对，会获取不到结果，程序会假死。</p>
 <p>4，如果正则写得有问题，不要钻牛角尖，更换一个思路。</p>
+<h1 id="数据的存储："><a href="#数据的存储：" class="headerlink" title="数据的存储："></a>数据的存储：</h1><h2 id="JSON文件格式处理。"><a href="#JSON文件格式处理。" class="headerlink" title="JSON文件格式处理。"></a>JSON文件格式处理。</h2><h3 id="JSON："><a href="#JSON：" class="headerlink" title="JSON："></a>JSON：</h3><p>是一种轻量级的数据交换格式，有效的提高网络传输效率</p>
+<p>JSON支持数据格式：</p>
+<ul>
+<li>对象（python的字典）：使用花括号</li>
+<li>数组（python的列表）：使用方括号</li>
+<li>字符串类型：字符串必须要用双引号，不能用单引号</li>
+<li>整形，浮点型，布尔类型还有null类型</li>
+<li>多个数据之间用逗号(,)分开</li>
+</ul>
+<p><strong>注</strong>：json本质上就是一个字符串</p>
+<h3 id="python数据转换成json数据（dumps和dump）："><a href="#python数据转换成json数据（dumps和dump）：" class="headerlink" title="python数据转换成json数据（dumps和dump）："></a>python数据转换成json数据（dumps和dump）：</h3><p>dumps：将python数据转换成json数据</p>
+<p>dump：将python数据转换成json数据，接收fp文件指针参数，并且保存到文件中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line">students = [</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;李四&quot;</span>, <span class="string">&#x27;age&#x27;</span>:<span class="number">19</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;王五&quot;</span>, <span class="string">&#x27;age&#x27;</span>:<span class="number">17</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&quot;张三&quot;</span>, <span class="string">&#x27;age&#x27;</span>:<span class="number">15</span>&#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">#dumps</span></span><br><span class="line">json_students = json.dumps(students, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"><span class="built_in">print</span>( <span class="built_in">type</span>(json_students) )   <span class="comment">#&lt;class &#x27;str&#x27;&gt; 类型数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#dump</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;test.json&quot;</span>,<span class="string">&quot;w&quot;</span>,encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    json.dump(students, fp, ensure_ascii=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注</strong>：这两个方法都有 ensure_ascii 参数，默认为True，那么只存储ASCII码格式，不存储中文。要存储中文将其设为False。</p>
+<h3 id="json数据转换成python数据（loads和load）："><a href="#json数据转换成python数据（loads和load）：" class="headerlink" title="json数据转换成python数据（loads和load）："></a>json数据转换成python数据（loads和load）：</h3><p>loads：将json数据转换成python数据</p>
+<p>load：将json数据转换成python数据，并且是从文件中获取JSON数据</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line">json_students = <span class="string">&#x27;[&#123;&quot;name&quot;: &quot;李四&quot;, &quot;age&quot;: 19&#125;, &#123;&quot;name&quot;: &quot;王五&quot;, &quot;age&quot;: 17&#125;, &#123;&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 15&#125;]&#x27;</span>   <span class="comment">#json类型字符串</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#loads</span></span><br><span class="line">students = json.loads(json_students)</span><br><span class="line"><span class="built_in">print</span>( <span class="built_in">type</span>(students) )  <span class="comment">#&lt;class &#x27;list&#x27;&gt; 类型数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># #load</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;test.json&quot;</span>, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    studetns = json.load(fp)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">type</span>(studetns))  <span class="comment">#&lt;class &#x27;list&#x27;&gt; 类型数据</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="CSV文件格式处理。"><a href="#CSV文件格式处理。" class="headerlink" title="CSV文件格式处理。"></a>CSV文件格式处理。</h2><p>csv文件有点类似excel表格一样。所以一般第一行为字段名</p>
+<h3 id="读取CSV文件的两种方法："><a href="#读取CSV文件的两种方法：" class="headerlink" title="读取CSV文件的两种方法："></a>读取CSV文件的两种方法：</h3><p>1，以列表形式读取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;ipSpider.csv&quot;</span>, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    reader = csv.reader(fp)  <span class="comment">#返回一个迭代器reader</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> reader:</span><br><span class="line">        <span class="built_in">print</span>(x[<span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+
+<p>2，以字典形式读取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;ipSpider.csv&quot;</span>, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    reader = csv.DictReader(fp)   <span class="comment">#返回一个迭代器reader</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> reader:</span><br><span class="line">        <span class="built_in">print</span>(x[<span class="string">&quot;位置&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="写入CSV文件的两种方法："><a href="#写入CSV文件的两种方法：" class="headerlink" title="写入CSV文件的两种方法："></a>写入CSV文件的两种方法：</h3><p>1，以列表形式读取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line">headers = [<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>]</span><br><span class="line">students = [</span><br><span class="line">    (<span class="string">&quot;李四&quot;</span>,<span class="number">18</span>),</span><br><span class="line">    (<span class="string">&quot;王五&quot;</span>,<span class="number">16</span>),</span><br><span class="line">    (<span class="string">&quot;张三&quot;</span>,<span class="number">20</span>),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;test.csv&quot;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>, newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    writer = csv.writer(fp)</span><br><span class="line">    writer.writerow(headers)    <span class="comment">#写一行</span></span><br><span class="line">    writer.writerows(students)  <span class="comment">#写多行</span></span><br></pre></td></tr></table></figure>
+
+<p>2，以字典形式读取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line">headers = [<span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>]</span><br><span class="line">students = [</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&#x27;李四&#x27;</span>, <span class="string">&quot;age&quot;</span>:<span class="number">16</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&#x27;张良&#x27;</span>, <span class="string">&quot;age&quot;</span>:<span class="number">15</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>:<span class="string">&#x27;李逵&#x27;</span>, <span class="string">&quot;age&quot;</span>:<span class="number">18</span>&#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;test.csv&quot;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>, newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    writer = csv.DictWriter(fp, headers)</span><br><span class="line">    writer.writeheader()     <span class="comment">#上一行传入了字段名，这里还需要写入字段名</span></span><br><span class="line">    writer.writerows(students)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Excel文件处理。"><a href="#Excel文件处理。" class="headerlink" title="Excel文件处理。"></a>Excel文件处理。</h2><p>安装xlrd和xlwt两个库（读取和写入）</p>
+<ul>
+<li>pip install xlrd</li>
+<li>pip indtall xlwt</li>
+</ul>
+<h3 id="读取Excel（xlrd）："><a href="#读取Excel（xlrd）：" class="headerlink" title="读取Excel（xlrd）："></a>读取Excel（xlrd）：</h3><p>1,打开Excel文件：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xlrd</span><br><span class="line">workbook = xlrd.open_workbook(<span class="string">&quot;test.xlsx&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2,工作簿对sheet表的操作:</p>
+<ul>
+<li><p>workbook.sheet_names()：获取所有sheet表名</p>
+</li>
+<li><p>workbook.sheet_by_index(0)：通过索引，获取sheet表对象(下标从0开始)</p>
+</li>
+<li><p>workbook.sheet_by_name(“Sheet1”)：通过名字，获取sheet表对象</p>
+</li>
+<li><p>workbook.sheets()：获取所有sheet表对象</p>
+</li>
+</ul>
+<p>3，sheet工作表对cell单元格的操作：</p>
+<ul>
+<li>sheet.nrows：总行数</li>
+<li>sheet.ncols：总列数</li>
+<li>sheet.cell(row,col) ：获取单元格对象</li>
+<li>sheet.cell_value(row,col) ：获取单元格对象的值</li>
+<li>sheet.row_slice(row,start_col,end_col) ：获取指定行里的某几列单元格对象</li>
+<li>sheet.row_values(row,start_col,end_col) ：获取指定行里的某几列单元格对象的值</li>
+<li>sheet.col_slice(col,start_row,end_row) ：获取指定列里的某几行单元格对象</li>
+<li>sheet.col_values(col,start_row,end_row) ：获取指定列里的某几行单元格对象的值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xlrd</span><br><span class="line"></span><br><span class="line">workbook = xlrd.open_workbook(<span class="string">&quot;test.xlsx&quot;</span>)  <span class="comment">#获取工作簿</span></span><br><span class="line">sheet = workbook.sheet_by_index(<span class="number">0</span>)   <span class="comment">#获取sheet表</span></span><br><span class="line"><span class="built_in">print</span>(sheet.name)     <span class="comment">#打印sheet表名</span></span><br><span class="line">cells = sheet.row_slice(<span class="number">1</span>,<span class="number">1</span>,sheet.ncols)   <span class="comment">#指定行获取某几列单元格</span></span><br><span class="line"><span class="keyword">for</span> cell <span class="keyword">in</span> cells:</span><br><span class="line">    <span class="built_in">print</span>(cell.value)   <span class="comment">#打印单元格的值</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="写入Excel（xlwt）："><a href="#写入Excel（xlwt）：" class="headerlink" title="写入Excel（xlwt）："></a>写入Excel（xlwt）：</h3><p>1,建立工作簿：workbook = xlwt.Workbook()</p>
+<p>2,添加工资表：sheet = workbook.add_sheet(“表1”)</p>
+<p>3,写入数据：sheet.write(row,col,value)</p>
+<p>4,保存路径：workbook.save(“test.xlsx”)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xlwt</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">workbook = xlwt.Workbook()</span><br><span class="line">sheet = workbook.add_sheet(<span class="string">&quot;表1&quot;</span>)</span><br><span class="line"></span><br><span class="line">headers = [<span class="string">&quot;姓名&quot;</span>,<span class="string">&quot;英文&quot;</span>,<span class="string">&quot;数学&quot;</span>,<span class="string">&quot;语文&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> index,value <span class="keyword">in</span> <span class="built_in">enumerate</span>(headers):</span><br><span class="line">    sheet.write(<span class="number">0</span>,index,value)</span><br><span class="line">    </span><br><span class="line">names = [<span class="string">&quot;阿信&quot;</span>,<span class="string">&quot;阿达&quot;</span>,<span class="string">&quot;二哥&quot;</span>,<span class="string">&quot;阿飞&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> index,value <span class="keyword">in</span> <span class="built_in">enumerate</span>(names):</span><br><span class="line">    sheet.write(index+<span class="number">1</span>,<span class="number">0</span>,value)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>):</span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">4</span>):</span><br><span class="line">        sheet.write(row,col,random.randint(<span class="number">1</span>,<span class="number">100</span>))</span><br><span class="line">        </span><br><span class="line">workbook.save(<span class="string">&quot;test2.xlsx&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据类型："><a href="#数据类型：" class="headerlink" title="数据类型："></a>数据类型：</h3><p>cell.ctype()：查看数据类型</p>
+<p><strong>注</strong>：返回结果为数字</p>
+<ul>
+<li><p>xlrd.XL_CELL_TEXT    文本类型(1)</p>
+</li>
+<li><p>xlrd.XL_CELL_NUMBER  数值类型(2)</p>
+</li>
+<li><p>xlrd.XL_CELL_DATE    日期时间类型(3)</p>
+</li>
+<li><p>xlrd.XL_CELL_BOOLEAN 布尔类型(4)</p>
+</li>
+<li><p>xlrd.XL_CELL_EMPTY   空白数据类型(0)</p>
+</li>
+</ul>
+<h3 id="编辑Excel："><a href="#编辑Excel：" class="headerlink" title="编辑Excel："></a>编辑Excel：</h3><p>1，先读取原来的Excel文件（xlrd）</p>
+<p>2，然后在读取的sheet表中对cell修改，使用 put_cell(row, col, 数据类型, value, None) 方法实现</p>
+<p>3，再重新创建新的Excel文件写入数据（xlwt）</p>
+<p>案例：Excel文件中有该数据，要求：添加总分和平均分</p>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>英语</th>
+<th>数学</th>
+<th>语文</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>张三</td>
+<td>55</td>
+<td>68</td>
+<td>99</td>
+</tr>
+<tr>
+<td>李四</td>
+<td>59</td>
+<td>89</td>
+<td>100</td>
+</tr>
+<tr>
+<td>王五</td>
+<td>56</td>
+<td>87</td>
+<td>77</td>
+</tr>
+<tr>
+<td>赵四</td>
+<td>69</td>
+<td>45</td>
+<td>89</td>
+</tr>
+<tr>
+<td>小二</td>
+<td>99</td>
+<td>66</td>
+<td>75</td>
+</tr>
+</tbody></table>
+<p>结果：</p>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>英语</th>
+<th>数学</th>
+<th>语文</th>
+<th>总分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>张三</td>
+<td>55</td>
+<td>68</td>
+<td>99</td>
+<td>222</td>
+</tr>
+<tr>
+<td>李四</td>
+<td>59</td>
+<td>89</td>
+<td>100</td>
+<td>248</td>
+</tr>
+<tr>
+<td>王五</td>
+<td>56</td>
+<td>87</td>
+<td>77</td>
+<td>220</td>
+</tr>
+<tr>
+<td>赵四</td>
+<td>69</td>
+<td>45</td>
+<td>89</td>
+<td>203</td>
+</tr>
+<tr>
+<td>小二</td>
+<td>99</td>
+<td>66</td>
+<td>75</td>
+<td>240</td>
+</tr>
+<tr>
+<td>平均分</td>
+<td>67.6</td>
+<td>71</td>
+<td>88</td>
+<td>226.6</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xlrd</span><br><span class="line"><span class="keyword">import</span> xlwt</span><br><span class="line"></span><br><span class="line"><span class="comment">#1,读取和修改到内存中</span></span><br><span class="line">rwb = xlrd.open_workbook(<span class="string">&quot;test.xlsx&quot;</span>)</span><br><span class="line">rsheet = rwb.sheet_by_index(<span class="number">0</span>)</span><br><span class="line">rows = rsheet.nrows</span><br><span class="line">cols = rsheet.ncols</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加总分字段</span></span><br><span class="line">rsheet.put_cell(<span class="number">0</span>,cols,xlrd.XL_CELL_TEXT,<span class="string">&quot;总分&quot;</span>,<span class="literal">None</span>)</span><br><span class="line"><span class="comment">#添加每个同学的总分</span></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,rows):</span><br><span class="line">    grades = rsheet.row_values(row,<span class="number">1</span>,cols)</span><br><span class="line">    total = <span class="built_in">sum</span>(grades)</span><br><span class="line">    rsheet.put_cell(row,cols,xlrd.XL_CELL_NUMBER,total,<span class="literal">None</span>)</span><br><span class="line">rows = rsheet.nrows</span><br><span class="line">cols = rsheet.ncols</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加平均分字段</span></span><br><span class="line">rsheet.put_cell(rows,<span class="number">0</span>,xlrd.XL_CELL_TEXT,<span class="string">&quot;平均分&quot;</span>,<span class="literal">None</span>)</span><br><span class="line"><span class="comment">#添加每个同学的平均分</span></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,cols):</span><br><span class="line">    grades = rsheet.col_values(col,<span class="number">1</span>,rows)</span><br><span class="line">    avg = <span class="built_in">sum</span>(grades)/<span class="built_in">len</span>(grades)</span><br><span class="line">    rsheet.put_cell(rows,col,xlrd.XL_CELL_NUMBER,avg,<span class="literal">None</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#2,写入</span></span><br><span class="line">wwb = xlwt.Workbook()</span><br><span class="line">wsheet = wwb.add_sheet(<span class="string">&quot;成绩表&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,rsheet.nrows):</span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,rsheet.ncols):</span><br><span class="line">        wsheet.write(row,col,rsheet.cell_value(row,col))</span><br><span class="line">wwb.save(<span class="string">&quot;test2.xlsx&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="MySQL数据库处理。"><a href="#MySQL数据库处理。" class="headerlink" title="MySQL数据库处理。"></a>MySQL数据库处理。</h2><p>安装相关模块：</p>
+<p>pip install pymysql</p>
+<p>1，连接数据库(主机号，端口号，用户，密码，数据库，编码)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">db = pymysql.connect(host=<span class="string">&quot;127.0.0.1&quot;</span>, port=<span class="number">3306</span>, user=<span class="string">&quot;root&quot;</span>, password=<span class="string">&quot;root&quot;</span>, database=<span class="string">&quot;de&quot;</span>,charset=<span class="string">&quot;utf8&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2，创建游标</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cursor = db.cursor()</span><br><span class="line"><span class="comment">#创建字典类型游标</span></span><br><span class="line">cursor = db.cursor(cursor=pymysql.cursors.DictCursor)</span><br></pre></td></tr></table></figure>
+
+<p>3，用游标执行sql语句</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#用游标执行各种命令</span></span><br><span class="line">cursor.execute(<span class="string">&quot;insert into users  values (&#x27;1&#x27;,&#x27;王二麻子&#x27;,&#x27;男&#x27;)&quot;</span>)</span><br><span class="line">sql = <span class="string">&quot;update users set userName=&#x27;二麻子&#x27; where id=&#x27;1&#x27;&quot;</span></span><br><span class="line">cursor.execute(sql)</span><br><span class="line"><span class="comment">#可以添加%s为占位符</span></span><br><span class="line">sql = <span class="string">&quot;select * from users where id=%s&quot;</span></span><br><span class="line">cursor.execute(sql,(<span class="number">1</span>)) </span><br></pre></td></tr></table></figure>
+
+<p>4，查询操作和修改操作<br>如果是查询操作，获取数据</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cursor.fetchone()    <span class="comment">#获取一条数据</span></span><br><span class="line">cursor.fetchmany(<span class="number">3</span>)  <span class="comment">#获取多条数据 </span></span><br><span class="line">cursor.fetchall()    <span class="comment">#获取所有数据</span></span><br></pre></td></tr></table></figure>
+
+<p>如果是‘增删改’这些修改操作，需要提交</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">db.commit()</span><br></pre></td></tr></table></figure>
+
+<p>5，关闭资源</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cursor.close()  <span class="comment">#关闭游标</span></span><br><span class="line">db.close()	    <span class="comment">#关闭数据库连接</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>python</category>

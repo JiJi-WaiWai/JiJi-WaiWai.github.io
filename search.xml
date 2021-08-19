@@ -24,7 +24,7 @@
     <url>/2021/07/24/web%20crawler/</url>
     <content><![CDATA[<p>python网络爬虫</p>
 <p>这是一篇文章关于python网络爬虫的个人笔记，</p>
-<p>爬爬爬，到处爬：爬取数据，然后解析，再保存！</p>
+<p>爬爬爬，到处爬</p>
 <span id="more"></span>
 
 <h1 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h1><h2 id="urllib库-—内置"><a href="#urllib库-—内置" class="headerlink" title="urllib库  —内置"></a>urllib库  —内置</h2><h3 id="urlopen函数"><a href="#urlopen函数" class="headerlink" title="urlopen函数"></a>urlopen函数</h3><p>创建一个表示远程url的类文件对象，然后像本地文件一样操作这类文件对象来获取远程数据。在urllib.request模块中</p>

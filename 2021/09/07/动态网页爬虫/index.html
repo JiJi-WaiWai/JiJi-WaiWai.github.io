@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jiji-waiwai.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="动态网页爬虫动态网页：是网站在不重新加载的情况下，通过ajax技术动态更新网站中的局部数据。直接查看网页源代码是找不到数据的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态网页爬虫">
+<meta property="og:url" content="https://jiji-waiwai.github.io/2021/09/07/%E5%8A%A8%E6%80%81%E7%BD%91%E9%A1%B5%E7%88%AC%E8%99%AB/index.html">
+<meta property="og:site_name" content="De&#39;s Blog">
+<meta property="og:description" content="动态网页爬虫动态网页：是网站在不重新加载的情况下，通过ajax技术动态更新网站中的局部数据。直接查看网页源代码是找不到数据的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-07T15:15:52.000Z">
+<meta property="article:modified_time" content="2021-09-07T15:25:22.137Z">
+<meta property="article:author" content="唧唧歪歪">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jiji-waiwai.github.io/2021/09/07/%E5%8A%A8%E6%80%81%E7%BD%91%E9%A1%B5%E7%88%AC%E8%99%AB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jiji-waiwai.github.io/2021/09/07/%E5%8A%A8%E6%80%81%E7%BD%91%E9%A1%B5%E7%88%AC%E8%99%AB/","path":"2021/09/07/动态网页爬虫/","title":"动态网页爬虫"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>动态网页爬虫 | De's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+  <a target="_blank" rel="noopener" href="https://GitHub.com/JiJi-WaiWai" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">De's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%BD%91%E9%A1%B5%E7%88%AC%E8%99%AB"><span class="nav-number">1.</span> <span class="nav-text">动态网页爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">解决方案：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#selenium%E5%92%8Cchromedriver%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">selenium和chromedriver介绍：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#selenium%E5%92%8Cchromedriver%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">selenium和chromedriver使用：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-number">1.3.1.</span> <span class="nav-text">基本使用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E9%A1%B5%E9%9D%A2%E5%92%8C%E6%B5%8F%E8%A7%88%E5%99%A8%EF%BC%9A"><span class="nav-number">1.3.2.</span> <span class="nav-text">关闭页面和浏览器：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E5%85%83%E7%B4%A0%EF%BC%9A"><span class="nav-number">1.3.3.</span> <span class="nav-text">定位元素：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E5%8D%95%E5%85%83%E7%B4%A0%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="nav-number">1.3.4.</span> <span class="nav-text">表单元素操作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E9%93%BE%EF%BC%9A"><span class="nav-number">1.3.5.</span> <span class="nav-text">行为链：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cookie%EF%BC%9A"><span class="nav-number">1.3.6.</span> <span class="nav-text">cookie：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E7%AD%89%E5%BE%85%E5%92%8C%E6%98%BE%E5%BC%8F%E7%AD%89%E5%BE%85%EF%BC%9A"><span class="nav-number">1.3.7.</span> <span class="nav-text">隐式等待和显式等待：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E7%AD%89%E5%BE%85%EF%BC%9A"><span class="nav-number">1.3.7.1.</span> <span class="nav-text">隐式等待：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%BE%E5%BC%8F%E7%AD%89%E5%BE%85%EF%BC%9A"><span class="nav-number">1.3.7.2.</span> <span class="nav-text">显式等待：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E7%AA%97%E5%8F%A3%EF%BC%9A"><span class="nav-number">1.3.8.</span> <span class="nav-text">切换窗口：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%BB%A3%E7%90%86IP%EF%BC%9A"><span class="nav-number">1.3.9.</span> <span class="nav-text">设置代理IP：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="nav-number">1.3.10.</span> <span class="nav-text">补充：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selenium%E5%AE%9E%E6%88%98-12306%E8%87%AA%E5%8A%A8%E6%8A%A2%E7%A5%A8"><span class="nav-number">1.4.</span> <span class="nav-text">Selenium实战-12306自动抢票</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E7%88%AC%E8%99%AB%E6%94%BB%E9%98%B2%E5%AE%9E%E6%88%98"><span class="nav-number">1.5.</span> <span class="nav-text">反爬虫攻防实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E9%81%93%E7%BF%BB%E8%AF%91"><span class="nav-number">1.5.1.</span> <span class="nav-text">有道翻译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="nav-number">1.5.2.</span> <span class="nav-text">自动识别验证码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E4%BD%93%E5%8F%8D%E7%88%AC"><span class="nav-number">1.5.3.</span> <span class="nav-text">字体反爬</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">解决方法：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text"></span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="唧唧歪歪"
+      src="/images/1.jpg">
+  <p class="site-author-name" itemprop="name">唧唧歪歪</p>
+  <div class="site-description" itemprop="description">踏上新征程----go！！！</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JiJi-WaiWai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JiJi-WaiWai" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1753645532@qq.com" title="E-Mail → mailto:1753645532@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://tool.gljlw.com/qq/?qq=1753645532" title="http:&#x2F;&#x2F;tool.gljlw.com&#x2F;qq&#x2F;?qq&#x3D;1753645532" rel="noopener" target="_blank">加qq</a>
+        </li>
+    </ul>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jiji-waiwai.github.io/2021/09/07/%E5%8A%A8%E6%80%81%E7%BD%91%E9%A1%B5%E7%88%AC%E8%99%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="唧唧歪歪">
+      <meta itemprop="description" content="踏上新征程----go！！！">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="De's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          动态网页爬虫
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-09-07 23:15:52 / 修改时间：23:25:22" itemprop="dateCreated datePublished" datetime="2021-09-07T23:15:52+08:00">2021-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="动态网页爬虫"><a href="#动态网页爬虫" class="headerlink" title="动态网页爬虫"></a>动态网页爬虫</h1><p>动态网页：是网站在不重新加载的情况下，通过ajax技术动态更新网站中的局部数据。直接查看网页源代码是找不到数据的。</p>
+<span id="more"></span>
+
+<h2 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h2><p>1，直接分析ajax调用的接口。然后通过代码请求这个接口。（上面的“爬虫实战1-多线程爬取王者荣耀壁纸”就是这种方案解决的）</p>
+<p>2，使用Selenium+chromedriver模拟浏览器行为获取数据。</p>
+<table>
+<thead>
+<tr>
+<th align="center">方式</th>
+<th align="center">优点</th>
+<th align="center">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">分析接口</td>
+<td align="center">直接可以请求到数据。不需要做一些解析工作。代码量少，性能高</td>
+<td align="center">分析接口比较复杂，特别是一些通过js混淆的接口，要有一定的js功底。容易别发现是爬虫。</td>
+</tr>
+<tr>
+<td align="center">selenium</td>
+<td align="center">直接模拟浏览器的行为。浏览器能请求到的，使用selenium也能请求到。爬虫更稳定</td>
+<td align="center">代码量多。性能低。</td>
+</tr>
+</tbody></table>
+<h2 id="selenium和chromedriver介绍："><a href="#selenium和chromedriver介绍：" class="headerlink" title="selenium和chromedriver介绍："></a>selenium和chromedriver介绍：</h2><p><strong>Selenium</strong>：相当于是一个机器人。可以模拟人类在浏览器上的一些行为，自动处理浏览器上的一些行为，比如点击，填充数据，删除cookie等。<br>Selenium官方网址(python版本)：<a target="_blank" rel="noopener" href="https://selenium-python.readthedocs.io/">https://selenium-python.readthedocs.io</a></p>
+<p>安装Selenium：Selenium有许多语言的版本，有java、ruby、python等。我们下载python版本就可以了。pip install selenium</p>
+<p><strong>chromedriver</strong>：是一个驱动Chrome浏览器的驱动程序，使用它才可以驱动Chrome浏览器。当然针对不同的浏览器有不同的driver。下面是不同的浏览器对应driver。</p>
+<ul>
+<li>Chrome：<a target="_blank" rel="noopener" href="https://sites.google.com/a/chromium.org/chromedriver/downloads">https://sites.google.com/a/chromium.org/chromedriver/downloads</a></li>
+<li>Firefox：<a target="_blank" rel="noopener" href="https://github.com/mozilla/geckodriver/releases">https://github.com/mozilla/geckodriver/releases</a></li>
+<li>Edge：<a target="_blank" rel="noopener" href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/">https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/</a></li>
+<li>Safari：<a target="_blank" rel="noopener" href="https://webkit.org/blog/6900/webdriver-support-in-safari-10/">https://webkit.org/blog/6900/webdriver-support-in-safari-10/</a></li>
+</ul>
+<p><em>注</em>：下载版本和对应浏览器版本一致。保存在纯英文没有权限的路径下。</p>
+<h2 id="selenium和chromedriver使用："><a href="#selenium和chromedriver使用：" class="headerlink" title="selenium和chromedriver使用："></a>selenium和chromedriver使用：</h2><h3 id="基本使用："><a href="#基本使用：" class="headerlink" title="基本使用："></a>基本使用：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="comment">#下载好的chromedriver的路径</span></span><br><span class="line">driver_path = <span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span></span><br><span class="line">driver = webdriver.Chrome(executable_path=driver_path)</span><br><span class="line"><span class="comment">#直接用driver访问网站</span></span><br><span class="line">driver.get(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="comment">#获取源代码</span></span><br><span class="line"><span class="built_in">print</span>(driver.page_source)  </span><br></pre></td></tr></table></figure>
+
+<h3 id="关闭页面和浏览器："><a href="#关闭页面和浏览器：" class="headerlink" title="关闭页面和浏览器："></a>关闭页面和浏览器：</h3><ul>
+<li><p>driver.close()：关闭当前页面</p>
+</li>
+<li><p>driver.quit()：关闭浏览器</p>
+</li>
+</ul>
+<h3 id="定位元素："><a href="#定位元素：" class="headerlink" title="定位元素："></a>定位元素：</h3><ul>
+<li>find_element_by_id(“”)：根据id查找元素</li>
+<li>find_element_by_class_name(“”)：根据class名查找元素</li>
+<li>find_element_by_name(“”)：根据name属性查找元素</li>
+<li>find_element_by_tag_name(“”)：根据标签名查找元素</li>
+<li>find_element_by_xpath(“”)：根据xpath语法查找元素</li>
+<li>find_element_by_css_selector(“”)：根据css选择器查找元素</li>
+</ul>
+<p><strong>注</strong>：这些find_element查找元素是查找第一个满足条件的元素；如果加上s，即find_element<strong>s</strong>是获取所有满足条件的元素。</p>
+<p>以上元素定位的方法外，还有另一种元素定位的写法，如下：</p>
+<p>需要导入By：<code>from selenium.webdriver.common.by import By</code></p>
+<ul>
+<li>find_element(By.ID, “id”)</li>
+<li>find_element(By.CLASS_NAME, “class_name”)</li>
+<li>find_element(By.NAME, “name”)</li>
+<li>find_element(By.TAG_NAME, “tag_name”)</li>
+<li>find_element(By.XPATH, “xpath语法”)</li>
+<li>find_element(By.CSS_SELECTOR, “css语法”)</li>
+</ul>
+<p><strong>注</strong>：用法和上面一样，也有element<strong>s</strong>的用法。注意大写。</p>
+<h3 id="表单元素操作："><a href="#表单元素操作：" class="headerlink" title="表单元素操作："></a>表单元素操作：</h3><p>先到找该元素，再进行操作</p>
+<p>1，输入文本操作，用于输入框</p>
+<p>element.send_keys(“text”)：在该元素输入文本内容</p>
+<p>element.clear()：清除文本内容</p>
+<p>2，点击操作，用于复选框，按钮等</p>
+<p>element.click()：单机该元素</p>
+<p>3，选择下拉列表操作，用于select，option</p>
+<ul>
+<li>需要导入Select：<code>from selenium.webdriver.support.ui import Select</code></li>
+<li>找到select元素后，用导入的Select包装一下：<br><code>select = Select(driver.find_element_by_xpath(&quot;//select[@name=&#39;name&#39;]&quot;))</code></li>
+<li>在select标签中选择option：<br>select.select_by_index(“index”)：通过索引值选择<br>select.select_by_value(“value”)：通过value属性值选择<br>select.select_by_visible_text(“text”)：通过可视文本选择，即显示在上面的文字内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#表单元素操作：访问百度，在搜索框中输入‘python’，然后单击‘百度一下’按钮</span></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>)</span><br><span class="line">driver.get(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="comment">#找到搜索框</span></span><br><span class="line">inputTag = driver.find_element_by_id(<span class="string">&quot;kw&quot;</span>)</span><br><span class="line"><span class="comment">#搜索框输入内容</span></span><br><span class="line">inputTag.send_keys(<span class="string">&quot;python&quot;</span>)  </span><br><span class="line"><span class="comment">#找到百度一下按钮</span></span><br><span class="line">btn = driver.find_element_by_id(<span class="string">&quot;su&quot;</span>)</span><br><span class="line"><span class="comment">#单机操作</span></span><br><span class="line">btn.click()  </span><br></pre></td></tr></table></figure>
+
+<h3 id="行为链："><a href="#行为链：" class="headerlink" title="行为链："></a>行为链：</h3><p>更像人类的操作</p>
+<p>有时候在页面中的操作可能要有很多步，那么可以使用行为链。</p>
+<p>有些网站可能会在浏览器端做一些验证行为是否符合人类的行为来做反爬虫。这时候我们就可以使用行为链来模拟人的操作。行为链有更多的复杂操作，比如双击，右击。在自动化测试中非常有用。</p>
+<p>使用：</p>
+<ul>
+<li><p>导入<code>from selenium.webdriver.common.action_chains import ActionChains</code></p>
+</li>
+<li><p>创建行为链<code>actions = ActionChains(driver)</code></p>
+</li>
+<li><p>相关操作</p>
+<ul>
+<li>actions.move_to_element(element)：鼠标移动到某个元素上</li>
+<li>actions.send_keys_to_element(element, “text”)：在某个元素上输入文本</li>
+<li>actions.click(element)：单击某元素</li>
+<li>actions.context_click(element)：右击某元素</li>
+<li>actions.double_click(element)：双击某元素</li>
+<li>actions.click_and_hold(element)：单击但不松开，拖曳</li>
+</ul>
+</li>
+<li><p>actions.perform()：执行行为链</p>
+</li>
+</ul>
+<p><strong>注</strong>：创建了行为链，定义完后要提交执行，要再次使用行为链时，再重新创建一个行为链。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.action_chains <span class="keyword">import</span> ActionChains</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>)</span><br><span class="line"><span class="comment">#访问知乎</span></span><br><span class="line">driver.get(<span class="string">&#x27;https://www.zhihu.com/signin?next=%2F&#x27;</span>)</span><br><span class="line"><span class="comment">#创建行为链</span></span><br><span class="line">actions = ActionChains(driver)</span><br><span class="line"><span class="comment">#操作：选择用户密码登入</span></span><br><span class="line">login = driver.find_elements_by_class_name(<span class="string">&quot;SignFlow-tab&quot;</span>)[<span class="number">1</span>]</span><br><span class="line">actions.move_to_element(login)</span><br><span class="line">actions.click(login)</span><br><span class="line"><span class="comment">#执行该行为链</span></span><br><span class="line">actions.perform()</span><br><span class="line"></span><br><span class="line">time.sleep(<span class="number">3</span>)</span><br><span class="line"><span class="comment">#再次创建新的行为链</span></span><br><span class="line">actions = ActionChains(driver)</span><br><span class="line"><span class="comment">#操作：填写用户名</span></span><br><span class="line">username = driver.find_element_by_name(<span class="string">&quot;username&quot;</span>)</span><br><span class="line">actions.move_to_element(username)</span><br><span class="line">actions.send_keys_to_element(username,<span class="string">&quot;17370466454&quot;</span>)</span><br><span class="line"><span class="comment">#操作：填写密码</span></span><br><span class="line">password = driver.find_element_by_name(<span class="string">&quot;password&quot;</span>)</span><br><span class="line">actions.move_to_element(password)</span><br><span class="line">actions.send_keys_to_element(password,<span class="string">&quot;123456789&quot;</span>)</span><br><span class="line"><span class="comment">#操作：点击提交</span></span><br><span class="line">submit = driver.find_element_by_xpath(<span class="string">&quot;//button[@type=&#x27;submit&#x27;]&quot;</span>)</span><br><span class="line">actions.move_to_element(submit)</span><br><span class="line">actions.click(submit)</span><br><span class="line"><span class="comment">#执行该行为链</span></span><br><span class="line">actions.perform()</span><br></pre></td></tr></table></figure>
+
+<h3 id="cookie："><a href="#cookie：" class="headerlink" title="cookie："></a>cookie：</h3><ul>
+<li>driver.get_cookies()：获取所有cookie</li>
+<li>driver.get_cookie(“name”)：获取指定name的cookie</li>
+<li>driver.delete_all_cookies()：删除所有cookie</li>
+<li>driver.delete_cookie(“BA_HECTOR”)：删除指定name的cookie</li>
+<li>driver.add_cookie({“name”:”abc”, “value”:”123456”})：添加cookie</li>
+</ul>
+<h3 id="隐式等待和显式等待："><a href="#隐式等待和显式等待：" class="headerlink" title="隐式等待和显式等待："></a>隐式等待和显式等待：</h3><p>现在的网页越来越多使用ajax技术，程序不能确定何时某个元素完全加载出来了。如果元素还没加载出来，但代码直接使用该元素，就会报错NullPointer。<br>为解决这问题，Selenium提供两种等待方式：隐式等待，显式等待。</p>
+<h4 id="隐式等待："><a href="#隐式等待：" class="headerlink" title="隐式等待："></a>隐式等待：</h4><p>等待指定的秒数<br>driver.implicitly_wait()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#隐式等待</span></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>)</span><br><span class="line"></span><br><span class="line">driver.get(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="comment">#等待10秒</span></span><br><span class="line">driver.implicitly_wait(<span class="number">10</span>)</span><br><span class="line">driver.find_element_by_id(<span class="string">&quot;fjkd&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="显式等待："><a href="#显式等待：" class="headerlink" title="显式等待："></a>显式等待：</h4><p>等待，直到给定的条件成立后就不再等待，也可以指定一个最大等待时间，超过这个时间后就抛出异常。可配合try:，except:，else:，finally:。</p>
+<p>需要导入：</p>
+<ul>
+<li><code>from selenium.webdriver.support.ui import WebDriverWait</code>  ：显式等待类</li>
+<li><code>from selenium.webdriver.support import expected_conditions</code>  ：期望条件类</li>
+<li><code>from selenium.webdriver.common.by import By</code>：在期望条件中查找元素，用By</li>
+</ul>
+<p>语法：</p>
+<ul>
+<li><code>WebDriverWait(driver, “最大等待时间” ).until( “期望的条件” )</code></li>
+</ul>
+<p>例子：访问12306铁路，等待，直到车站中选择了北京后，再查询。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support.ui <span class="keyword">import</span> WebDriverWait  <span class="comment">#显式等待类</span></span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support <span class="keyword">import</span> expected_conditions <span class="keyword">as</span> EC  <span class="comment">#期望的条件类,as取别名</span></span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By   <span class="comment">#By用来查找元素的</span></span><br><span class="line"></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>)</span><br><span class="line"><span class="comment">#访问12306铁路</span></span><br><span class="line">driver.get(<span class="string">&quot;https://kyfw.12306.cn/otn/czxx/init&quot;</span>)</span><br><span class="line"><span class="comment">#条件是本文被显示在某个元素的value属性上</span></span><br><span class="line">WebDriverWait(driver,<span class="number">1000</span>).until(</span><br><span class="line">    EC.text_to_be_present_in_element_value((By.NAME,<span class="string">&quot;train_station_name&quot;</span>),<span class="string">&quot;北京&quot;</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">btn = driver.find_element_by_id(<span class="string">&quot;_a_search_btn&quot;</span>)</span><br><span class="line">btn.click()</span><br></pre></td></tr></table></figure>
+
+<p>显式等待预期的条件：</p>
+<ul>
+<li>title_is 判断title是否出现</li>
+<li>title_contains 判断title页面标题是否包含某些字符</li>
+<li><strong>presence_of_element_located 判断某个元素是否被加载到了dom树里，但是并不代表这个元素可见</strong></li>
+<li><strong>url_contains 判断当前url是否包含某个url</strong></li>
+<li>url_matches 判断当前url是否符合某种格式</li>
+<li>url_to_be 判断当前url是否出现</li>
+<li>url_changes 判断当前url是否已经发生了变化</li>
+<li>visibility_of_element_located 判断某个元素是否被添加到了dom树里，且宽高都大于0</li>
+<li>visibility_of 判断看某个元素是否可见</li>
+<li>presence_of_all_elements_located 判断至少有一个元素存在于dom树中，返回所有定位到的元素</li>
+<li>visibility_of_any_elements_located 判断至少有一个元素在页面中可见</li>
+<li>visibility_of_all_elements_located 判断是否所有元素都在页面中可见</li>
+<li>text_to_be_present_in_element 判断指定的元素中是否包含了预期的字符串</li>
+<li><strong>text_to_be_present_in_element_value 判断指定的元素属性值中是否包含了预期的字符串</strong></li>
+<li>frame_to_be_available_and_switch_to_it 判断iframe是否可以switch进去</li>
+<li>invisibility_of_element_located 判断某个元素是否在dom中不可见</li>
+<li>element_to_be_clickable 判断某个元素是否可见并且是enable的，也就是说是是否可以点击</li>
+<li>staleness_of 等待某个元素从dom中删除</li>
+<li>element_to_be_selected 判断某个元素是否被选中了，一般用于下拉列表中</li>
+<li>element_located_to_be_selected 与上面的意思一样，只不过上面实例化的时候传入的是元素对象，这个传入的是定位</li>
+<li>element_selection_state_to_be 判断某个元素的选中状态是否符合预期</li>
+<li>element_located_selection_state_to_be 与上面一样，只不过传值不同而已</li>
+<li>number_of_windows_to_be 判断当前窗口数是否等于预期</li>
+<li>new_window_is_opened 判断是否有窗口增加</li>
+<li>alert_is_present 判断页面是否有弹窗</li>
+</ul>
+<h3 id="切换窗口："><a href="#切换窗口：" class="headerlink" title="切换窗口："></a>切换窗口：</h3><p>1，<code>driver.switch_to_window()</code>：切换到指定窗口</p>
+<p>2，<code>driver.window_handles</code>：返回窗口的列表</p>
+<p>配合使用<code>driver.switch_to_window( driver.window_handles[0] )</code>，表示切换到第一个窗口</p>
+<p>3，<code>driver.execute_script(&quot;window.open(&#39;https://douban.com&#39;)&quot;)</code>：execute_script表示执行js代码，这里用js代码打开新的窗口</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>)</span><br><span class="line">driver.get(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="comment">#执行js代码,用js代码打开新的窗口</span></span><br><span class="line">driver.execute_script(<span class="string">&quot;window.open(&#x27;https://douban.com&#x27;)&quot;</span>)</span><br><span class="line"><span class="comment">#切换窗口</span></span><br><span class="line">driver.switch_to_window(driver.window_handles[<span class="number">1</span>])</span><br><span class="line"><span class="comment">#打印网页源代码</span></span><br><span class="line"><span class="built_in">print</span>(driver.page_source)</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置代理IP："><a href="#设置代理IP：" class="headerlink" title="设置代理IP："></a>设置代理IP：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"><span class="comment">#1，创建options</span></span><br><span class="line">options = webdriver.ChromeOptions()</span><br><span class="line"><span class="comment">#2，options添加代理IP</span></span><br><span class="line">options.add_argument(<span class="string">&quot;--proxy-server=http://219.128.76.3:8080&quot;</span>)</span><br><span class="line"><span class="comment">#3，创建驱动时，把options添加进去</span></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>,chrome_options=options)</span><br><span class="line"><span class="comment">#该网站返回自己的ip地址</span></span><br><span class="line">driver.get(<span class="string">&quot;http://httpbin.org/ip&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><p>element.get_property(“属性名”)：获取元素的html官方属性。</p>
+<p>element.get_attribute(“属性名”)：获取元素的属性，包括官方和自定义属性。</p>
+<p>driver.save_screenshot(“path”)：保存当前页面截图，一般png类型。</p>
+<h2 id="Selenium实战-12306自动抢票"><a href="#Selenium实战-12306自动抢票" class="headerlink" title="Selenium实战-12306自动抢票"></a>Selenium实战-12306自动抢票</h2><p>该程序可以自动实现抢票，虽然有点鸡肋，重在学习selenium。</p>
+<p>假如9点开始抢票。提前物色好车次和席别，添加乘客信息，定好开抢时间。在9点之前打开该程序并运行，由于9点没到，会一直处于等待阶段。直到9点一到，立刻抢票。</p>
+<p>简单定时器制作方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#导入time</span></span><br><span class="line"><span class="keyword">import</span> time   </span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment">#获取时间戳，时间戳就是1970年一直到现在的时间秒数，所以分分秒秒时间戳都在变化</span></span><br><span class="line">    timestamp = time.time()</span><br><span class="line">    <span class="comment">#把时间戳变为本地时间</span></span><br><span class="line">    localtime = time.localtime(timestamp)</span><br><span class="line">    <span class="comment">#将本地时间格式化成我们想要的文本格式</span></span><br><span class="line">    localtime = time.strftime(<span class="string">&quot;%H:%M:%S&quot;</span>,localtime)</span><br><span class="line">    <span class="comment">#判断如果本地时间到了指定时间(文本格式要一致)就停止循环，继续往下执行代码</span></span><br><span class="line">    <span class="keyword">if</span> localtime == <span class="string">&quot;12:45:00&quot;</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;时间到了！！&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>代码实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support.ui <span class="keyword">import</span> WebDriverWait</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support <span class="keyword">import</span> expected_conditions <span class="keyword">as</span> EC</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support.ui <span class="keyword">import</span> Select</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TrainSpider</span>():</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    该类用于12306铁路自动抢票功能，创建实例对象后直接调用run()方法。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    login_url = <span class="string">&quot;https://kyfw.12306.cn/otn/resources/login.html&quot;</span></span><br><span class="line">    search_url = <span class="string">&quot;https://kyfw.12306.cn/otn/leftTicket/init?linktypeid=dc&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,from_station,to_station,date,trains,passengers,snap_up</span>):</span></span><br><span class="line">        self.from_station = from_station</span><br><span class="line">        self.to_station = to_station</span><br><span class="line">        self.date = date</span><br><span class="line">        self.trains = trains</span><br><span class="line">        self.stations = &#123;&#125;  <span class="comment">#存放各个城市对应的代号词</span></span><br><span class="line">        self.get_stations_code()</span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.train = <span class="literal">None</span>  <span class="comment">#存放确定好的的车次</span></span><br><span class="line">        self.seat = <span class="literal">None</span>   <span class="comment">#存放确定好的的席位</span></span><br><span class="line">        self.passengers = passengers</span><br><span class="line">        self.snap_up = snap_up</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_stations_code</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取每个城市对应的代号词&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;stations.csv&quot;</span>, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">            reader = csv.reader(fp)</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> reader:</span><br><span class="line">                self.stations[i[<span class="number">0</span>]] = i[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.login_url)</span><br><span class="line">        <span class="comment">#等待用户手动登入</span></span><br><span class="line">        WebDriverWait(self.driver,<span class="number">1000</span>).until(</span><br><span class="line">            EC.url_contains(<span class="string">&quot;https://kyfw.12306.cn/otn/view/index.html&quot;</span>)</span><br><span class="line">        )</span><br><span class="line">        <span class="comment">#等待“新冠疫情”的提示框弹出</span></span><br><span class="line">        WebDriverWait(self.driver,<span class="number">1000</span>).until(</span><br><span class="line">            EC.presence_of_element_located((By.CLASS_NAME, <span class="string">&quot;modal&quot;</span>))</span><br><span class="line">        )</span><br><span class="line">        <span class="comment">#单击确认</span></span><br><span class="line">        btn = self.driver.find_element(By.CLASS_NAME, <span class="string">&quot;modal-close&quot;</span>)</span><br><span class="line">        btn.click()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;登入成功！&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search_ticket</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment">#相当于单击了“车票”导航栏中的“单程”命令</span></span><br><span class="line">        self.driver.get(self.search_url)</span><br><span class="line">        <span class="comment"># 等待“新冠疫情防控”的提示框弹出</span></span><br><span class="line">        WebDriverWait(self.driver, <span class="number">1000</span>).until(</span><br><span class="line">            EC.presence_of_element_located((By.ID,<span class="string">&quot;content_defaultwarningAlert_id&quot;</span>))</span><br><span class="line">        )</span><br><span class="line">        <span class="comment">#单击确认</span></span><br><span class="line">        self.driver.find_element_by_id(<span class="string">&quot;qd_closeDefaultWarningWindowDialog_id&quot;</span>).click()</span><br><span class="line">        <span class="comment">#输入起始站，终点站，时间</span></span><br><span class="line">        input_from_station = self.driver.find_element_by_id(<span class="string">&quot;fromStation&quot;</span>)</span><br><span class="line">        from_station_code = self.stations[self.from_station]</span><br><span class="line">        self.driver.execute_script(<span class="string">&quot;arguments[0].value=&#x27;%s&#x27;&quot;</span>%from_station_code,input_from_station)</span><br><span class="line">        input_to_station = self.driver.find_element_by_id(<span class="string">&quot;toStation&quot;</span>)</span><br><span class="line">        to_station_code = self.stations[self.to_station]</span><br><span class="line">        self.driver.execute_script(<span class="string">&quot;arguments[0].value=&#x27;%s&#x27;&quot;</span>%to_station_code, input_to_station)</span><br><span class="line">        input_date = self.driver.find_element_by_id(<span class="string">&quot;train_date&quot;</span>)</span><br><span class="line">        self.driver.execute_script(<span class="string">&quot;arguments[0].value=&#x27;%s&#x27;&quot;</span>%self.date, input_date)</span><br><span class="line">        <span class="comment">#到达指定时间才继续执行代码，用于抢票</span></span><br><span class="line">        <span class="keyword">if</span> self.snap_up == <span class="string">&quot;无&quot;</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                timestamp = time.time()</span><br><span class="line">                localtime = time.localtime(timestamp)</span><br><span class="line">                localtime = time.strftime(<span class="string">&quot;%H:%M:%S&quot;</span>, localtime)</span><br><span class="line">                <span class="keyword">if</span> localtime == self.snap_up:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">        <span class="comment">#点击查询</span></span><br><span class="line">        btn_submit = self.driver.find_element_by_id(<span class="string">&quot;query_ticket&quot;</span>)</span><br><span class="line">        btn_submit.click()</span><br><span class="line">        <span class="comment">#等待查询结果加载出来</span></span><br><span class="line">        WebDriverWait(self.driver,<span class="number">1000</span>).until(</span><br><span class="line">            EC.presence_of_element_located((By.XPATH,<span class="string">&quot;//tbody[@id=&#x27;queryLeftTable&#x27;]/tr&quot;</span>))</span><br><span class="line">        )</span><br><span class="line">        <span class="comment">#获取车次信息，解析车次</span></span><br><span class="line">        trs = self.driver.find_elements_by_xpath(<span class="string">&quot;//tbody[@id=&#x27;queryLeftTable&#x27;]/tr[not(@datatran)]&quot;</span>)</span><br><span class="line">        have_seat = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">for</span> tr <span class="keyword">in</span> trs:</span><br><span class="line">            train_info = tr.text.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot; &quot;</span>).split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">            train = train_info[<span class="number">0</span>]</span><br><span class="line">            <span class="comment">#判断是不是我们想要的车次</span></span><br><span class="line">            <span class="keyword">if</span> train <span class="keyword">in</span> self.trains:</span><br><span class="line">                seats = self.trains[train]</span><br><span class="line">                <span class="keyword">for</span> seat <span class="keyword">in</span> seats:</span><br><span class="line">                    <span class="comment">#判断是什么座位，并判断该座位有无票</span></span><br><span class="line">                    <span class="comment">#一等座:M,二等座:O,硬座:1，硬卧:3，软卧:4,高级软卧:6,商务座:9</span></span><br><span class="line">                    <span class="keyword">if</span> seat == <span class="string">&quot;M&quot;</span>:</span><br><span class="line">                        ticket = train_info[-<span class="number">11</span>]</span><br><span class="line">                        <span class="comment">#票情况可以为：文本类型的数字，有，候补，无，--，*</span></span><br><span class="line">                        <span class="comment">#ticket等于‘有’或者等于文本类型的数字都代表有票，这里强行把ticket转换成int类型，</span></span><br><span class="line">                        <span class="comment">#可以转换表示ticket是文本类型的数字，转不了表示ticket是’有‘，或者其他无票的可能，那就pass</span></span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            ticket = <span class="built_in">int</span>(ticket)</span><br><span class="line">                        <span class="keyword">except</span>:</span><br><span class="line">                            <span class="keyword">pass</span></span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(ticket)) == <span class="string">&quot;&lt;class &#x27;int&#x27;&gt;&quot;</span> <span class="keyword">or</span> ticket == <span class="string">&quot;有&quot;</span>:</span><br><span class="line">                            have_seat = <span class="literal">True</span></span><br><span class="line">                            self.seat = seat</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">if</span> seat == <span class="string">&quot;O&quot;</span>:</span><br><span class="line">                        ticket = train_info[-<span class="number">10</span>]</span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            ticket = <span class="built_in">int</span>(ticket)</span><br><span class="line">                        <span class="keyword">except</span>:</span><br><span class="line">                            <span class="keyword">pass</span></span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(ticket)) == <span class="string">&quot;&lt;class &#x27;int&#x27;&gt;&quot;</span> <span class="keyword">or</span> ticket == <span class="string">&quot;有&quot;</span>:</span><br><span class="line">                            have_seat = <span class="literal">True</span></span><br><span class="line">                            self.seat = seat</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">if</span> seat == <span class="string">&quot;1&quot;</span>:</span><br><span class="line">                        ticket = train_info[-<span class="number">4</span>]</span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            ticket = <span class="built_in">int</span>(ticket)</span><br><span class="line">                        <span class="keyword">except</span>:</span><br><span class="line">                            <span class="keyword">pass</span></span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(ticket)) == <span class="string">&quot;&lt;class &#x27;int&#x27;&gt;&quot;</span> <span class="keyword">or</span> ticket == <span class="string">&quot;有&quot;</span>:</span><br><span class="line">                            have_seat = <span class="literal">True</span></span><br><span class="line">                            self.seat = seat</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">if</span> seat == <span class="string">&quot;3&quot;</span>:</span><br><span class="line">                        ticket = train_info[-<span class="number">6</span>]</span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            ticket = <span class="built_in">int</span>(ticket)</span><br><span class="line">                        <span class="keyword">except</span>:</span><br><span class="line">                            <span class="keyword">pass</span></span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(ticket)) == <span class="string">&quot;&lt;class &#x27;int&#x27;&gt;&quot;</span> <span class="keyword">or</span> ticket == <span class="string">&quot;有&quot;</span>:</span><br><span class="line">                            have_seat = <span class="literal">True</span></span><br><span class="line">                            self.seat = seat</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">if</span> seat == <span class="string">&quot;4&quot;</span>:</span><br><span class="line">                        ticket = train_info[-<span class="number">8</span>]</span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            ticket = <span class="built_in">int</span>(ticket)</span><br><span class="line">                        <span class="keyword">except</span>:</span><br><span class="line">                            <span class="keyword">pass</span></span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(ticket)) == <span class="string">&quot;&lt;class &#x27;int&#x27;&gt;&quot;</span> <span class="keyword">or</span> ticket == <span class="string">&quot;有&quot;</span>:</span><br><span class="line">                            have_seat = <span class="literal">True</span></span><br><span class="line">                            self.seat = seat</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">if</span> seat == <span class="string">&quot;6&quot;</span>:</span><br><span class="line">                        ticket = train_info[-<span class="number">9</span>]</span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            ticket = <span class="built_in">int</span>(ticket)</span><br><span class="line">                        <span class="keyword">except</span>:</span><br><span class="line">                            <span class="keyword">pass</span></span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(ticket)) == <span class="string">&quot;&lt;class &#x27;int&#x27;&gt;&quot;</span> <span class="keyword">or</span> ticket == <span class="string">&quot;有&quot;</span>:</span><br><span class="line">                            have_seat = <span class="literal">True</span></span><br><span class="line">                            self.seat = seat</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">if</span> seat == <span class="string">&quot;9&quot;</span>:</span><br><span class="line">                        ticket = train_info[-<span class="number">12</span>]</span><br><span class="line">                        <span class="keyword">try</span>:</span><br><span class="line">                            ticket = <span class="built_in">int</span>(ticket)</span><br><span class="line">                        <span class="keyword">except</span>:</span><br><span class="line">                            <span class="keyword">pass</span></span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">str</span>(<span class="built_in">type</span>(ticket)) == <span class="string">&quot;&lt;class &#x27;int&#x27;&gt;&quot;</span> <span class="keyword">or</span> ticket == <span class="string">&quot;有&quot;</span>:</span><br><span class="line">                            have_seat = <span class="literal">True</span></span><br><span class="line">                            self.seat = seat</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">if</span> have_seat:</span><br><span class="line">                    <span class="comment"># have_seat为真表示找到了票，然后单击‘预定’按钮</span></span><br><span class="line">                    self.train = train</span><br><span class="line">                    btn = tr.find_element_by_class_name(<span class="string">&quot;btn72&quot;</span>)</span><br><span class="line">                    btn.click()</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">submit</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment">#选择乘客</span></span><br><span class="line">        WebDriverWait(self.driver,<span class="number">1000</span>).until(</span><br><span class="line">            EC.presence_of_element_located((By.XPATH,<span class="string">&quot;//ul[@id=&#x27;normal_passenger_id&#x27;]/li/label&quot;</span>))</span><br><span class="line">        )</span><br><span class="line">        passengers = self.driver.find_elements_by_xpath(<span class="string">&quot;//ul[@id=&#x27;normal_passenger_id&#x27;]/li/label&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> passenger <span class="keyword">in</span> passengers:</span><br><span class="line">            <span class="keyword">if</span> passenger.text <span class="keyword">in</span> self.passengers:</span><br><span class="line">                passenger.click()</span><br><span class="line">        <span class="comment">#选择席别</span></span><br><span class="line">        selectsEle = self.driver.find_elements_by_xpath(<span class="string">&quot;//tbody[@id=&#x27;ticketInfo_id&#x27;]/tr[not(@class=&#x27;tips&#x27;)]/td[3]/select&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> selectEle <span class="keyword">in</span> selectsEle:</span><br><span class="line">            select = Select( selectEle )</span><br><span class="line">            select.select_by_value(self.seat)</span><br><span class="line">        <span class="comment">#提交订单</span></span><br><span class="line">        btn = self.driver.find_element_by_id(<span class="string">&quot;submitOrder_id&quot;</span>)</span><br><span class="line">        btn.click()</span><br><span class="line">        <span class="comment">#确认提交订单信息</span></span><br><span class="line">        WebDriverWait(self.driver, <span class="number">1000</span>).until(</span><br><span class="line">            EC.presence_of_element_located((By.XPATH, <span class="string">&quot;//tbody[@id=&#x27;check_ticketInfo_id&#x27;]/tr/td&quot;</span>))</span><br><span class="line">        )</span><br><span class="line">        WebDriverWait(self.driver,<span class="number">1000</span>).until(</span><br><span class="line">            EC.presence_of_element_located((By.ID,<span class="string">&#x27;qr_submit_id&#x27;</span>))</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                btn = self.driver.find_element_by_id(<span class="string">&quot;qr_submit_id&quot;</span>)</span><br><span class="line">                btn.click()</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                passengers = <span class="string">&quot;、&quot;</span>.join(self.passengers)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;已为【%s】乘客购得【%s】车次【%s】席别票&quot;</span> % (passengers, self.train, self.seat))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="comment">#1，登入</span></span><br><span class="line">        self.login()</span><br><span class="line">        <span class="comment">#2，查询票</span></span><br><span class="line">        self.search_ticket()</span><br><span class="line">        <span class="comment">#3，提交订单</span></span><br><span class="line">        self.submit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="comment">#使用说明</span></span><br><span class="line">    <span class="comment">#创建类时按顺序输入参数：出发点，目的地，发车日期(&quot;****-**-**&quot;),车次座位(字典格式)，乘客(列表格式)，抢票时间(“**:**:**”)</span></span><br><span class="line">    <span class="comment">#车次座位格式：&#123;&quot;G403&quot;:[&quot;1&quot;],&quot;G505&quot;:[&quot;M&quot;,&quot;O&quot;]&#125;</span></span><br><span class="line">    <span class="comment"># 一等座:M,二等座:O,硬座:1，硬卧:3，软卧:4,高级软卧:6,商务座:9</span></span><br><span class="line">    <span class="comment">#抢票时间精确到时分秒，若填写“无”，表示当前时间直接抢票</span></span><br><span class="line">    </span><br><span class="line">    trainSpider = TrainSpider(<span class="string">&quot;万安县&quot;</span>,<span class="string">&quot;南昌&quot;</span>,<span class="string">&quot;2021-09-01&quot;</span>,&#123;<span class="string">&quot;G5022&quot;</span>:[<span class="string">&quot;O&quot;</span>]&#125;,[<span class="string">&quot;李昭德&quot;</span>,<span class="string">&quot;李昭辉&quot;</span>],<span class="string">&quot;13:11:00&quot;</span>)</span><br><span class="line">    trainSpider.run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="反爬虫攻防实战"><a href="#反爬虫攻防实战" class="headerlink" title="反爬虫攻防实战"></a>反爬虫攻防实战</h2><p>上一章爬取动态网页是使用selenium。这一章用另一种方法，分析后端接口，破解js，直接访问后端接口。<br>这种方法需要有一定的js功底。</p>
+<h3 id="有道翻译"><a href="#有道翻译" class="headerlink" title="有道翻译"></a>有道翻译</h3><p>通过请求有道翻译后端接口，实现翻译功能</p>
+<p>网址：<a target="_blank" rel="noopener" href="https://fanyi.youdao.com/">https://fanyi.youdao.com/</a></p>
+<p><strong>分析及代码实现</strong>：</p>
+<p>进入网站使用有道翻译发现，输入文本”world”后会自动翻译成”世界”，结论：输入文本后网页自动发送ajax请求。<br>通过抓包工具，找到相关包，包名‘translate_o?sm…..’。获取请求的url=”<a target="_blank" rel="noopener" href="https://fanyi.youdao.com/translate_o?smartresult=dict&amp;smartresult=rule&quot;%EF%BC%8C%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%EF%BC%9Apost%EF%BC%8C%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%A1%E6%81%AF%EF%BC%8C%E4%BB%A5%E5%8F%8A%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E3%80%82%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90%E5%A6%82%E4%B8%8B%EF%BC%9A">https://fanyi.youdao.com/translate_o?smartresult=dict&amp;smartresult=rule&quot;，请求方式：post，请求头信息，以及请求参数。请求参数分析如下：</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">i: world          			<span class="comment">//要翻译的文本，不管</span></span><br><span class="line"><span class="attr">from</span>: AUTO		            <span class="comment">//原文本的语言，AUTO表示自动识别，不管</span></span><br><span class="line"><span class="attr">to</span>: AUTO		 		    <span class="comment">//需要翻译成的语言，AUTO表示自动识别，不管</span></span><br><span class="line"><span class="attr">smartresult</span>: dict    		<span class="comment">//应该是固定的，不管</span></span><br><span class="line"><span class="attr">client</span>: fanyideskweb    	<span class="comment">//应该是固定的，不管</span></span><br><span class="line"><span class="attr">salt</span>: <span class="number">16293414783192</span>    				  <span class="comment">//应该是通过某种算法或加密得到    </span></span><br><span class="line"><span class="attr">sign</span>: 530e6e5252905a4774e78e524a42fd0b    <span class="comment">//应该是通过某种算法或加密得到 </span></span><br><span class="line"><span class="attr">lts</span>: <span class="number">1629341478319</span>       				  <span class="comment">//应该是通过某种算法或加密得到 </span></span><br><span class="line"><span class="attr">bv</span>: eda468fc64295ecf2810ab8a672c2db1      <span class="comment">//应该是通过某种算法或加密得到 </span></span><br><span class="line"><span class="attr">doctype</span>: json    			<span class="comment">//应该是固定的，不管</span></span><br><span class="line"><span class="attr">version</span>: <span class="number">2.1</span>     			<span class="comment">//应该是固定的，不管</span></span><br><span class="line"><span class="attr">keyfrom</span>: fanyi.web    		<span class="comment">//应该是固定的，不管</span></span><br><span class="line"><span class="attr">action</span>: FY_BY_REALTlME      <span class="comment">//应该是固定的，不管</span></span><br></pre></td></tr></table></figure>
+
+<p>通过观察，很明显有些请求参数是固定的，可以不需要修改，不用管<br>但是还有些参数是应该是通过某种算法或加密得到的，而且每次请求都不一样，所以需要自己根据其后端接口的规则来模仿实现。</p>
+<p>ajax请求是js文件写的，所以找到发送该ajax请求的js文件。找法：右击查看网页源代码，在网页源代码中找调用的js文件。可以打开js文件看看里面有没有相关的请求参数，如果基本都有，那就应该是该js文件。该js文件一般没有格式化，可以用js美化工具经行美化，方便阅读。</p>
+<p>拿到js文件后，分析需要的请求参数在里面是怎么实现的，以有道翻译为例。<br>下面4个是我们需要自己实现的请求参数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">salt: <span class="number">16293414783192</span></span><br><span class="line"><span class="attr">sign</span>: 530e6e5252905a4774e78e524a42fd0b</span><br><span class="line"><span class="attr">lts</span>: <span class="number">1629341478319</span></span><br><span class="line"><span class="attr">bv</span>: eda468fc64295ecf2810ab8a672c2db1</span><br></pre></td></tr></table></figure>
+
+<p>然后在js文件中找这些参数实现的原理：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">i: n,   <span class="comment">//n表示当前要翻译的单词</span></span><br><span class="line"><span class="attr">from</span>: C,</span><br><span class="line"><span class="attr">to</span>: S,</span><br><span class="line"><span class="attr">smartresult</span>: <span class="string">&quot;dict&quot;</span>,</span><br><span class="line"><span class="attr">client</span>: E,   </span><br><span class="line"><span class="attr">salt</span>: r.salt,    	<span class="comment">//找到这4个参数的实现原理，要找到r</span></span><br><span class="line"><span class="attr">sign</span>: r.sign,    	<span class="comment">//</span></span><br><span class="line"><span class="attr">lts</span>: r.ts,		 	<span class="comment">//</span></span><br><span class="line"><span class="attr">bv</span>: r.bv,		 	<span class="comment">//</span></span><br><span class="line"><span class="attr">doctype</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line"><span class="attr">version</span>: <span class="string">&quot;2.1&quot;</span>,</span><br><span class="line"><span class="attr">keyfrom</span>: <span class="string">&quot;fanyi.web&quot;</span>,</span><br><span class="line"><span class="attr">action</span>: e || <span class="string">&quot;FY_BY_DEFAULT&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//找到了这个</span></span><br><span class="line">r = v.generateSaltSign(n)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//按照逻辑一路往上找，最后找到该函数</span></span><br><span class="line"><span class="comment">//函数返回的这4个参数就是我们需要的参数，参数的实现原理也在其中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;   <span class="comment">//e就是表示上面的n</span></span><br><span class="line">			<span class="keyword">var</span> t = n.md5(navigator.appVersion),    <span class="comment">//md5加密navigator.appVersion，‘navigator.appVersion’返回浏览器版本，可以在浏览器工作台打印看看，是固定的</span></span><br><span class="line">				r = <span class="string">&quot;&quot;</span> + (<span class="keyword">new</span> <span class="built_in">Date</span>).getTime(),   <span class="comment">//获取时间戳，然后改为文本类型</span></span><br><span class="line">				i = r + <span class="built_in">parseInt</span>(<span class="number">10</span> * <span class="built_in">Math</span>.random(), <span class="number">10</span>);  <span class="comment">//r加上随机数1到10</span></span><br><span class="line">			<span class="keyword">return</span> &#123;   </span><br><span class="line">				<span class="attr">ts</span>: r,</span><br><span class="line">				<span class="attr">bv</span>: t,</span><br><span class="line">				<span class="attr">salt</span>: i,</span><br><span class="line">				<span class="attr">sign</span>: n.md5(<span class="string">&quot;fanyideskweb&quot;</span> + e + i + <span class="string">&quot;Y2FYu%TNSbMCxc3t2u^XT&quot;</span>)  <span class="comment">//md5加密</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>找到了参数的实现原理后，用python代码把这些参数重新实现一遍，然后就可以发送请求：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">n = <span class="built_in">input</span>(<span class="string">&quot;请输入&quot;</span>)</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://fanyi.youdao.com/translate_o?smartresult=dict&amp;smartresult=rule&quot;</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;Cookie&quot;</span>: <span class="string">&quot;SESSION_FROM_COOKIE=www.baidu.com; OUTFOX_SEARCH_USER_ID=-1154821063@117.162.66.74; JSESSIONID=aaaogRJYT3CYncQm3pCTx; OUTFOX_SEARCH_USER_ID_NCOO=1780673000.2103813; ___rl__test__cookies=1629341478311&quot;</span>,</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;https://fanyi.youdao.com/&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">timestamp = <span class="built_in">str</span>(time.time()*<span class="number">1000</span>)  <span class="comment">#时间戳，默认秒，转换成毫秒，转换文本型</span></span><br><span class="line">salt = timestamp + <span class="built_in">str</span>(random.randint(<span class="number">1</span>,<span class="number">10</span>))</span><br><span class="line">text = <span class="string">&quot;fanyideskweb&quot;</span> + n + salt + <span class="string">&quot;Y2FYu%TNSbMCxc3t2u^XT&quot;</span></span><br><span class="line">sign = hashlib.md5(text.encode(<span class="string">&quot;utf-8&quot;</span>)).hexdigest()   <span class="comment">#md5加密后获取值</span></span><br><span class="line"></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;i&quot;</span>: n,</span><br><span class="line">    <span class="string">&quot;from&quot;</span>: <span class="string">&quot;AUTO&quot;</span>,</span><br><span class="line">    <span class="string">&quot;to&quot;</span>: <span class="string">&quot;AUTO&quot;</span>,</span><br><span class="line">    <span class="string">&quot;smartresult&quot;</span>: <span class="string">&quot;dict&quot;</span>,</span><br><span class="line">    <span class="string">&quot;client&quot;</span>: <span class="string">&quot;fanyideskweb&quot;</span>,</span><br><span class="line">    <span class="string">&quot;salt&quot;</span>: salt,             <span class="comment">#</span></span><br><span class="line">    <span class="string">&quot;sign&quot;</span>: sign,             <span class="comment">#</span></span><br><span class="line">    <span class="string">&quot;lts&quot;</span>: timestamp,         <span class="comment">#</span></span><br><span class="line">    <span class="string">&quot;bv&quot;</span>: <span class="string">&quot;eda468fc64295ecf2810ab8a672c2db1&quot;</span>,    <span class="comment">#</span></span><br><span class="line">    <span class="string">&quot;doctype&quot;</span>: <span class="string">&quot;json&quot;</span>,</span><br><span class="line">    <span class="string">&quot;version&quot;</span>: <span class="string">&quot;2.1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;keyfrom&quot;</span>: <span class="string">&quot;fanyi.web&quot;</span>,</span><br><span class="line">    <span class="string">&quot;action&quot;</span>: <span class="string">&quot;FY_BY_REALTlME&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resp = requests.post(url, headers=headers, data=data)</span><br><span class="line">text = resp.text</span><br><span class="line">text = json.loads(text)</span><br><span class="line">fanyi = text.get(<span class="string">&quot;translateResult&quot;</span>)[<span class="number">0</span>][<span class="number">0</span>].get(<span class="string">&quot;tgt&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(fanyi)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果：</span></span><br><span class="line"><span class="comment"># 请输入hello world</span></span><br><span class="line"><span class="comment"># 你好世界</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自动识别验证码"><a href="#自动识别验证码" class="headerlink" title="自动识别验证码"></a>自动识别验证码</h3><p>自动识别验证码，这里使用的是打码平台。</p>
+<p>以菲菲打码平台为例，网址：<a target="_blank" rel="noopener" href="http://www.fateadm.com/">http://www.fateadm.com/</a></p>
+<p>1，注册登入，付款买积分（不贵，用于学习足够）<br>2，“开发文档”—–&gt;”例子参考“—–&gt;”demo下载“—–&gt;”python3“—–&gt;“下载解压得到py文件，可以直接使用”<br>3，该py文件中，定义了API接口调用类“FateadmApi”。如果不会使用，下面还定义了测试函数“TestFunc”。复制测试函数，粘贴到新的py文件，稍作修改，自己定义相关接口。如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fateadm_api <span class="keyword">import</span> FateadmApi   <span class="comment">#导入API接口调用类</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">TestFunc</span>(<span class="params">img_path,pred_type</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    验证码图片识别</span></span><br><span class="line"><span class="string">    :param img_path: 验证码图片路径</span></span><br><span class="line"><span class="string">    :param pred_type: 验证码图片类型，下面就类型说明</span></span><br><span class="line"><span class="string">    :return: 对应的验证码</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    pd_id           = <span class="string">&quot;***不方便展示***&quot;</span>     <span class="comment">#用户中心页可以查询到pd信息</span></span><br><span class="line">    pd_key          = <span class="string">&quot;***不方便展示***&quot;</span></span><br><span class="line">    app_id          = <span class="string">&quot;***不方便展示***&quot;</span>     <span class="comment">#开发者分成用的账号，在开发者中心可以查询到</span></span><br><span class="line">    app_key         = <span class="string">&quot;***不方便展示***&quot;</span></span><br><span class="line">    <span class="comment">#识别类型，</span></span><br><span class="line">    <span class="comment">#具体类型可以查看官方网站的价格页选择具体的类型，不清楚类型的，可以咨询客服</span></span><br><span class="line">    pred_type       = pred_type</span><br><span class="line">    api             = FateadmApi(app_id, app_key, pd_id, pd_key)</span><br><span class="line">    <span class="comment"># 查询余额</span></span><br><span class="line">    balance 		= api.QueryBalcExtend()   <span class="comment"># 直接返余额</span></span><br><span class="line">    <span class="comment"># api.QueryBalc()</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 通过文件形式识别：</span></span><br><span class="line">    file_name       = img_path</span><br><span class="line">    <span class="comment"># 多网站类型时，需要增加src_url参数，具体请参考api文档: http://docs.fateadm.com/web/#/1?page_id=6</span></span><br><span class="line">    <span class="comment"># result =  api.PredictFromFileExtend(pred_type,file_name)   # 直接返回识别结果</span></span><br><span class="line">    rsp             = api.PredictFromFile(pred_type, file_name)  <span class="comment"># 直接返回详细识别结果</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rsp.pred_rsp.value   <span class="comment">#返回识别结果</span></span><br></pre></td></tr></table></figure>
+
+<p>pd_id、pd_key、app_id、app_key要填写自己的，在用户中可以找到。参数：pred_type是验证码类型，在“开发文档”—–&gt;”类型说明”。img_path是验证码的图片路径。</p>
+<p>使用例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fateadm_api_my <span class="keyword">import</span> TestFunc   <span class="comment">#导入自己定义的接口函数</span></span><br><span class="line"></span><br><span class="line">result = TestFunc(<span class="string">&quot;image.png&quot;</span>,<span class="string">&quot;30900&quot;</span>)  <span class="comment">#调用函数，参数：验证码图片路径、验证码类型</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+
+<p>访问要填写验证码的网站时，需要保存该验证码的图片，然后导入并调用我们定义的接口函数，传入参数：验证码图片路径、验证码类型，返回验证码识别结果。识别结果有一定的几率识别错误。</p>
+<p>如果某个打码平台用不了了，属于正常现象，不必惊奇。</p>
+<h3 id="字体反爬"><a href="#字体反爬" class="headerlink" title="字体反爬"></a>字体反爬</h3><p>网页开发者自己创造一种字体，因为在字体中每个文字都有其代号，那么以后再网页中不会直接显示这个文字的最终效果，而是显示他的代号。因此即使获取到了网页中的文字内容，也只是获取到文字的代号，而不是文字本身。从而达到反爬目的。</p>
+<p>因为创造字体费时费力，数量多也影响网页加载。一般情况下为了反爬，仅会针对0-9以及少数汉字单独创造，其他还是使用用户系统中自带的字体。</p>
+<p>这里以爬取这个网址：<a target="_blank" rel="noopener" href="https://su.58.com/qztech/%E4%B8%BA%E4%BE%8B%E5%AD%90%E3%80%82">https://su.58.com/qztech/为例子。</a></p>
+<h4 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h4><p>在网页源代码中我们可以找到@font-face属性，@font-face属性中一般有两种情况：<br>1，字体被编码成base64方式，直接获取@font-face中base64后面的内容。<br>2，字体文件放到服务器上，在@font-face中可以找到其url，直接下载。</p>
+<p><strong>分析字体</strong>：</p>
+<p>分析字体时，需要将字体转换成xml文件和ttf文件。<br>xml文件：可查看里的cmap和glyf内容。cmap中储存code（就是文字的代号，网页源代码显示的代号）和name的映射关系。glyf中储存name和对应的字体绘制规则。<br>ttf文件：在xml中可以得到字体绘制规则，类似坐标的形式，但是不知道字体长什么样子。有一款软件FontCreator，可以打开ttf文件，能看到最终字体的呈现效果。（软件下载地址：<a target="_blank" rel="noopener" href="https://www.high-logic.com/FontCreatorSetup-x64.exe">https://www.high-logic.com/FontCreatorSetup-x64.exe</a></p>
+<p>分析字体其目的是为了得到真实的字体和其字体对应的字体绘制规则</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">from</span> fontTools.ttLib <span class="keyword">import</span> TTFont</span><br><span class="line"><span class="comment"># font_face是被经过base64解码后的字符串，其本身就是一个字体文件</span></span><br><span class="line">font_face = <span class="string">&#x27;d09GRgABAAAAACEUAAsAAAAAK....8klH9vrSy9aNNlv0CLWhrggA=&#x27;</span>  <span class="comment">#@font-face中复制的，内容太多，省略。</span></span><br><span class="line"><span class="comment">#将font_face用base64解密，放到Bytes管道中，然后创建TTFont对象。</span></span><br><span class="line">baseFont = TTFont(io.BytesIO(base64.b64decode(font_face)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># onlineFont.saveXML(&quot;58.xml&quot;)  #将字体保存成xml文件</span></span><br><span class="line"><span class="comment"># onlineFont.save(&quot;58.ttf&quot;)     #将字体保存成ttf文件</span></span><br><span class="line"></span><br><span class="line">baseGlyf = baseFont[<span class="string">&quot;glyf&quot;</span>]   <span class="comment">#获取glyg内容：name和其对应的字体绘制规则</span></span><br><span class="line"><span class="comment">#通过分析字体，得到真实字体和其对应的字体绘制规则。</span></span><br><span class="line">baseFontMap = &#123;</span><br><span class="line">    <span class="string">&quot;0&quot;</span>:baseGlyf[<span class="string">&quot;uniE3D3&quot;</span>],</span><br><span class="line">    <span class="string">&quot;1&quot;</span>:baseGlyf[<span class="string">&quot;uniF4C8&quot;</span>],</span><br><span class="line">    <span class="string">&quot;2&quot;</span>:baseGlyf[<span class="string">&quot;uniEB1C&quot;</span>],</span><br><span class="line">    <span class="string">&quot;3&quot;</span>:baseGlyf[<span class="string">&quot;uniF843&quot;</span>],</span><br><span class="line">    <span class="string">&quot;4&quot;</span>:baseGlyf[<span class="string">&quot;uniEA7C&quot;</span>],</span><br><span class="line">    <span class="string">&quot;5&quot;</span>:baseGlyf[<span class="string">&quot;uniE90E&quot;</span>],</span><br><span class="line">    <span class="string">&quot;6&quot;</span>:baseGlyf[<span class="string">&quot;uniE881&quot;</span>],</span><br><span class="line">    <span class="string">&quot;7&quot;</span>:baseGlyf[<span class="string">&quot;uniE671&quot;</span>],</span><br><span class="line">    <span class="string">&quot;8&quot;</span>:baseGlyf[<span class="string">&quot;uniEEB6&quot;</span>],</span><br><span class="line">    <span class="string">&quot;9&quot;</span>:baseGlyf[<span class="string">&quot;uniE295&quot;</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>font-face的字体内容每次访问都不一样，所以上面的代码只是为了得到“baseFontMap”：真实字体和其对应的字体绘制规则的映射</p>
+<p>代码实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">from</span> fontTools.ttLib <span class="keyword">import</span> TTFont</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">comp</span>(<span class="params">shape_1, shape_2</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    传入两个字体的绘制规则，判断这两个字体绘制的各个坐标的差异是否小于某某范围，一般40以内。匹配不到可扩大范围，出现乱匹配可缩小范围。</span></span><br><span class="line"><span class="string">    :param shape_1: 字体绘制规则1</span></span><br><span class="line"><span class="string">    :param shape_2: 字体绘制规则2</span></span><br><span class="line"><span class="string">    :return: True:各个坐标差异小于指定范围； False:各个坐标差异大于指定范围</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 获取字体绘制规则的坐标详情</span></span><br><span class="line">    shape_1 = shape_1.coordinates</span><br><span class="line">    shape_2 = shape_2.coordinates</span><br><span class="line">    <span class="comment"># 判断两个字体绘制规则的坐标个数是否一样</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(shape_1) == <span class="built_in">len</span>(shape_2):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(shape_1)):</span><br><span class="line">            <span class="comment"># 判断两个字体绘制规则相应的坐标，差异的范围是否在指定范围内。</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">abs</span>(shape_1[i][<span class="number">0</span>]-shape_2[i][<span class="number">0</span>])&gt;<span class="number">70</span> <span class="keyword">or</span> <span class="built_in">abs</span>(shape_1[i][<span class="number">1</span>]-shape_2[i][<span class="number">1</span>])&gt;<span class="number">70</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    font_face = <span class="string">&#x27;d09GRgABAAAAAC...aNNlv0CLWhrggA=&#x27;</span>   <span class="comment">##@font-face中复制的，内容太多，省略。</span></span><br><span class="line">    baseFont = TTFont(io.BytesIO(base64.b64decode(font_face)))</span><br><span class="line">    baseGlyf = baseFont[<span class="string">&quot;glyf&quot;</span>]</span><br><span class="line">    <span class="comment"># 得到真实字体和其对应的字体绘制规则的映射</span></span><br><span class="line">    baseFontMap = &#123;</span><br><span class="line">        <span class="string">&quot;0&quot;</span>:baseGlyf[<span class="string">&quot;uniE3D3&quot;</span>],</span><br><span class="line">        <span class="string">&quot;1&quot;</span>:baseGlyf[<span class="string">&quot;uniF4C8&quot;</span>],</span><br><span class="line">        <span class="string">&quot;2&quot;</span>:baseGlyf[<span class="string">&quot;uniEB1C&quot;</span>],</span><br><span class="line">        <span class="string">&quot;3&quot;</span>:baseGlyf[<span class="string">&quot;uniF843&quot;</span>],</span><br><span class="line">        <span class="string">&quot;4&quot;</span>:baseGlyf[<span class="string">&quot;uniEA7C&quot;</span>],</span><br><span class="line">        <span class="string">&quot;5&quot;</span>:baseGlyf[<span class="string">&quot;uniE90E&quot;</span>],</span><br><span class="line">        <span class="string">&quot;6&quot;</span>:baseGlyf[<span class="string">&quot;uniE881&quot;</span>],</span><br><span class="line">        <span class="string">&quot;7&quot;</span>:baseGlyf[<span class="string">&quot;uniE671&quot;</span>],</span><br><span class="line">        <span class="string">&quot;8&quot;</span>:baseGlyf[<span class="string">&quot;uniEEB6&quot;</span>],</span><br><span class="line">        <span class="string">&quot;9&quot;</span>:baseGlyf[<span class="string">&quot;uniE295&quot;</span>],</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 去爬取网页</span></span><br><span class="line">    url = <span class="string">&quot;https://su.58.com/qztech/&quot;</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;cookie&#x27;</span>: <span class="string">&#x27;f=n; commoer=101...&#x27;</span>,   <span class="comment">#直接复制的cookie，内容太多，省略。</span></span><br><span class="line">        <span class="string">&#x27;user-agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;referer&#x27;</span>: <span class="string">&#x27;https://passport.58.com/&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    resp = requests.get(url, headers=headers)</span><br><span class="line">    text = resp.text</span><br><span class="line">    <span class="comment"># 获取font_face内容</span></span><br><span class="line">    font_face = re.search(<span class="string">&quot;@font-face.+?base64,(.+?)\)&quot;</span>,text,re.DOTALL).group(<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 创建TTFont对象</span></span><br><span class="line">    currentFont = TTFont(io.BytesIO(base64.b64decode(font_face)))</span><br><span class="line">    <span class="comment">#获取cmap内容，即code和name的映射</span></span><br><span class="line">    currentCmap = currentFont.getBestCmap()</span><br><span class="line">    <span class="comment">#获取glyf内容，即name和字体绘制规则的映射</span></span><br><span class="line">    currentGlyf = currentFont[<span class="string">&quot;glyf&quot;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> code,name <span class="keyword">in</span> currentCmap.items():</span><br><span class="line">        <span class="comment"># 当前网页的字体绘制规则</span></span><br><span class="line">        currentShape = currentGlyf[name]</span><br><span class="line">        <span class="keyword">for</span> font,shape <span class="keyword">in</span> baseFontMap.items():</span><br><span class="line">            <span class="comment">#1，如果字体绘制规则不变，可以这样写，直接相等。则说明code对应其font</span></span><br><span class="line">            <span class="comment">#if shape == currentShape:</span></span><br><span class="line">            <span class="comment">#2，如果字体绘制规则每次访问时都会略微改变，判断对应的坐标改变在某某范围以内，则视为同一字体。则说明code对应其font</span></span><br><span class="line">            <span class="keyword">if</span> comp(shape, currentShape):</span><br><span class="line">                <span class="comment">#把code转换成网页源代码上显示的格式，把code（十进制）转十六进制，然后把开头的“0”改为“&amp;#”，然后末尾加“;”</span></span><br><span class="line">                code = <span class="built_in">str</span>(<span class="built_in">hex</span>(code)).replace(<span class="string">&#x27;0&#x27;</span>,<span class="string">&quot;&amp;#&quot;</span>,<span class="number">1</span>) + <span class="string">&quot;;&quot;</span></span><br><span class="line">                text = re.sub(code,font,text)</span><br><span class="line">    <span class="built_in">print</span>(text)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢老铁的支持！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="唧唧歪歪 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="唧唧歪歪 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"><i class="fa fa-tag"></i> 爬虫</a>
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/21/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81MzYzOC8zMDExMQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">唧唧歪歪</span>
+</div>
+<div class="busuanzi-count">
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div> -->
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script class="next-config" data-name="nprogress" type="application/json">{"enable":true,"spinner":true}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>

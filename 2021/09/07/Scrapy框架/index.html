@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/07/hIxYRI.png">
 <meta property="article:published_time" content="2021-09-07T15:37:58.000Z">
-<meta property="article:modified_time" content="2021-09-23T12:15:22.240Z">
+<meta property="article:modified_time" content="2021-09-29T14:11:23.947Z">
 <meta property="article:author" content="唧唧歪歪">
 <meta property="article:tag" content="爬虫">
 <meta property="article:tag" content="python">
@@ -126,7 +126,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scrapy%E6%A1%86%E6%9E%B6%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">Scrapy框架架构介绍：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">创建项目：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E6%88%98-%E5%8F%A4%E8%AF%97%E6%96%87%E7%BD%91%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">实战-古诗文网爬虫实战：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">各文件代码如下：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CrawlSpider%E7%88%AC%E8%99%AB"><span class="nav-number">4.</span> <span class="nav-text">CrawlSpider爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89url%E8%A7%84%E5%88%99"><span class="nav-number">4.1.</span> <span class="nav-text">定义url规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Rule%E8%A7%84%E5%88%99%E7%B1%BB%EF%BC%9A"><span class="nav-number">4.1.1.</span> <span class="nav-text">Rule规则类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkExtractors%E9%93%BE%E6%8E%A5%E6%8F%90%E5%8F%96%E5%99%A8%EF%BC%9A"><span class="nav-number">4.1.2.</span> <span class="nav-text">LinkExtractors链接提取器：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98-%E7%8C%8E%E4%BA%91%E7%BD%91%E7%88%AC%E8%99%AB%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">实战-猎云网爬虫：</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scrapy%E6%A1%86%E6%9E%B6%E6%9E%B6%E6%9E%84%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">Scrapy框架架构介绍：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">创建项目：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E6%88%98-%E5%8F%A4%E8%AF%97%E6%96%87%E7%BD%91%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">实战-古诗文网爬虫实战：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">各文件代码如下：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CrawlSpider%E7%88%AC%E8%99%AB"><span class="nav-number">4.</span> <span class="nav-text">CrawlSpider爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89url%E8%A7%84%E5%88%99"><span class="nav-number">4.1.</span> <span class="nav-text">定义url规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Rule%E8%A7%84%E5%88%99%E7%B1%BB%EF%BC%9A"><span class="nav-number">4.1.1.</span> <span class="nav-text">Rule规则类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkExtractors%E9%93%BE%E6%8E%A5%E6%8F%90%E5%8F%96%E5%99%A8%EF%BC%9A"><span class="nav-number">4.1.2.</span> <span class="nav-text">LinkExtractors链接提取器：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98-%E7%8C%8E%E4%BA%91%E7%BD%91%E7%88%AC%E8%99%AB%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">实战-猎云网爬虫：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scrapy%E4%B8%8B%E8%BD%BD%E5%9B%BE%E7%89%87"><span class="nav-number">5.</span> <span class="nav-text">scrapy下载图片</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%88%98-zcool%E7%BD%91%E7%AB%99%E4%B8%8B%E8%BD%BD%E5%9B%BE%E7%89%87"><span class="nav-number">5.1.</span> <span class="nav-text">实战-zcool网站下载图片</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -245,7 +245,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-09-23 20:15:22" itemprop="dateModified" datetime="2021-09-23T20:15:22+08:00">2021-09-23</time>
+        <time title="修改时间：2021-09-29 22:11:23" itemprop="dateModified" datetime="2021-09-29T22:11:23+08:00">2021-09-29</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -382,36 +382,34 @@
 
 
 
+<p>出现的问题点：scrapy运行正常，pipeline管道经过测试是没有运行的。判断已经主要是并没有创建设置的IMAGES_STORE<br>提前指出解决的办法，主要是没有依赖处理图片的第三库pillow</p>
+<p>pip install -i <a target="_blank" rel="noopener" href="https://pypi.doubanio.com/simple/">https://pypi.doubanio.com/simple/</a> –trusted-host pypi.doubanio.com pillow</p>
+<h1 id="scrapy下载图片"><a href="#scrapy下载图片" class="headerlink" title="scrapy下载图片"></a>scrapy下载图片</h1><p><strong>流程：</strong></p>
+<p>1，解析图片的url</p>
+<p>2，定义item。item中必须要有image_urls和images两个字段。image_urls中存放图片的url。</p>
+<p>3，在settings.py中，使用scrapy.pipelines.images.ImagesPipeline来作为数据保存的pipeline。</p>
+<p>4，在settings.py中，设置IMAGE_STORE来定义图片下载的路径。</p>
+<p>此时，只操作以上步骤的话。指定的IMAGE_STORE路径中会自动生成full文件夹，所有图片保存在里面。</p>
+<p>5，如果想要有更复杂的图片保存路径的需求。先在settings.py中，关掉第2步的‘scrapy.pipelines.images.ImagesPipeline’，打开‘zcool.pipelines.ZcoolPipeline’。然后在pipelines.py中重写ImagePipiline类的file_path方法。该方法用来返回每个图片的保存路径。</p>
+<p>6，但是file_path方法中没有item对象。如果想要item对象的话，我们还需要重写ImagePipline类的get_media_requests方法,来把item绑定到request上。</p>
+<h2 id="实战-zcool网站下载图片"><a href="#实战-zcool网站下载图片" class="headerlink" title="实战-zcool网站下载图片"></a>实战-zcool网站下载图片</h2><p>网站：<a target="_blank" rel="noopener" href="https://www.zcool.com.cn/">https://www.zcool.com.cn/</a></p>
+<p>把相同作品的图片下载到用一个文件夹，文件夹名就为作品名称</p>
+<p><strong>实际步骤如下：</strong>（对照上面的流程）</p>
+<p>创建scrapy项目，创建crawlSpider，在settings.py中更改配置，如不遵守机器人协议，请求头</p>
+<p>流程一，zcool_spider.py文件代码：(访问网站，解析图片url)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> ..items <span class="keyword">import</span> ZcoolItem</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZcoolSpiderSpider</span>(<span class="params">CrawlSpider</span>):</span></span><br><span class="line">    name = <span class="string">&#x27;zcool_spider&#x27;</span></span><br><span class="line">    allowed_domains = [<span class="string">&#x27;zcool.com.cn&#x27;</span>]</span><br><span class="line">    start_urls = [<span class="string">&#x27;https://www.zcool.com.cn/home?p=1#tab_anchor&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r&#x27;home\?p=\d+#tab_anchor&#x27;</span>), follow=<span class="literal">True</span>),</span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r&#x27;work/.+=\.html&#x27;</span>), callback=<span class="string">&#x27;parse_item&#x27;</span>, follow=<span class="literal">False</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">myprint</span>(<span class="params">self, value</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span>*<span class="number">40</span>)</span><br><span class="line">        <span class="built_in">print</span>(value)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span> * <span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span>(<span class="params">self, response</span>):</span></span><br><span class="line">        title = response.xpath(<span class="string">&quot;//div[@class=&#x27;details-contitle-box&#x27;]/h2/text()&quot;</span>).getall()</span><br><span class="line">        title = <span class="string">&#x27;&#x27;</span>.join(title).strip()</span><br><span class="line">        image_urls = response.xpath(<span class="string">&quot;//div[@class=&#x27;reveal-work-wrap js-sdata-box text-center&#x27;]//img/@src&quot;</span>).getall()</span><br><span class="line"></span><br><span class="line">        item = ZcoolItem(title=title, image_urls=image_urls)</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
 
+<p>流程二，item.py文件代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZcoolItem</span>(<span class="params">scrapy.Item</span>):</span></span><br><span class="line">    <span class="comment">#image_urls 和 images必须要有。</span></span><br><span class="line">    title = scrapy.Field()</span><br><span class="line">    image_urls = scrapy.Field()</span><br><span class="line">    images = scrapy.Field()</span><br></pre></td></tr></table></figure>
 
+<p>流程三四，配置settings.py文件：<br>1，设置ITEM_PIPELINES，如果图片放在一起就开启scrapy.pipelines.images.ImagesPipeline；如果有其他存放路径需求，就开启zcool.pipelines.ZcoolPipeline，并接着下一步在pipelines.py文件中重写方法</p>
+<p>2，添加IMAGES_STORE，是图片的保存目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ITEM_PIPELINES = &#123;</span><br><span class="line">   &#x27;zcool.pipelines.ZcoolPipeline&#x27;: 300,</span><br><span class="line">   #  &#x27;scrapy.pipelines.images.ImagesPipeline&#x27;: 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IMAGES_STORE = os.path.join(os.path.dirname(os.path.dirname(__file__)),&#x27;images&#x27;)</span><br></pre></td></tr></table></figure>
 
+<p>流程五六，在pipelines.py文件中，重写ImagePipiline类的file_path方法和get_media_requests方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itemadapter <span class="keyword">import</span> ItemAdapter</span><br><span class="line"><span class="keyword">from</span> scrapy.pipelines.images <span class="keyword">import</span> ImagesPipeline</span><br><span class="line"><span class="keyword">from</span> zcool <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZcoolPipeline</span>(<span class="params">ImagesPipeline</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_media_requests</span>(<span class="params">self, item, info</span>):</span></span><br><span class="line">        <span class="comment">#重写该方法的目的是，把item绑定在request上面，然后下面的file_path方法可以访问到item</span></span><br><span class="line">        media_requests = <span class="built_in">super</span>(ZcoolPipeline, self).get_media_requests(item, info)</span><br><span class="line">        <span class="keyword">for</span> media_request <span class="keyword">in</span> media_requests:</span><br><span class="line">            media_request.item = item</span><br><span class="line">        <span class="keyword">return</span> media_requests</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">file_path</span>(<span class="params">self, request, response=<span class="literal">None</span>, info=<span class="literal">None</span></span>):</span></span><br><span class="line">        orige_path = <span class="built_in">super</span>(ZcoolPipeline, self).file_path(request, response, info)</span><br><span class="line"></span><br><span class="line">        title = request.item[<span class="string">&quot;title&quot;</span>]</span><br><span class="line">        title = re.sub(<span class="string">r&#x27;[/\\:\*\?&quot;&lt;&gt;\|]&#x27;</span>,<span class="string">&quot;_&quot;</span>,title)</span><br><span class="line">        image_path = os.path.join(settings.IMAGES_STORE,title)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(image_path):</span><br><span class="line">            os.mkdir(image_path)</span><br><span class="line">        image_name = orige_path.replace(<span class="string">&quot;full/&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">		<span class="comment">#返回值就是每个图片的保存路径</span></span><br><span class="line">        <span class="keyword">return</span> os.path.join(image_path, image_name)</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<p>注意：创建文件夹时，名称不可用包含九种特殊符号。<br>我们的处理方式：<code>title = re.sub(r&#39;[/\\:\*\?&quot;&lt;&gt;\|]&#39;,&quot;_&quot;,title)</code></p>
 
     </div>
 

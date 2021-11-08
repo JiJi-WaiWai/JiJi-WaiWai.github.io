@@ -225,7 +225,61 @@
 <p>Proxy模型类：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Proxy</span>():</span></span><br><span class="line">    <span class="comment"># proxy的模型，方便管理</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, proxy_dict</span>):</span></span><br><span class="line">        data = proxy_dict[<span class="string">&quot;data&quot;</span>][<span class="number">0</span>]</span><br><span class="line">        self.proxy_url = <span class="string">&quot;https://&quot;</span> + data[<span class="string">&quot;ip&quot;</span>] + <span class="string">&quot;:&quot;</span> + <span class="built_in">str</span>(data[<span class="string">&quot;port&quot;</span>])</span><br><span class="line">        self.is_blacked = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
 
-<p>最后settings.py中把该下载器中间件启用。</p>
+<p>最后在settings.py中将该下载器中间件启用。</p>
+<h1 id="scrapy集成selenium爬取网页"><a href="#scrapy集成selenium爬取网页" class="headerlink" title="scrapy集成selenium爬取网页"></a>scrapy集成selenium爬取网页</h1><p>在scrapy爬取网址时，有时因为需要加载ajax或者需要点击某个按钮后，需要的数据才能完整展示出来，可以在scrapy中写selenium解决这个问题。</p>
+<p><strong>流程：</strong>下载器中间件的process_request(self, request, spider)方法，发送请求时调用，即发送请求前截拦，然后执行该方法。所以在该方法内，用selenium发送请求，处理，再封装成response对象返回。</p>
+<p>1，截拦原始请求。<br>2，用selenium请求。<br>3，将selenium请求的数据封装成response对象并返回。</p>
+<p><em><strong>案例：</strong></em></p>
+<p>爬取简书网站：<a href="http://jianshu.com/%EF%BC%8C%E7%AE%80%E4%B9%A6%E5%8F%91%E8%A1%A8%E7%9A%84%E6%96%87%E7%AB%A0%E4%B8%8B%E9%9D%A2%E6%9C%89%E6%98%BE%E7%A4%BA%E8%A2%AB%E6%9F%90%E6%9F%90%E4%B8%93%E9%A2%98%E6%94%B6%E5%85%A5%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%B8%93%E9%A2%98%E5%A4%9A%E7%9A%84%E8%AF%9D%EF%BC%8C%E5%8F%AA%E4%BC%9A%E6%98%BE%E7%A4%BA%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%8C%E9%9C%80%E8%A6%81%E7%82%B9%E5%87%BB%E6%8C%89%E9%92%AE%E2%80%9C%E5%B1%95%E5%BC%80%E6%9B%B4%E5%A4%9A%E2%80%9D%E6%89%8D%E8%83%BD%E6%98%BE%E7%A4%BA%E5%85%A8%E9%83%A8%E3%80%82">http://jianshu.com/，简书发表的文章下面有显示被某某专题收入，如果专题多的话，只会显示一部分，需要点击按钮“展开更多”才能显示全部。</a></p>
+<p>爬取简书，然后用selenium执行点击“展开更多”按钮后，把数据返回。</p>
+<p><strong>代码如下：</strong></p>
+<p>爬虫文件代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JianshuSpiderSpider</span>(<span class="params">CrawlSpider</span>):</span></span><br><span class="line">    name = <span class="string">&#x27;jianshu_spider&#x27;</span></span><br><span class="line">    allowed_domains = [<span class="string">&#x27;jianshu.com&#x27;</span>]</span><br><span class="line">    start_urls = [<span class="string">&#x27;http://jianshu.com/&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r&#x27;p/[0-9a-z]&#123;12&#125;&#x27;</span>), callback=<span class="string">&#x27;parse_item&#x27;</span>, follow=<span class="literal">True</span>),</span><br><span class="line">        <span class="comment"># Rule(LinkExtractor(allow=r&#x27;p/dbc69681575f&#x27;), callback=&#x27;parse_item&#x27;, follow=True),</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">myprint</span>(<span class="params">self, value</span>):</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;*&quot;</span>*<span class="number">40</span>)</span><br><span class="line">        <span class="built_in">print</span>(value)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;*&quot;</span>*<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span>(<span class="params">self, response</span>):</span></span><br><span class="line">        zhuantis = response.xpath(<span class="string">&quot;//div[@class=&#x27;_21bLU4 _3kbg6I&#x27;]/div[1]/div[1]/section[position()=3]/div[1]//text()&quot;</span>).getall()</span><br><span class="line">        self.myprint(zhuantis)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>middlewares.py文件：（<strong>重点</strong>）（记得在settings.py中开启）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support.ui <span class="keyword">import</span> WebDriverWait</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support <span class="keyword">import</span> expected_conditions <span class="keyword">as</span> EC</span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> scrapy.http.response.html <span class="keyword">import</span> HtmlResponse   <span class="comment">#封装response对象用的。</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JianshuDownloaderMiddleware</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver_path = <span class="string">&quot;D:/webDriver/chromedriver_win32_95.exe&quot;</span></span><br><span class="line">        self.driver = webdriver.Chrome(executable_path=self.driver_path)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_request</span>(<span class="params">self, request, spider</span>):</span></span><br><span class="line">        <span class="comment">#1,只要写了该方法就相当于截拦了原始请求</span></span><br><span class="line">        <span class="comment">#2，用selenium请求，并处理，点击“展开更多”按钮</span></span><br><span class="line">        <span class="keyword">if</span> re.match(<span class="string">r&quot;.*?\.com/p/[0-9a-z]&#123;12&#125;&quot;</span>, request.url):</span><br><span class="line">            self.driver.get(request.url)</span><br><span class="line"></span><br><span class="line">            btn_path = <span class="string">&quot;//div[@class=&#x27;_21bLU4 _3kbg6I&#x27;]/div[1]/div[1]/section[position()=3]/div[1]/div[1]&quot;</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                WebDriverWait(self.driver, <span class="number">10</span>).until(</span><br><span class="line">                    EC.element_to_be_clickable((By.XPATH, btn_path))</span><br><span class="line">                )</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                response = HtmlResponse(request.url, body=self.driver.page_source, request=request, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> response</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    btn = self.driver.find_element_by_xpath(btn_path)</span><br><span class="line">                    self.driver.execute_script(<span class="string">&quot;arguments[0].click()&quot;</span>, btn)</span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="comment">#3，最后把selenium访问的网页数据，封装成response对象并返回</span></span><br><span class="line">            response = HtmlResponse(request.url, body=self.driver.page_source, request=request, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> response    <span class="comment">#这个返回的response给爬虫文件中的response对象。</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>爬虫</category>
@@ -273,6 +327,9 @@
 <li>Safari：<a href="https://webkit.org/blog/6900/webdriver-support-in-safari-10/">https://webkit.org/blog/6900/webdriver-support-in-safari-10/</a></li>
 </ul>
 <p><em>注</em>：下载版本和对应浏览器版本一致。保存在纯英文没有权限的路径下。</p>
+<p>如果启动selenium报错如下：</p>
+<p><code>selenium.common.exceptions.SessionNotCreatedException: Message: session not created: This version of ChromeDriver only supports Chrome version 92</code>,</p>
+<p>就是浏览器和浏览器驱动版本不一样导致的。</p>
 <h2 id="selenium和chromedriver使用："><a href="#selenium和chromedriver使用：" class="headerlink" title="selenium和chromedriver使用："></a>selenium和chromedriver使用：</h2><h3 id="基本使用："><a href="#基本使用：" class="headerlink" title="基本使用："></a>基本使用：</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="comment">#下载好的chromedriver的路径</span></span><br><span class="line">driver_path = <span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span></span><br><span class="line">driver = webdriver.Chrome(executable_path=driver_path)</span><br><span class="line"><span class="comment">#直接用driver访问网站</span></span><br><span class="line">driver.get(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="comment">#获取源代码</span></span><br><span class="line"><span class="built_in">print</span>(driver.page_source)  </span><br></pre></td></tr></table></figure>
 
 <h3 id="关闭页面和浏览器："><a href="#关闭页面和浏览器：" class="headerlink" title="关闭页面和浏览器："></a>关闭页面和浏览器：</h3><ul>
@@ -383,7 +440,7 @@
 <li><strong>text_to_be_present_in_element_value 判断指定的元素属性值中是否包含了预期的字符串</strong></li>
 <li>frame_to_be_available_and_switch_to_it 判断iframe是否可以switch进去</li>
 <li>invisibility_of_element_located 判断某个元素是否在dom中不可见</li>
-<li>element_to_be_clickable 判断某个元素是否可见并且是enable的，也就是说是是否可以点击</li>
+<li><strong>element_to_be_clickable 判断某个元素是否可见并且是enable的，也就是说是是否可以点击</strong></li>
 <li>staleness_of 等待某个元素从dom中删除</li>
 <li>element_to_be_selected 判断某个元素是否被选中了，一般用于下拉列表中</li>
 <li>element_located_to_be_selected 与上面的意思一样，只不过上面实例化的时候传入的是元素对象，这个传入的是定位</li>
@@ -396,7 +453,7 @@
 <h3 id="切换窗口："><a href="#切换窗口：" class="headerlink" title="切换窗口："></a>切换窗口：</h3><p>1，<code>driver.switch_to_window()</code>：切换到指定窗口</p>
 <p>2，<code>driver.window_handles</code>：返回窗口的列表</p>
 <p>配合使用<code>driver.switch_to_window( driver.window_handles[0] )</code>，表示切换到第一个窗口</p>
-<p>3，<code>driver.execute_script(&quot;window.open(&#39;https://douban.com&#39;)&quot;)</code>：execute_script表示执行js代码，这里用js代码打开新的窗口</p>
+<p>3，<code>driver.execute_script(&quot;window.open(&#39;https://douban.com&#39;)&quot;)</code>：execute_script表示执行js代码，这里用js代码打开新的窗口，execute_script（”这里写js代码，还可以写arguments[0]，arguments[1]，表示引用外面的参数”，参数1，参数2）。</p>
   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>)</span><br><span class="line">driver.get(<span class="string">&quot;https://www.baidu.com&quot;</span>)</span><br><span class="line"><span class="comment">#执行js代码,用js代码打开新的窗口</span></span><br><span class="line">driver.execute_script(<span class="string">&quot;window.open(&#x27;https://douban.com&#x27;)&quot;</span>)</span><br><span class="line"><span class="comment">#切换窗口</span></span><br><span class="line">driver.switch_to_window(driver.window_handles[<span class="number">1</span>])</span><br><span class="line"><span class="comment">#打印网页源代码</span></span><br><span class="line"><span class="built_in">print</span>(driver.page_source)</span><br></pre></td></tr></table></figure>
 
 <h3 id="设置代理IP："><a href="#设置代理IP：" class="headerlink" title="设置代理IP："></a>设置代理IP：</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"></span><br><span class="line"><span class="comment">#1，创建options</span></span><br><span class="line">options = webdriver.ChromeOptions()</span><br><span class="line"><span class="comment">#2，options添加代理IP</span></span><br><span class="line">options.add_argument(<span class="string">&quot;--proxy-server=http://219.128.76.3:8080&quot;</span>)</span><br><span class="line"><span class="comment">#3，创建驱动时，把options添加进去</span></span><br><span class="line">driver = webdriver.Chrome(executable_path=<span class="string">&quot;D://webDriver//chromedriver_win32_92.exe&quot;</span>,chrome_options=options)</span><br><span class="line"><span class="comment">#该网站返回自己的ip地址</span></span><br><span class="line">driver.get(<span class="string">&quot;http://httpbin.org/ip&quot;</span>)</span><br></pre></td></tr></table></figure>

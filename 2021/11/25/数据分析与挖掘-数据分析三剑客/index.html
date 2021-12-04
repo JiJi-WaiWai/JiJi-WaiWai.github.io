@@ -22,19 +22,21 @@
   <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"jiji-waiwai.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.6.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="介绍了python中用于数据分析的三个模块，Numpy，Pandas，Matplotlib。">
+<meta name="description" content="介绍了python中用于数据分析的三个模块，numpy，Pandas，Matplotlib。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据分析与挖掘(数据分析三剑客)">
 <meta property="og:url" content="https://jiji-waiwai.github.io/2021/11/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E6%8C%96%E6%8E%98-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%89%E5%89%91%E5%AE%A2/index.html">
 <meta property="og:site_name" content="De&#39;s Blog">
-<meta property="og:description" content="介绍了python中用于数据分析的三个模块，Numpy，Pandas，Matplotlib。">
+<meta property="og:description" content="介绍了python中用于数据分析的三个模块，numpy，Pandas，Matplotlib。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/29/oM0B9I.png">
 <meta property="article:published_time" content="2021-11-25T03:46:30.000Z">
-<meta property="article:modified_time" content="2021-11-25T03:52:22.720Z">
+<meta property="article:modified_time" content="2021-12-04T13:19:34.982Z">
 <meta property="article:author" content="唧唧歪歪">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="数据分析">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/11/29/oM0B9I.png">
 
 
 <link rel="canonical" href="https://jiji-waiwai.github.io/2021/11/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%8E%E6%8C%96%E6%8E%98-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E4%B8%89%E5%89%91%E5%AE%A2/">
@@ -110,7 +112,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -123,6 +125,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Anaconda"><span class="nav-number">1.</span> <span class="nav-text">Anaconda</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy"><span class="nav-number">2.</span> <span class="nav-text">numpy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84array"><span class="nav-number">2.1.</span> <span class="nav-text">数组array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">相关方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#random%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">random随机数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pandas"><span class="nav-number">3.</span> <span class="nav-text">pandas</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="nav-number">3.1.</span> <span class="nav-text">数据读取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">3.2.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="nav-number">3.3.</span> <span class="nav-text">数据清洗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B1%87%E6%80%BB"><span class="nav-number">3.4.</span> <span class="nav-text">数据汇总</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#matplotlib"><span class="nav-number">4.</span> <span class="nav-text">matplotlib</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -233,10 +236,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-11-25 11:46:30 / 修改时间：11:52:22" itemprop="dateCreated datePublished" datetime="2021-11-25T11:46:30+08:00">2021-11-25</time>
+      <time title="创建时间：2021-11-25 11:46:30" itemprop="dateCreated datePublished" datetime="2021-11-25T11:46:30+08:00">2021-11-25</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-04 21:19:34" itemprop="dateModified" datetime="2021-12-04T21:19:34+08:00">2021-12-04</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -264,12 +273,311 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>介绍了python中用于数据分析的三个模块，Numpy，Pandas，Matplotlib。</p>
+        <p>介绍了python中用于数据分析的三个模块，numpy，Pandas，Matplotlib。</p>
 <span id="more"></span>
 
+<h1 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h1><p>本次学习我们使用的是Anaconda数据科学平台</p>
+<p>Anaconda是Python的一个发行版，里面内置了很多常用的库，例如Pandas、NumPy，Matplotlib，这些都不用自己再安装（pip）了。</p>
+<p>下载一个Anaconda就自带了Python和常用的工具，Python本身也不需要再单独下载了。</p>
+<p><em><strong>注：</strong></em>如果自己已经安装了python，并且需要再安装Anaconda的话，就把之前安装的python的环境变量删除掉。安装时记得勾选添加环境变量。</p>
+<p><strong>jupyter notebook</strong>  </p>
+<p>它是一个交互式记事本（Anaconda自带），里面可以写Python代码，还可以插入文字和图片（markdown模式）。</p>
+<p>使用方法：</p>
+<p>在cmd中打开需要目录后，输入jupyter notebook即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#jupyter notebook 快捷键</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#运行：Ctrl + Enter 或 Shift + Enter</span></span><br><span class="line"><span class="comment">#注释：Ctrl + /</span></span><br><span class="line"><span class="comment">#帮助：Shift + Tab(按一到四次)</span></span><br></pre></td></tr></table></figure>
 
+<p>在jupyter notebook中安装包：<code>! pip install 库名 -i https://pypi.douban.com/simple</code></p>
+<h1 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h1><h2 id="数组array"><a href="#数组array" class="headerlink" title="数组array"></a>数组array</h2><p><strong>运算快，效率高</strong></p>
+<p>列表list在进行数学运算时，列表不能直接参与运算，需要借助for循环、列表表达式等。而numpy提供的数组可以直接参与运算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="built_in">list</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line"><span class="comment"># list + 5    会报错</span></span><br><span class="line">array1 = np.array(<span class="built_in">list</span>)</span><br><span class="line">array1 + <span class="number">5</span>     </span><br><span class="line"><span class="comment">#结果：array([6, 7, 8, 9])</span></span><br></pre></td></tr></table></figure>
 
+<p>列表的索引方法可以在数组中使用，而且数组还有间断索引和逻辑索引。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array = np.array([<span class="number">11</span>,<span class="number">8</span>,<span class="number">15</span>,<span class="number">6</span>,<span class="number">18</span>,<span class="number">1</span>])</span><br><span class="line"><span class="comment">#数组和列表一样可以索引，切片索引</span></span><br><span class="line">array[-<span class="number">1</span>]     </span><br><span class="line">array[<span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line"><span class="comment">#间隔索引</span></span><br><span class="line">array[[<span class="number">0</span>,<span class="number">2</span>]]    <span class="comment">#结果：array([11, 15])</span></span><br><span class="line"><span class="comment">#逻辑索引，即布尔索引</span></span><br><span class="line">array&lt;<span class="number">10</span>        <span class="comment">#结果：array([False,  True, False,  True, False,  True])</span></span><br><span class="line">array[array&lt;<span class="number">10</span>]   <span class="comment">#结果：array([8, 6, 1])</span></span><br></pre></td></tr></table></figure>
 
+<p><strong>二维数组</strong>，索引时采用  [行下标,列下标]  即  [rows,cols] ，下标都是从0开始。使用 ：符号表示任意。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array2 = np.array([</span><br><span class="line">        [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],</span><br><span class="line">        [<span class="number">2</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">1</span>],</span><br><span class="line">        [<span class="number">3</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">2</span>]</span><br><span class="line">    ])</span><br><span class="line">array2[<span class="number">1</span>,<span class="number">1</span>]        <span class="comment">#结果：6</span></span><br><span class="line">array2[<span class="number">1</span>,:]        <span class="comment">#结果：array([2, 6, 9, 1])</span></span><br><span class="line">array2[:,<span class="number">2</span>]        <span class="comment">#结果：array([3, 9, 7])</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="相关方法"><a href="#相关方法" class="headerlink" title="相关方法"></a>相关方法</h2><p><strong>数学运算符</strong></p>
+<ul>
+<li><p>+：数组对应元素的和</p>
+</li>
+<li><p>-：数组对应元素的差</p>
+</li>
+<li><p>*：数组对应元素的乘积</p>
+</li>
+<li><p>/：数组对应元素的商</p>
+</li>
+<li><p>%：数组对应元素商的余数</p>
+</li>
+<li><p>//：数组对应元素的整除数</p>
+</li>
+<li><p>**：数组对应元素的幂指数</p>
+</li>
+</ul>
+<p><strong>比较运算符</strong></p>
+<ul>
+<li>&gt; 或 np.greater(arr1,arr2)：判断arr1的元素是否大于arr2的元素</li>
+<li>&gt;= 或 np.greater_equal(arr1,arr2)：判断arr1的元素是否大于等于arr2的元素</li>
+<li>&lt; 或 np.less(arr1,arr2)：判断arr1的元素是否小于arr2的元素</li>
+<li>&lt;= 或 np.less_equal(arr1,arr2)：判断arr1的元素是否小于等于arr2的元素</li>
+<li>== 或 np.equal(arr1,arr2)：判断arr1的元素是否等于arr2的元素</li>
+<li>!= 或 np.not_equal(arr1,arr2)：判断arr1的元素是否不等于arr2的元素</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">arr1 = np.array([<span class="number">1</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>])</span><br><span class="line">arr2 = np.array([<span class="number">2</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">9</span>])</span><br><span class="line">arr1+arr2           <span class="comment">#结果：array([ 3,  9,  6, 15])</span></span><br><span class="line">arr1&lt;arr2           <span class="comment">#结果：array([ True, False, False,  True])</span></span><br><span class="line">np.less(arr1,arr2)  <span class="comment">#结果：array([ True, False, False,  True])</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>常用的数学函数</strong></p>
+<ul>
+<li>np.round(arr)：对各元素四舍五入</li>
+<li>np.sqrt(arr)：计算各元素的算术平方根</li>
+<li>np.square(arr)：计算各元素的平方值</li>
+<li>np.exp(arr)：计算以e为底的指数</li>
+<li>np.power(arr, a)：计算各元素的指数</li>
+<li>np.log2(arr)：计算以2为底各元素的对数</li>
+<li>np.log10(arr)：计算以10为底各元素的对数</li>
+<li>np.log(arr)：计算以e为底各元素的对数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">arr1 = np.array([<span class="number">1</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">6</span>])</span><br><span class="line">np.square(arr1)</span><br><span class="line"><span class="comment">#结果：array([ 1, 25,  9, 36], dtype=int32)</span></span><br><span class="line">np.sqrt(arr1)</span><br><span class="line"><span class="comment">#结果：array([1.        , 2.23606798, 1.73205081, 2.44948974])</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>常用的统计函数</strong></p>
+<ul>
+<li>np.min(arr,axis)：按照轴的方向计算最小值</li>
+<li>np.max(arr,axis)：按照轴的方向计算最大值</li>
+<li>np.mean(arr,axis)：按照轴的方向计算平均值</li>
+<li>np.median(arr,axis)：按照轴的方向计算中位数</li>
+<li>np.sum(arr,axis)：按照轴的方向计算求和</li>
+<li>np.std(arr,axis)：按照轴的方向计算标准差</li>
+<li>np.var(arr,axis)：按照轴的方向计算方差</li>
+</ul>
+<p><em>注意</em>：axis=0 时，计算数组各列的统计值，形象记忆变成胖子；axis=1时，计算数组各行的统计值，形象记忆变成瘦子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">arr = np.array([</span><br><span class="line">    [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],</span><br><span class="line">    [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>],</span><br><span class="line">    [<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>]</span><br><span class="line">])</span><br><span class="line"><span class="comment">#对每行计算求和,三种写法</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    <span class="built_in">print</span>(np.<span class="built_in">sum</span>(arr[i,:]))</span><br><span class="line">np.<span class="built_in">sum</span>(arr, axis=<span class="number">1</span>)</span><br><span class="line">arr.<span class="built_in">sum</span>(axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#对每列计算求和，三种写法</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">    <span class="built_in">print</span>(np.<span class="built_in">sum</span>(arr[:,i]))</span><br><span class="line">np.<span class="built_in">sum</span>(arr, axis=<span class="number">0</span>)</span><br><span class="line">arr.<span class="built_in">sum</span>(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="random随机数"><a href="#random随机数" class="headerlink" title="random随机数"></a>random随机数</h2><p>import numpy as np</p>
+<ul>
+<li>np.random.randint()：随机整数</li>
+<li>np.random.uniform()：随机均匀分布</li>
+<li>np.random.normal()：随机正态分布</li>
+</ul>
+<p><strong>案例</strong>：有100钱去理想状态下赌博，赢了加1钱，输了扣1钱。模拟赌1000次。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">money = <span class="number">100</span></span><br><span class="line">P = [<span class="number">100</span>]  <span class="comment">#用于记录每次的钱</span></span><br><span class="line">R = np.random.uniform(<span class="number">0</span>,<span class="number">1</span>,<span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> R:</span><br><span class="line">    <span class="keyword">if</span> i&lt;<span class="number">0.5</span>:</span><br><span class="line">        money -= <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> i == <span class="number">0.5</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        money += <span class="number">1</span></span><br><span class="line">    P.append(money)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.plot(<span class="built_in">range</span>(<span class="number">1001</span>), P)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/oM0B9I"><img src="https://z3.ax1x.com/2021/11/29/oM0B9I.png" alt="oM0B9I.png" border="0" /></a></p>
+<h1 id="pandas"><a href="#pandas" class="headerlink" title="pandas"></a>pandas</h1><h2 id="数据读取"><a href="#数据读取" class="headerlink" title="数据读取"></a>数据读取</h2><p><strong>文本文件</strong></p>
+<p>pandas.read_csv(filepath_or_buffer, sep=”,”)<br><em>参数</em>：</p>
+<ul>
+<li>filepath_or_buffer：指定txt或csv文件所在的路径</li>
+<li>sep：指定原数据集中各字段之间的分隔符，默认为逗号” , “。</li>
+<li>header：是否将原数据集中第一行作为表头，默认是，赋值None不是</li>
+<li>names：如果原数据集中没有表头，该参数添加表头</li>
+<li>usecols：指定需要读取原数据集中的那些字段</li>
+<li>skiprows：数据读取时，指定需要跳过原数据集开头的行数（空白行不计入）</li>
+<li>skipfooter：数据读取时，指定需要跳过原数据集末尾的行数</li>
+<li>converters：将字段的类型转换（以字典的形式）</li>
+<li>encoding：指定字符编码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pn</span><br><span class="line"></span><br><span class="line">path = <span class="string">r&quot;D:\tempFile(2)&quot;</span></span><br><span class="line">pn.read_csv(path+<span class="string">&quot;/test_1.txt&quot;</span>, sep=<span class="string">&quot; &quot;</span>, skiprows=<span class="number">1</span>, skipfooter=<span class="number">1</span>, </span><br><span class="line">            header=<span class="literal">None</span>, names=[<span class="string">&quot;id&quot;</span>, <span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>], </span><br><span class="line">            usecols=[<span class="string">&quot;id&quot;</span>, <span class="string">&quot;name&quot;</span>], converters=&#123;<span class="string">&quot;id&quot;</span>:<span class="built_in">str</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>excel表</strong></p>
+<p>pandas.read_excel(io, sheetname=0)</p>
+<p><em>参数</em>：</p>
+<ul>
+<li>io：工作蒲的路径</li>
+<li>sheetname：哪张表，默认第一张</li>
+<li>header，skiprows，skip_footer等等参数同上。</li>
+</ul>
+<p><strong>sql</strong></p>
+<p>pandas.read_sql(“sql语句”, con=连接)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql </span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pn</span><br><span class="line"><span class="comment">#利用pymysql创建连接</span></span><br><span class="line">con = pymysql.connect(host=<span class="string">&quot;127.0.0.1&quot;</span>, user=<span class="string">&quot;root&quot;</span>, password=<span class="string">&quot;root&quot;</span>, </span><br><span class="line">                      database=<span class="string">&quot;studentv2db&quot;</span>, port=<span class="number">3306</span>, charset=<span class="string">&quot;utf8&quot;</span>, )</span><br><span class="line"></span><br><span class="line">df = pn.read_sql(<span class="string">&quot;select * from student&quot;</span>, con=con)</span><br><span class="line"><span class="comment">#关闭资源</span></span><br><span class="line">con.close()</span><br></pre></td></tr></table></figure>
+
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p><strong>数据的概览</strong>（df表示数据集）</p>
+<ul>
+<li>df.head()：浏览前5条数据</li>
+<li>df.shape：查看数据量，几行几列</li>
+<li>df.size：查看数据量，行*列</li>
+<li>df.columns：查看所有字段</li>
+<li>df.dtypes：查看字段类型，在pandas中，非数值型就是object类型</li>
+<li>df.describe()：数据描述，默认对数值型字段经行数学统计。df.describe(include=”object”)对非数值型字段数学统计。</li>
+</ul>
+<p><strong>数据筛选</strong></p>
+<ul>
+<li>df.字段名：选取某一字段</li>
+<li>df[“字段名”]：选取某一字段，可以多个字段，平时推荐该方法</li>
+<li>df.loc[行条件，列名称]：选取某子表，用冒号” : “ 表示任意行或列。如<code>df.loc[ df[&quot;Gender&quot;]==&quot;男&quot;, [&quot;Name&quot;, &quot;Gender&quot;] ]</code>，表示选取“Gender”条件为男的”Name“和”Gender“字段。</li>
+</ul>
+<p><strong>补充</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#简单构造数据集df</span></span><br><span class="line">df = pn.DataFrame(&#123;<span class="string">&quot;name&quot;</span>:[<span class="string">&quot;bob&quot;</span>,<span class="string">&quot;jake&quot;</span>],<span class="string">&quot;age&quot;</span>:[<span class="number">18</span>,<span class="number">20</span>]&#125;)</span><br><span class="line"><span class="comment">#对df数据集重新定义字段顺序</span></span><br><span class="line">df = pn.DataFrame(df, columns=[<span class="string">&quot;age&quot;</span>, <span class="string">&quot;name&quot;</span>])</span><br><span class="line"><span class="comment">#对df数据集的字段重命名</span></span><br><span class="line">df = df.rename(columns=&#123;<span class="string">&quot;age&quot;</span>:<span class="string">&quot;年龄&quot;</span>,<span class="string">&quot;name&quot;</span>:<span class="string">&quot;姓名&quot;</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h2><p><strong>数据类型的修改</strong></p>
+<ul>
+<li><p>pandas.to_datetime(columns,format=)：转换成时间类型</p>
+</li>
+<li><p>columns.astype()：转换从其他类型</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将df的&quot;Birthday&quot;字段转换成时间类型</span></span><br><span class="line">df[<span class="string">&quot;Birthday&quot;</span>] = pn.to_datetime(df[<span class="string">&quot;Birthday&quot;</span>], <span class="built_in">format</span>=<span class="string">&quot;%Y-%m-%d&quot;</span>)</span><br><span class="line"><span class="comment">#将df的&quot;SNo&quot;字段转换成str类型</span></span><br><span class="line">df[<span class="string">&quot;SNo&quot;</span>] = df[<span class="string">&quot;SNo&quot;</span>].astype(<span class="built_in">str</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据冗余</strong></p>
+<ul>
+<li>df.duplicated()：查看数据冗余（所有字段都一致），subset参数指定某一字段</li>
+<li>df.drop_duplicates()：删除冗余的记录，inplace参数为True表示同步原数据集df</li>
+</ul>
+<p><strong>异常值识别和处理</strong></p>
+<p>无</p>
+<p><strong>缺省值</strong></p>
+<ul>
+<li>df.isnull()：查看缺省值</li>
+<li>df.dropna()：删除缺省值</li>
+<li>df.fillna()：填充缺省值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看,可借助any()和sum()</span></span><br><span class="line">df.isnull()</span><br><span class="line">df.isnull().<span class="built_in">any</span>(axis=<span class="number">0</span>)</span><br><span class="line">df.isnull().<span class="built_in">sum</span>(axis=<span class="number">0</span>)                 <span class="comment">#计算每个字段的缺省值数量</span></span><br><span class="line">df.isnull().<span class="built_in">sum</span>(axis=<span class="number">0</span>) / df.shape[<span class="number">0</span>]   <span class="comment">#计算每个字段的缺省值率</span></span><br><span class="line"><span class="comment">#删除</span></span><br><span class="line">df.dropna(axis=<span class="number">0</span>, inplace=<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#填充</span></span><br><span class="line">df.fillna(value=<span class="number">0</span>, inplace=<span class="literal">True</span>)      <span class="comment">#所有缺省值填充0</span></span><br><span class="line">df.fillna(value=&#123;<span class="string">&quot;Birthday&quot;</span>:df[<span class="string">&quot;Birthday&quot;</span>].mode()[<span class="number">0</span>],<span class="string">&quot;Image&quot;</span>:<span class="string">&quot;无&quot;</span>&#125;)   <span class="comment">#不同字段填充不同数据</span></span><br><span class="line"><span class="comment">#补充要点</span></span><br><span class="line">df[<span class="string">&quot;Birthday&quot;</span>].mode()  <span class="comment">#某字段众数</span></span><br><span class="line">df[<span class="string">&quot;SNo&quot;</span>].median()     <span class="comment">#某字段中位数</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="数据汇总"><a href="#数据汇总" class="headerlink" title="数据汇总"></a>数据汇总</h2><p><strong>透视表功能</strong></p>
+<p>pandas.pivot_table(data, index=None, columns=None, values=None, aggfunc=”mean”)</p>
+<p><em>参数</em>：</p>
+<ul>
+<li>data：原数据集</li>
+<li>index：需要拉入”行标签“的字段列表</li>
+<li>columns：需要拉入”列标签“的字段列表</li>
+<li>values：需要计算的字段</li>
+<li>aggfunc：指定统计函数，也可以指定numpy模块中的其他统计函数</li>
+<li>fill_value：指定一个标量，用于填充缺失值</li>
+<li>margins：bool类型参数，是否显示行或列的总计数，默认为False</li>
+<li>droopan：bool类型参数，是否删除整列为缺失的字段，默认为True</li>
+<li>margins_name：指定行或列的总计名称，默认为All</li>
+</ul>
+<p>数据集如下：表3-1</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>姓名</th>
+<th>性别</th>
+<th>部门</th>
+<th>年龄</th>
+<th>薪水</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>李</td>
+<td>男</td>
+<td>开发部</td>
+<td>23</td>
+<td>12000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>王</td>
+<td>女</td>
+<td>UI部</td>
+<td>33</td>
+<td>8000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>刘</td>
+<td>女</td>
+<td>开发部</td>
+<td>34</td>
+<td>15000</td>
+</tr>
+<tr>
+<td>4</td>
+<td>赵</td>
+<td>女</td>
+<td>UI部</td>
+<td>45</td>
+<td>9000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>江</td>
+<td>男</td>
+<td>测试部</td>
+<td>26</td>
+<td>23000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>陈</td>
+<td>女</td>
+<td>测试部</td>
+<td>28</td>
+<td>18000</td>
+</tr>
+<tr>
+<td>7</td>
+<td>阮</td>
+<td>女</td>
+<td>开发部</td>
+<td>29</td>
+<td>15000</td>
+</tr>
+<tr>
+<td>8</td>
+<td>莫</td>
+<td>男</td>
+<td>UI部</td>
+<td>27</td>
+<td>10000</td>
+</tr>
+<tr>
+<td>9</td>
+<td>金</td>
+<td>男</td>
+<td>开发部</td>
+<td>18</td>
+<td>8000</td>
+</tr>
+<tr>
+<td>10</td>
+<td>曹</td>
+<td>男</td>
+<td>开发部</td>
+<td>36</td>
+<td>10000</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pn</span><br><span class="line"><span class="comment">#df数据集如上表3-1</span></span><br><span class="line">df = pn.read_excel(<span class="string">r&quot;D:\tempFile(2)\test_2.xlsx&quot;</span>)</span><br><span class="line"><span class="comment">#男女性别薪水的平均值</span></span><br><span class="line">pn.pivot_table(df, index=<span class="string">&quot;性别&quot;</span>, values=<span class="string">&quot;薪水&quot;</span>, aggfunc=<span class="string">&quot;mean&quot;</span>)</span><br><span class="line"><span class="comment">#不同部门，男女性别薪水平均值</span></span><br><span class="line">pn.pivot_table(df, index=<span class="string">&quot;部门&quot;</span>, columns=<span class="string">&quot;性别&quot;</span>, values=<span class="string">&quot;薪水&quot;</span>, aggfunc=<span class="string">&quot;mean&quot;</span>)</span><br><span class="line"><span class="comment"># 不同部门，男女性别数量</span></span><br><span class="line">pn.pivot_table(df, index=<span class="string">&quot;部门&quot;</span>, columns=<span class="string">&quot;性别&quot;</span>, aggfunc=<span class="string">&quot;size&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>分组汇总</strong></p>
+<ul>
+<li>df.groupby(by=”字段”)：在汇总前，设定需要分组的字段</li>
+<li>grouped.aggregate()：基于上面的groupby方法分组后的结果，做进一步的统计汇总。需以字典的形式传参，选择统计的字段和对应的统计方法。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pn</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment">#df数据集如上表3-1</span></span><br><span class="line">df = pn.read_excel(<span class="string">r&quot;D:\tempFile(2)\test_2.xlsx&quot;</span>)</span><br><span class="line"><span class="comment">#对部门，性别进行分组</span></span><br><span class="line">grouped = df.groupby(by = [<span class="string">&quot;部门&quot;</span>, <span class="string">&quot;性别&quot;</span>])</span><br><span class="line"><span class="comment">#对分组后的结果做统计计算：年龄的最小值，薪水平均值</span></span><br><span class="line">result = grouped.aggregate(&#123;<span class="string">&quot;年龄&quot;</span>:np.<span class="built_in">min</span>, <span class="string">&quot;薪水&quot;</span>:np.mean&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>合并表</strong></p>
+<p>pandas.concat(objs)</p>
+<p><em>参数</em></p>
+<ul>
+<li>objs：指定需要合并的对象</li>
+<li>axis：合并的轴，默认为0，合并行；为1，合并列。</li>
+<li>join：合并的方式，默认为outer，表示合并所有数据；为inner，表示合并公共部分数据</li>
+<li>join_axes：合并数据后，指定保留的数据轴</li>
+<li>ignore_index：bool类型参数，是否忽略原数据集的索引，默认False。如果为True，则重新生成新索引。</li>
+<li>keys：为合并后的数据添加新的索引，用于区分各个数据源于哪张表。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pn</span><br><span class="line"></span><br><span class="line">df1 = pn.DataFrame(&#123;<span class="string">&quot;id&quot;</span>:[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>],<span class="string">&quot;name&quot;</span>:[<span class="string">&quot;Bob&quot;</span>,<span class="string">&quot;Jake&quot;</span>,<span class="string">&quot;Alice&quot;</span>],<span class="string">&quot;age&quot;</span>:[<span class="number">18</span>,<span class="number">16</span>,<span class="number">10</span>]&#125;)</span><br><span class="line">df2 = pn.DataFrame(&#123;<span class="string">&quot;id&quot;</span>:[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>],<span class="string">&quot;name&quot;</span>:[<span class="string">&quot;Jeff&quot;</span>,<span class="string">&quot;Jamse&quot;</span>,<span class="string">&quot;Alice&quot;</span>],<span class="string">&quot;age&quot;</span>:[<span class="number">11</span>,<span class="number">25</span>,<span class="number">10</span>]&#125;)</span><br><span class="line">pn.concat([df1,df2],keys=[<span class="string">&quot;表1&quot;</span>,<span class="string">&quot;表2&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<p><strong>连接表</strong></p>
+<p>pandas.merge(left, right, how=”inner”, on=None)</p>
+<p><em>参数</em></p>
+<ul>
+<li>left：连接的左表（主表）</li>
+<li>right：连接的右表（辅表）</li>
+<li>how：连接方式，默认inner内连接。left左连接，right右链接，outer外连接</li>
+<li>on：指定连接的两张表共同的字段。如果没有共同的字段，则使用下面两个参数</li>
+<li>left_on：指定左表需要连接的共同字段</li>
+<li>rigth_on：指定右表需要连接的共同字段</li>
+<li>left_index：bool类型参数，是否将左表的行索引作为连接的共同字段，默认False</li>
+<li>right_index：bool类型参数，是否将右表的行索引作为连接的共同字段，默认False</li>
+<li>sort：bool类型参数，是否对连接后的数据按照共同字段排序，默认False</li>
+<li>suffixes：如果数据连接中存在相同的字段名，则使用前缀经行区分。传列表</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pn</span><br><span class="line">df1 = pn.DataFrame(&#123;<span class="string">&quot;id&quot;</span>:[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>],<span class="string">&quot;name&quot;</span>:[<span class="string">&quot;Bob&quot;</span>,<span class="string">&quot;Jake&quot;</span>,<span class="string">&quot;Alice&quot;</span>],<span class="string">&quot;age&quot;</span>:[<span class="number">18</span>,<span class="number">16</span>,<span class="number">10</span>]&#125;)</span><br><span class="line">df2 = pn.DataFrame(&#123;<span class="string">&quot;ID&quot;</span>:[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>],<span class="string">&quot;score&quot;</span>:[<span class="number">99</span>,<span class="number">83</span>,<span class="number">60</span>]&#125;)</span><br><span class="line"></span><br><span class="line">pn.merge(df1,df2,left_on=<span class="string">&quot;id&quot;</span>,right_on=<span class="string">&quot;ID&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="matplotlib"><a href="#matplotlib" class="headerlink" title="matplotlib"></a>matplotlib</h1>
     </div>
 
     

@@ -1523,4 +1523,91 @@
         <tag>数据分析</tag>
       </tags>
   </entry>
+  <entry>
+    <title>JavaSE</title>
+    <url>/2021/12/11/JavaSE/</url>
+    <content><![CDATA[<p>JaveSE</p>
+<p>这是一篇关于javaSE基础的笔记</p>
+<p>其中包括java面向对象，java核心类库，java型特性和项目</p>
+<span id="more"></span>
+
+<h1 id="Java面向对象编程"><a href="#Java面向对象编程" class="headerlink" title="Java面向对象编程"></a>Java面向对象编程</h1><h2 id="类和对象"><a href="#类和对象" class="headerlink" title="类和对象"></a>类和对象</h2><p>定义类：class 类名{ 类体 }。<br><code>class Person&#123;&#125;</code></p>
+<p>创建对象：new 类名();<br><code>Person p = new Person();</code></p>
+<p>成员变量的定义：数据类型 变量名 = 初始值;<br><code>int age;</code></p>
+<p>成员方法的定义：返回值类型 方法名（参数）{ 方法体 }<br><code>void setAge(int age)&#123; &#125;</code></p>
+<p>成员方法的可变长参数，即该参数长度是0~~n个，最多定义一个，而且放在最后一个参数。使用时，相当于一维数组。<br>可变长参数定义<code>void xiaoName(String... args)&#123; &#125;</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	String name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;我叫&quot;</span> + name + <span class="string">&quot;, 今年&quot;</span> + age + <span class="string">&quot;岁！&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">xiaoName</span><span class="params">(String... args)</span><span class="comment">/*可变参数*/</span> </span>&#123; </span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;args.length; i++) &#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;第&quot;</span> + i + <span class="string">&quot;个参数是：&quot;</span> + args[i]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//创建Person类型引用指向Person类型对象</span></span><br><span class="line">		Person p = <span class="keyword">new</span> Person();</span><br><span class="line">		p.setName(<span class="string">&quot;李&quot;</span>);</span><br><span class="line">		p.age = <span class="number">18</span>;</span><br><span class="line">		p.show();</span><br><span class="line">		p.xiaoName(<span class="string">&quot;德&quot;</span>, <span class="string">&quot;昭的&quot;</span>, <span class="string">&quot;得得&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据类型的分类</strong></p>
+<p>1）基本数据类型：byte、short、char、int、long、float、double、boolean 八个。</p>
+<p>这些基本数据类型定义变量时，内存中的栈区会申请一个存储单元用来存储数据。</p>
+<p>如 int a = 10;  内存中的栈区申请一个名为a的存储单元，大小为4个字节，里面存放着数据10。</p>
+<p>2）引用数据类型：数组、类、接口、枚举、标注</p>
+<p>引用数据类型在定义时，如<code>Person p = new Person();</code> ，内存中的栈区申请一个名为p的存储单元，而new Person()这部分存放在内存中的堆区，假设在堆区中的地址是0x10。p中存放的就是这个地址0x10。</p>
+<p>如图，变量a为int类型，在栈区中存放的是数据10。变量p为Person类型（类），在栈区中存放的是一个地址（0x10），该地址指向堆区中的new Person()，而new Person()中才有数据。</p>
+<p>基本数据类型变量中存放的是数据，而引用数据类型变量中存放的是地址。</p>
+<p><a href="https://imgtu.com/i/oTqXEq"><img src="https://s4.ax1x.com/2021/12/11/oTqXEq.png" alt="oTqXEq.png" border="0" /></a></p>
+<p><strong>注意</strong>：</p>
+<p>基本数据类型的变量，作为方法的参数传递时，形参不会影响到实参，因为这两个变量存放的是各自的数据，虽然数据一样。</p>
+<p>引用数据类型的变量，作为方法的参数传递时，形参可能会影响到实参，因为这两个变量存放的是同一个地址。</p>
+<p><strong>垃圾回收机制</strong></p>
+<p>其实创建对象是<code>new Person();</code>,此时内存堆区会申请一块空间存放对象，但是由于没有引用变量指向该对象的地址，就会被当作垃圾回收。所以创建对象时使用<code>Person p = new Person();</code>,含义是“创建Person类型引用指向Person类型对象”。引用变量p存放对象的地址。</p>
+<h2 id="方法和封装"><a href="#方法和封装" class="headerlink" title="方法和封装"></a>方法和封装</h2><h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><p>使用new关键字创建对象时，会自动调用构造方法。一般用于对象的初始化工作</p>
+<p>定义：</p>
+<ul>
+<li><p>不用写返回值类型</p>
+</li>
+<li><p>构造方法名和类名一致</p>
+</li>
+</ul>
+<p>当用户没有定义构造方法时，系统会默认定义一个无参无内容的构造方法，如Person类，<code>Person()&#123;&#125;</code></p>
+<h3 id="方法的重载"><a href="#方法的重载" class="headerlink" title="方法的重载"></a>方法的重载</h3><p>重载：方法名可以相同，但是参数个数，或类型，或顺序不一样。</p>
+<p>例如：一般我们定义构造方法时，会定义一个有参的构造方法，同时再定义一个无参的构造方法，这就属于重载。</p>
+<p>意义：调用用一个方法名，参数不一样可以实现不同的功能。例如println()方法，调用该方法我们传参可以是多种数据类型，但是依然可以打印出来，是因为官方写好了许多个println()同名不同参数方法。</p>
+<h3 id="this关键字"><a href="#this关键字" class="headerlink" title="this关键字"></a>this关键字</h3><p>在类中使用this关键字表示，该对象本身。</p>
+<p>用法：</p>
+<ul>
+<li>this.成员变量、this.成员方法：当成员变量和局部变量重名时，系统会就近原则。变量前加上this.前缀，就表明是成员变量。（成员方法相同）</li>
+<li>this还可以当作返回值，表示该对象本身。返回值类型就是该类名的类型。</li>
+<li><code>this();</code>用在构造方法的第一行，可以调用本类的其他构造方法</li>
+</ul>
+<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><p>递归：定义 方法时，该方法会调用该方法自己</p>
+<p>例如：计算费氏数列：1，1，2，3，5，8，13，21，第一项和第二项是1，之后的每一项的前两项和。下面分别使用递归和递推(循环)实现。传入第n项，返回第n项的数值。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FengShi</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">diGui</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;  <span class="comment">//用递归的方法计算</span></span><br><span class="line">		<span class="keyword">if</span> (n == <span class="number">1</span> || n ==<span class="number">2</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> diGui(n-<span class="number">1</span>) + diGui(n-<span class="number">2</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">diTui</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;  <span class="comment">//用递推的方法计算</span></span><br><span class="line">		<span class="keyword">int</span> ia = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">int</span> ib = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">int</span> ic;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">3</span>; i&lt;=n; i++) &#123;</span><br><span class="line">			ic = ia + ib;</span><br><span class="line">			ia = ib;</span><br><span class="line">			ib = ic;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> ib;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很明显，使用递归代码简单明了，而递推复杂。但是递归代码的执行速度慢许多。</p>
+<p><strong>递归注意事项</strong></p>
+<ul>
+<li>使用递归必须有递归规律以及退出条件</li>
+<li>使用递归是把问题变得简单化而不是复杂化</li>
+<li>若递归影响到程序的执行性能，则不推荐。建议使用递推取代之。</li>
+</ul>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>通常情况下测试类给成员变量赋值一些合法但不合理的数值，程序不会报错，但是与现实不符。例如age赋值负数等。</p>
+<p>为避免这一现象，需要对成员变量进行密封包装处理，保证成员变量的合理性，该机制就叫封装。</p>
+<p>步骤：</p>
+<ul>
+<li><p>私有化成员变量，用private关键字修饰。如<code>private int age;</code></p>
+</li>
+<li><p>提供公有的set和get成员方法来访问成员变量，在方法中对参数进行判断</p>
+</li>
+<li><p>构造方法中也调用set方法进行合理值判断</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">	<span class="comment">//1,私有化成员变量。</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//3,构造方法也调用成员方法来初始化成员变量。</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(String name, <span class="keyword">int</span> age)</span></span>&#123;</span><br><span class="line">		setAge(age);</span><br><span class="line">		setName(name);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//2,提供我们写成员方法来访问成员变量，成员方法会判断参数是否正确。</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (age &lt; <span class="number">0</span>)&#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;age不能小于0岁。&quot;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.age = age;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> age;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//定义show()来打印对象的特征</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;我叫&quot;</span> + name + <span class="string">&quot;，今年&quot;</span> + age + <span class="string">&quot;岁！&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>案例</strong></em>：使用上面定义的类完成。提示用户输入人数，然后输入学生信息：姓名，年龄，最后打印出来。</p>
+<p>提示：Student[] arr = new Student[num];</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentTest</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">&quot;请输入学生人数：&quot;</span>);</span><br><span class="line">		Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">		<span class="keyword">int</span> num = sc.nextInt();</span><br><span class="line">		<span class="comment">//根据输入的人数，创建Student引用类型的一维数组</span></span><br><span class="line">		Student[] arr = <span class="keyword">new</span> Student[num];</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;num; i++) &#123;</span><br><span class="line">			System.out.println(<span class="string">&quot;请输入name和age：&quot;</span>);</span><br><span class="line">			arr[i] = <span class="keyword">new</span> Student(sc.next(), sc.nextInt());</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;num; i++) &#123;</span><br><span class="line">			arr[i].show();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Student[] arr = new Student[num];</code>，表示创建一个一维数组，数组类型是自己定义的Student引用类型。数组中的每个元素都是Student引用类型变量，里面存放的只是地址，指向后面创建的对象。如下图：</p>
+<p><a href="https://imgtu.com/i/oq9Xb6"><img src="https://s4.ax1x.com/2021/12/12/oq9Xb6.png" alt="oq9Xb6.png" border="0" /></a></p>
+<h2 id="static关键字和继承"><a href="#static关键字和继承" class="headerlink" title="static关键字和继承"></a>static关键字和继承</h2>]]></content>
+      <categories>
+        <category>jave</category>
+      </categories>
+      <tags>
+        <tag>基础</tag>
+        <tag>java</tag>
+      </tags>
+  </entry>
 </search>

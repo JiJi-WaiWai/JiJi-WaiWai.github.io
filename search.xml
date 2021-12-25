@@ -2309,16 +2309,472 @@
 
 <p><strong>总结</strong></p>
 <ul>
-<li><p>基本数据类型转换为对应包装类的方式：<code>Integer it2 = Integer.valueOf(5);</code></p>
-</li>
-<li><p>获取包装类对象中基本数据类型变量数值的方式</p>
-</li>
+<li>基本数据类型转换为对应包装类的方式</li>
+</ul>
+<p>调用包装类的构造方法或静态方法即可</p>
+<ul>
+<li>获取包装类对象中基本数据类型变量数值的方式</li>
 </ul>
 <p>调用包装类中的xxxValue方法即可</p>
 <ul>
 <li>字符串转换为基本数据类型的方式</li>
 </ul>
 <p>调用包装类中的parseXxx方法即可</p>
+<h3 id="数学处理类"><a href="#数学处理类" class="headerlink" title="数学处理类"></a>数学处理类</h3><h4 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h4><p>java.lang.Math类主要用于提供执行数学运算的方法，如：对数，平方根。</p>
+<p>常用方法</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>static int max(int a, int b)</td>
+<td>返回两个参数中的最大值</td>
+</tr>
+<tr>
+<td>static int min(int a, int b)</td>
+<td>返回两个参数中的最小值</td>
+</tr>
+<tr>
+<td>static double pow(double a, double b)</td>
+<td>返回第一个参数的幂</td>
+</tr>
+<tr>
+<td>static int abs(int a)</td>
+<td>返回参数指定数值的绝对值</td>
+</tr>
+<tr>
+<td>static long round(double a)</td>
+<td>返回参数四舍五入的结果</td>
+</tr>
+<tr>
+<td>static double sqrt(double a)</td>
+<td>返回参数的平方根</td>
+</tr>
+<tr>
+<td>static double random()</td>
+<td>返回0.0到1.0的随机数</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;最大数：&quot;</span> + Math.max(<span class="number">5</span>,<span class="number">8</span>));    <span class="comment">//8</span></span><br><span class="line">System.out.println(<span class="string">&quot;最小数&quot;</span> + Math.min(<span class="number">5</span>,<span class="number">8</span>));      <span class="comment">//5</span></span><br><span class="line">System.out.println(<span class="string">&quot;求幂&quot;</span> + Math.pow(<span class="number">2</span>,<span class="number">3</span>));        <span class="comment">//8.0</span></span><br><span class="line">System.out.println(<span class="string">&quot;绝对值&quot;</span> + Math.abs(-<span class="number">1</span>));       <span class="comment">//1</span></span><br><span class="line">System.out.println(<span class="string">&quot;四舍五路:&quot;</span> + Math.round(<span class="number">2</span>/<span class="number">0.3</span>));<span class="comment">//7</span></span><br><span class="line">System.out.println(<span class="string">&quot;平方跟:&quot;</span> + Math.sqrt(<span class="number">25</span>));      <span class="comment">//5.0</span></span><br><span class="line">System.out.println(<span class="string">&quot;0到1.0的随机数:&quot;</span> + Math.random());<span class="comment">//随机数</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="BigDecimal"><a href="#BigDecimal" class="headerlink" title="BigDecimal"></a>BigDecimal</h4><p>由于flfloat类型和double类型在运算时可能会有误差，若希望实现精确运算则借助<br>java.math.BigDecimal类型加以描述。</p>
+<p>常用方法：</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BigDecimal(String val)</td>
+<td>根据参数指定的字符串来构造对象</td>
+</tr>
+<tr>
+<td>BigDecimal add(BigDecimal augend)</td>
+<td>用于实现加法运算</td>
+</tr>
+<tr>
+<td>BigDecimal subtract(BigDecimal subtrahend)</td>
+<td>用于实现减法运算</td>
+</tr>
+<tr>
+<td>BigDecimal multiply(BigDecimal multiplicand)</td>
+<td>用于实现乘法运算</td>
+</tr>
+<tr>
+<td>BigDecimal divide(BigDecimal divisor)</td>
+<td>用于实现除法运算</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigDecimal bd1 = <span class="keyword">new</span> BigDecimal(<span class="string">&quot;5.2&quot;</span>);</span><br><span class="line">BigDecimal bd2 = <span class="keyword">new</span> BigDecimal(<span class="string">&quot;1.3&quot;</span>);</span><br><span class="line"><span class="comment">//正常浮点类型运算会由失误，虽然误差很小。</span></span><br><span class="line">System.out.println(<span class="number">5.2</span>*<span class="number">1.3</span>);    <span class="comment">//6.760000000000001</span></span><br><span class="line">System.out.println(<span class="string">&quot;加法运算：&quot;</span> + bd1.add(bd2));       <span class="comment">//6,5</span></span><br><span class="line">System.out.println(<span class="string">&quot;减法运算：&quot;</span> + bd1.subtract(bd2));  <span class="comment">//3.9</span></span><br><span class="line">System.out.println(<span class="string">&quot;乘法运算：&quot;</span> + bd1.multiply(bd2));  <span class="comment">//6.76</span></span><br><span class="line">System.out.println(<span class="string">&quot;除法运算：&quot;</span> + bd1.divide(bd2));    <span class="comment">//4.0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="BigInteger"><a href="#BigInteger" class="headerlink" title="BigInteger"></a>BigInteger</h4><p>若希望表示比long类型范围还大的整数数据，则需要借助java.math.BigInteger类型描述。</p>
+<p>常用方法：</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BigInteger(String val)</td>
+<td>根据参数指定的字符串来构造对象</td>
+</tr>
+<tr>
+<td>“加减乘除”与上述BigDecimal一样</td>
+<td></td>
+</tr>
+<tr>
+<td>BigInteger remainder(BigInteger val)</td>
+<td>用于实现取余运算</td>
+</tr>
+<tr>
+<td>BigInteger[] divideAndRemainder(BigInteger val)</td>
+<td>用于实现取商和余数的运算</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BigInteger bi1 = <span class="keyword">new</span> BigInteger(<span class="string">&quot;20&quot;</span>);</span><br><span class="line">BigInteger bi2 = <span class="keyword">new</span> BigInteger(<span class="string">&quot;8&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//取商和取余数一起</span></span><br><span class="line">BigInteger[] arr = bi1.divideAndRemainder(bi2);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;arr.length; i++) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;下标为&quot;</span> + i + <span class="string">&quot;的元素值是：&quot;</span> + arr[i]);    <span class="comment">//0--2， 1--4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="String类"><a href="#String类" class="headerlink" title="String类"></a>String类</h2><ul>
+<li><p>java.lang.String类用于描述字符串，Java程序中所有的字符串字面值都可以使用该类的对象加以描述，如：”abc”。</p>
+</li>
+<li><p>该类由fifinal关键字修饰，表示该类不能被继承。</p>
+</li>
+<li><p>从jdk1.9开始该类的底层不使用char[]来存储数据，而是改成 byte[]加上编码标记，从而节约了一些空间。</p>
+</li>
+<li><p>该类描述的字符串内容是个常量不可更改，因此可以被共享使用。</p>
+<p>如：</p>
+<p> String str = “abc”; -表示str指向”abc”，其中”abc”这个字符串是个常量不可改变。 </p>
+<p> str = “123”; - 将“123”字符串的地址赋值给变量str。</p>
+<p> - 改变str的指向并没有改变指向的内容</p>
+</li>
+</ul>
+<h3 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h3><p>由于String类型描述的字符串内容是常量不可改变，因此Java虚拟机将首次出现的字符串放入常量</p>
+<p>池中，若后续代码中出现了相同字符串内容则直接使用池中已有的字符串对象而无需申请内存及创建对</p>
+<p>象，从而提高了性能。</p>
+<p>例如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String str1 = <span class="string">&quot;adcd&quot;</span>;</span><br><span class="line">String str2 = <span class="string">&quot;adcd&quot;</span>;</span><br><span class="line">System.out.println(str1 == str2);  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用构造方法"><a href="#常用构造方法" class="headerlink" title="常用构造方法"></a>常用构造方法</h3><table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String()</td>
+<td>使用无参方式构造对象得到空字符序列</td>
+</tr>
+<tr>
+<td>String(byte[] bytes, int offffset, int length)</td>
+<td>使用bytes数组中下标从offffset位置开始的length个字节来构造对象</td>
+</tr>
+<tr>
+<td>String(byte[] bytes)</td>
+<td>使用bytes数组中的所有内容构造对象</td>
+</tr>
+<tr>
+<td>String(char[] value, int offffset, int count)</td>
+<td>使用value数组中下标从offffset位置开始的count个字符来构造对象</td>
+</tr>
+<tr>
+<td>String(char[] value)</td>
+<td>使用value数组中的所有内容构造对象</td>
+</tr>
+<tr>
+<td>String(String original)</td>
+<td>根据参数指定的字符串内容来构造对象，新创建对象为参数对象的副本</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">byte</span>[] bArr = &#123;<span class="number">97</span>,<span class="number">98</span>,<span class="number">99</span>,<span class="number">100</span>&#125;;</span><br><span class="line">String str = <span class="keyword">new</span> String(bBrr);</span><br><span class="line">System.out.println(str);  <span class="comment">//abcd   由ASCII码转换而成。</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>考点</strong>：</p>
+<ul>
+<li>String str = “abc”  和 String str = new String(“abc”)的区别：<br>String str = “abc”：常量“abc”被创建在常量池中，str指向“abc”。<br>String str = new String(“abc”)：常量“abc”被创建在常量池中，new String()被创建在堆区，str指向堆区的new String()。</li>
+<li>判断如下：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String str1 = <span class="string">&quot;adcd&quot;</span>;</span><br><span class="line">String str2 = <span class="string">&quot;adcd&quot;</span>;</span><br><span class="line">String str3 = <span class="keyword">new</span> String(<span class="string">&quot;adcd&quot;</span>);</span><br><span class="line">String str4 = <span class="keyword">new</span> String(<span class="string">&quot;adcd&quot;</span>);</span><br><span class="line"><span class="comment">//判断内容</span></span><br><span class="line">System.out.println(str1.equals(str2));   <span class="comment">//true</span></span><br><span class="line">System.out.println(str3.equals(str4));   <span class="comment">//true</span></span><br><span class="line"><span class="comment">//判断地址</span></span><br><span class="line">System.out.println(str1 == str2);   <span class="comment">//true，都指向常量池中的常量“abcd”。</span></span><br><span class="line">System.out.println(str3 == str4);   <span class="comment">//false，指向堆区中不同的String类型对象。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String str1 = <span class="string">&quot;abcd&quot;</span>;</span><br><span class="line">String str2 = <span class="string">&quot;ab&quot;</span> + <span class="string">&quot;cd&quot;</span>;   <span class="comment">//常量优化机制</span></span><br><span class="line">System.out.println(str1 == str2);   <span class="comment">//true</span></span><br><span class="line"></span><br><span class="line">String str3 = <span class="string">&quot;ab&quot;</span>;</span><br><span class="line">String str4 = str3 + <span class="string">&quot;cd&quot;</span>;  <span class="comment">//没有常量优化机制</span></span><br><span class="line">System.out.println(str1 == str4);   <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用成员方法"><a href="#常用成员方法" class="headerlink" title="常用成员方法"></a>常用成员方法</h3><table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String toString()</td>
+<td>返回字符串本身</td>
+</tr>
+<tr>
+<td>byte[] getBytes()</td>
+<td>将当前字符串内容转换为byte数组并返回</td>
+</tr>
+<tr>
+<td>char[] toCharArray()</td>
+<td>用于将当前字符串内容转换为char数组并返回</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char charAt(int index)</td>
+<td>方法charAt用于返回字符串指定位置的字符。</td>
+</tr>
+<tr>
+<td>int length()</td>
+<td>返回字符串字符序列的长度</td>
+</tr>
+<tr>
+<td>boolean isEmpty()</td>
+<td>判断字符串是否为空</td>
+</tr>
+</tbody></table>
+<p>案例题目:</p>
+<p>判断字符串“上海自来水来自海上”是否为回文并打印，所谓回文是指一个字符序列无论从左向右读</p>
+<p>还是从右向左读都是相同的句子。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String str2 = <span class="string">&quot;上海自来水来自海上&quot;</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;str2.length()/<span class="number">2</span>; i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>( str2.charAt(i) != str2.charAt(str2.length()-<span class="number">1</span>-i) )&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;不是回文！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(<span class="string">&quot;是回文！&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int compareTo(String anotherString)</td>
+<td>用于比较调用对象和参数对象的大小关系</td>
+</tr>
+<tr>
+<td>int compareToIgnoreCase(String str)</td>
+<td>不考虑大小写，也就是’a’和’A’是相等的关系</td>
+</tr>
+</tbody></table>
+<p>从头比，相同的继续比较下一个，不同就用字符串对应的ASCII码值相减。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String str = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">System.out.println( str.compareTo(<span class="string">&quot;hello&quot;</span>) );          <span class="comment">//相同返回 0</span></span><br><span class="line">System.out.println( str.compareTo(<span class="string">&quot;hgllo&quot;</span>) );          <span class="comment">//e-g 返回 -2</span></span><br><span class="line">System.out.println( str.compareTo(<span class="string">&quot;hello1234&quot;</span>) );      <span class="comment">//长度返回 -4</span></span><br><span class="line">System.out.println( str.compareToIgnoreCase(<span class="string">&quot;HELLO&quot;</span>) );<span class="comment">//不区分大小写 0</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String concat(String str)</td>
+<td>用于实现字符串的拼接</td>
+</tr>
+<tr>
+<td>boolean contains(CharSequence s)</td>
+<td>用于判断当前字符串是否包含参数指定的内容</td>
+</tr>
+<tr>
+<td>String toLowerCase()</td>
+<td>返回字符串的小写形式</td>
+</tr>
+<tr>
+<td>String toUpperCase()</td>
+<td>返回字符串的大写形式</td>
+</tr>
+<tr>
+<td>String trim()</td>
+<td>返回去掉前导和后继空白的字符串</td>
+</tr>
+<tr>
+<td>boolean startsWith(String prefifix)</td>
+<td>判断字符串是否以参数字符串开头</td>
+</tr>
+<tr>
+<td>boolean startsWith(String prefifix, int toffffset)</td>
+<td>从指定位置开始是否以参数字符串开头</td>
+</tr>
+<tr>
+<td>boolean endsWith(String suffiffiffix)</td>
+<td>判断字符串是否以参数字符串结尾</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean equals(Object anObject)</td>
+<td>用于比较字符串内容是否相等并返回</td>
+</tr>
+<tr>
+<td>boolean equalsIgnoreCase(String anotherString)</td>
+<td>用于比较字符串内容是否相等并返回，不考虑大小写，如：’A’和’a’是相等</td>
+</tr>
+<tr>
+<td>int hashCode()</td>
+<td>获取调用对象的哈希码值</td>
+</tr>
+</tbody></table>
+<p>案例题目</p>
+<p>提示用户从键盘输入用户名和密码信息，若输入”admin”和”123456”则提示“登录成功，欢迎使</p>
+<p>用”，否则提示“用户名或密码错误，您还有n次机会”，若用户输入三次后依然错误则提示“账户已</p>
+<p>冻结，请联系客服人员！”</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">3</span>; i&gt;<span class="number">0</span>; i--) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;请输入用户名：&quot;</span>);</span><br><span class="line">    String user = sc.next();</span><br><span class="line">    System.out.println(<span class="string">&quot;请输入密码：&quot;</span>);</span><br><span class="line">    String password = sc.next();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&quot;admin&quot;</span>.equals(user) &amp;&amp; <span class="string">&quot;123456&quot;</span>.equals(password)) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;登录成功，欢迎使用&quot;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(i==<span class="number">1</span>) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;账户已冻结，请联系客服人员！&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;用户名或密码错误，您还有&quot;</span> + (i-<span class="number">1</span>) + <span class="string">&quot;次机会&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int indexOf(int ch)</td>
+<td>用于返回当前字符串中参数ch指定的字符第一次出现的下标</td>
+</tr>
+<tr>
+<td>int indexOf(int ch, int fromIndex)</td>
+<td>用于从fromIndex位置开始查找ch指定的字符</td>
+</tr>
+<tr>
+<td>int indexOf(String str)</td>
+<td>在字符串中检索str返回其第一次出现的位置，若找不到返回-1</td>
+</tr>
+<tr>
+<td>int indexOf(String str, int fromIndex)</td>
+<td>表示从字符串的fromIndex位置开始检索str第一次出现的位置</td>
+</tr>
+<tr>
+<td>int lastIndexOf(int ch)</td>
+<td>用于返回参数ch指定的字符最后一次出现的下标</td>
+</tr>
+<tr>
+<td>int lastIndexOf(int ch, int fromIndex)</td>
+<td>用于从fromIndex位置开始查找ch指定字符出现的下标</td>
+</tr>
+<tr>
+<td>int lastIndexOf(String str)</td>
+<td>返回str指定字符串最后一次出现的下标</td>
+</tr>
+<tr>
+<td>int lastIndexOf(String str, int fromIndex)</td>
+<td>用于从fromIndex位置开始反向搜索的第一次出现的下标。</td>
+</tr>
+</tbody></table>
+<p>注意：indexOf() 是从左往右第一个，而lastIndexOf() 是从右往左第一个。</p>
+<ul>
+<li>案例题目</li>
+</ul>
+<p>编写通用的代码可以查询字符串”Good Good Study, Day Day Up!”中所有”Day”出现的索引位置并打印出来。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String str = <span class="string">&quot;Good Good Study, Day Day Up!&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = str.indexOf(<span class="string">&quot;Day&quot;</span>);</span><br><span class="line"><span class="keyword">while</span>(i != -<span class="number">1</span>)&#123;</span><br><span class="line">    System.out.println(i);</span><br><span class="line">    i = str.indexOf(<span class="string">&quot;Day&quot;</span>, i+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优化：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String str = <span class="string">&quot;Good Good Study, Day Day Up!&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>( (i=str.indexOf(<span class="string">&quot;Day&quot;</span>, i)) != -<span class="number">1</span> )&#123;</span><br><span class="line">    System.out.println(i);</span><br><span class="line">    i += <span class="string">&quot;Day&quot;</span>.length();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<table>
+<thead>
+<tr>
+<th><strong>方法声明</strong></th>
+<th><strong>功能介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String substring(int beginIndex, int endIndex)</td>
+<td>返回字符串中从下标beginIndex（包括）开始到endIndex（不包括）结束的子字符串</td>
+</tr>
+<tr>
+<td>String substring(int beginIndex)</td>
+<td>返回字符串中从下标beginIndex（包括）开始到字符串结尾的子字符串</td>
+</tr>
+</tbody></table>
+<ul>
+<li>案例题目</li>
+</ul>
+<p>提示用户从键盘输入一个字符串和一个字符，输出该字符(不含)后面的所有子字符串。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">System.out.println(<span class="string">&quot;请输入字符串：&quot;</span>);</span><br><span class="line">String str1 = sc.next();</span><br><span class="line">System.out.println(<span class="string">&quot;请输入字符：&quot;</span>);</span><br><span class="line">String str2 = sc.next();</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = str1.indexOf(str2);</span><br><span class="line">String str3 = str1.substring(i+<span class="number">1</span>);</span><br><span class="line">System.out.println(str3);</span><br></pre></td></tr></table></figure>
+
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>正则表达式本质就是一个“规则字符串”，可以用于对字符串数据的格式进行验证，以及匹配、查</p>
+<p>找、替换等操作。该字符串通常使用^运算符作为开头标志，使用$运算符作为结尾标志，当然也可以省</p>
+<p>略。</p>
+<p>规则：</p>
+<ul>
+<li><p>[abc] ：可以出现a、b、c中任意一个字符</p>
+</li>
+<li><p>[^abc] ：可以出现任何字符，除了a、b、c的任意字符</p>
+</li>
+<li><p>[a-z] ：可以出现a、b、c、……、z中的任意一个字符</p>
+</li>
+<li><p>[a-zA-Z0-9] ：可以出现a<del>z、A</del>Z、0~9中任意一个字符</p>
+</li>
+</ul>
+<hr>
+<hr>
+<ul>
+<li><p>. ：任意一个字符（通常不包含换行符）</p>
+</li>
+<li><p>\d ：任意一个数字字符，相当于[0-9]</p>
+</li>
+<li><p>\D ：任意一个非数字字符</p>
+</li>
+<li><p>\s ：空白字符，相当于[\t\n\x0B\f\r]</p>
+</li>
+<li><p>\S ：非空白字符</p>
+</li>
+<li><p>\w ：任意一个单词字符，相当于[a-zA-Z_0-9]</p>
+</li>
+<li><p>\W ：任意一个非单词字符</p>
+</li>
+</ul>
+<hr>
+<hr>
+<ul>
+<li><p>X? ：表示X可以出现一次或一次也没有，也就是0 ~ 1次</p>
+</li>
+<li><p>X* ：表示X可以出现零次或多次，也就是0 ~ n次</p>
+</li>
+<li><p>X+ ：表示X可以出现一次或多次，也就是1 ~ n次</p>
+</li>
+<li><p>X{n} ：表示X可以出现恰好 n 次</p>
+</li>
+<li><p>X{n，} ：表示X可以出现至少 n 次，也就是&gt;=n次</p>
+</li>
+<li><p>X{n，m} ：表示X可以出现至少 n 次，但是不超过 m 次，也就是&gt;=n并且&lt;=m次</p>
+</li>
+</ul>
+<p><strong>相关方法：</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>方法名称</strong></th>
+<th><strong>方法说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean matches(String regex)</td>
+<td>判断当前正在调用的字符串是否匹配参数指定的正则表达式规则</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">System.out.println(<span class="string">&quot;请输入字符串：&quot;</span>);</span><br><span class="line">String str = sc.next();</span><br><span class="line"><span class="comment">//规则: 银行卡密码的规则：要求是由6位数字组成。</span></span><br><span class="line">String reg = <span class="string">&quot;\\d&#123;6&#125;&quot;</span>;   </span><br><span class="line"><span class="keyword">if</span>( str.matches(reg) )&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;字符规则正确！&quot;</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;字符规则错误！&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分割和替换：</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法名称</strong></th>
+<th>方法说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String[] split(String regex)</td>
+<td>参数regex为正则表达式，以regex所表示的字符串为分隔符，将字符串拆分成字符串数组</td>
+</tr>
+<tr>
+<td>String replace(char oldChar, char newChar)</td>
+<td>使用参数newChar替换此字符串中出现的所有参数oldChar</td>
+</tr>
+<tr>
+<td>String replaceFirst(String regex, String replacement)</td>
+<td>替换此字符串匹配给定的正则表达式的第一个子字符串</td>
+</tr>
+<tr>
+<td>String replaceAll(String regex, String replacement)</td>
+<td>将字符串中匹配正则表达式regex的字符串替换成replacement</td>
+</tr>
+</tbody></table>
 <h1 id="Java核心类库-下"><a href="#Java核心类库-下" class="headerlink" title="Java核心类库(下)"></a>Java核心类库(下)</h1>]]></content>
       <categories>
         <category>jave</category>

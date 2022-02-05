@@ -4890,7 +4890,322 @@ c;
 </tbody></table>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//1，创建线程池</span></span><br><span class="line">    ExecutorService pool = Executors.newFixedThreadPool(<span class="number">10</span>);</span><br><span class="line">    <span class="comment">//2，向线程池布置任务</span></span><br><span class="line">    Test1 t = <span class="keyword">new</span> Test1();</span><br><span class="line">    pool.execute(t);</span><br><span class="line">    pool.execute(t);</span><br><span class="line">    <span class="comment">//3，关闭线程池</span></span><br><span class="line">    pool.shutdown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2>]]></content>
+<h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><h3 id="网络常识"><a href="#网络常识" class="headerlink" title="网络常识"></a>网络常识</h3><p><strong>七层网络模型</strong>：</p>
+<ul>
+<li>OSI（Open System Interconnect）即开放式系统互联，是ISO（国际标准化组织）在1985年研究的网络互联模型。</li>
+<li>OSI七层模型和TCP/IP五层模型的划分如下：</li>
+</ul>
+<p><a href="https://imgtu.com/i/Hme9fK"><img src="https://s4.ax1x.com/2022/02/05/Hme9fK.png" alt="Hme9fK.png"></a></p>
+<ul>
+<li>当发送数据时，需要对发送的内容按照上述七层模型进行层层加包后发送出去。</li>
+<li>当接收数据时，需要对接收的内容按照上述七层模型相反的次序层层拆包并显示出来。</li>
+</ul>
+<p><strong>相关协议</strong>：</p>
+<p>计算机在网络中实现通信就必须有一些约定或者规则，这种约定和规则就叫做通信协议，通信协议可以对速率、传输代码、代码结构、传输控制步骤、出错控制等制定统一的标准。</p>
+<p>（1）TCP协议</p>
+<ul>
+<li>传输控制协议(Transmission Control Protocol)，是一种面向连接的协议，类似于打电话。 </li>
+<li>建立连接 =&gt; 进行通信 =&gt; 断开连接在传输前采用”三次握手”方式。</li>
+<li>在通信的整个过程中全程保持连接，形成数据传输通道。</li>
+<li>保证了数据传输的<strong>可靠性和有序性</strong>。</li>
+</ul>
+<p>是一种全双工的字节流通信方式，可以进行大数据量的传输。传输完毕后需要释放已建立的连接，发送数据的<strong>效率比较低</strong>。</p>
+<p>（2）UDP协议</p>
+<ul>
+<li>用户数据报协议(User Datagram Protocol)，是一种非面向连接的协议，类似于写信。</li>
+<li>在通信的整个过程中不需要保持连接，其实是不需要建立连接。</li>
+<li><strong>不保证数据传输的可靠性和有序性。</strong></li>
+<li>是一种全双工的数据报通信方式，每个数据报的大小限制在64K内。</li>
+</ul>
+<p>发送数据完毕后无需释放资源，开销小，发送数据的<strong>效率比较高，速度快</strong>。</p>
+<p><strong>IP地址：</strong></p>
+<ul>
+<li><p>192.168.1.1  - 是绝大多数路由器的登录地址，主要配置用户名和密码以及Mac过滤。</p>
+</li>
+<li><p>IP地址是互联网中的唯一地址标识，本质上是由32位二进制组成的整数，叫做IPv4，当然也有128 位二进制组成的整数，叫做IPv6，目前主流的还是IPv4。</p>
+</li>
+<li><p>日常生活中采用点分十进制表示法来进行IP地址的描述，将每个字节的二进制转化为一个十进制整数，不同的整数之间采用小数点隔开。<br>  如：0x01020304 =&gt; 1.2.3.4   </p>
+</li>
+<li><p>查看IP地址的方式：<br>Windows系统：在dos窗口中使用ipconfig或ipconfig/all命令即可<br>Unix/linux系统：在终端窗口中使用ifconfig或/sbin/ifconfig命令即可   特殊的地址<br>本地回环地址(hostAddress)：127.0.0.1 主机名(hostName)：localhost</p>
+</li>
+</ul>
+<p><strong>端口号：</strong></p>
+<ul>
+<li>IP地址 - 可以定位到具体某一台设备。</li>
+<li>端口号 - 可以定位到该设备中具体某一个进程。</li>
+<li>端口号本质上是16位二进制组成的整数，表示范围是：0 ~ 65535，其中0 ~ 1024之间的端口号通常被系统占用，建议编程从1025开始使用。</li>
+<li>特殊的端口：<pre><code>HTTP:80       FTP:21       Oracle:1521       MySQL:3306       Tomcat:8080
+</code></pre>
+</li>
+<li>网络编程需要提供：IP地址 + 端口号，组合在一起叫做网络套接字：Socket。</li>
+</ul>
+<h3 id="TCP协议的编程模型"><a href="#TCP协议的编程模型" class="headerlink" title="TCP协议的编程模型"></a>TCP协议的编程模型</h3><h4 id="C-S架构介绍"><a href="#C-S架构介绍" class="headerlink" title="C/S架构介绍"></a>C/S架构介绍</h4><ul>
+<li>在C/S模式下客户向服务器发出服务请求，服务器接收请求后提供服务。</li>
+<li>例如：在一个酒店中，顾客找服务员点菜,服务员把点菜单通知厨师，厨师按点菜单做好菜后让服务员端给客户，这就是一种C/S工作方式。如果把酒店看作一个系统，服务员就是客户端，厨师就是服务器。这种系统分工和协同工作的方式就是C/S的工作方式。</li>
+<li>客户端部分：为每个用户所专有的，负责执行前台功能。</li>
+<li>服务器部分：由多个用户共享的信息与功能，招待后台服务。</li>
+</ul>
+<h4 id="编程模型"><a href="#编程模型" class="headerlink" title="编程模型"></a>编程模型</h4><p>服务器：</p>
+<ul>
+<li>创建ServerSocket类型的对象并提供端口号；</li>
+<li>等待客户端的连接请求，调用accept()方法；</li>
+<li>使用输入输出流进行通信；</li>
+<li>关闭Socket；</li>
+</ul>
+<p>客户端：</p>
+<ul>
+<li>创建Socket类型的对象并提供服务器的IP地址和端口号；</li>
+<li>使用输入输出流进行通信；</li>
+<li>关闭Socket；</li>
+</ul>
+<h4 id="相关类和方法"><a href="#相关类和方法" class="headerlink" title="相关类和方法"></a>相关类和方法</h4><p><strong>ServerSocket类</strong></p>
+<p>java.net.ServerSocket类主要用于描述服务器套接字信息（大插排）。常用的方法如</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ServerSocket(int port)</td>
+<td>根据参数指定的端口号来构造对象</td>
+</tr>
+<tr>
+<td>Socket accept()</td>
+<td>侦听并接收到此套接字的连接请求</td>
+</tr>
+<tr>
+<td>void   close()</td>
+<td>用于关闭套接字</td>
+</tr>
+</tbody></table>
+<p><strong>Socket类</strong></p>
+<p>java.net.Socket类主要用于描述客户端套接字，是两台机器间通信的端点（小插排）。常用的方法如下：</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Socket(String host, int port)</td>
+<td>根据指定主机名和端口来构造对象</td>
+</tr>
+<tr>
+<td>InputStream getInputStream()</td>
+<td>用于获取当前套接字的输入流</td>
+</tr>
+<tr>
+<td>OutputStream   getOutputStream()</td>
+<td>用于获取当前套接字的输出流</td>
+</tr>
+<tr>
+<td>void   close()</td>
+<td>用于关闭套接字</td>
+</tr>
+</tbody></table>
+<p><strong>注意事项</strong></p>
+<ul>
+<li>客户端 Socket 与服务器端 Socket 对应, 都包含输入和输出流。</li>
+<li>客户端的socket.getInputStream() 连接于服务器socket.getOutputStream()。</li>
+<li>客户端的socket.getOutputStream()连接于服务器socket.getInputStream()</li>
+</ul>
+<p>案例：<br>客户端可以发送消息给服务器，服务器接收后回复消息给客户端，直到客户端发送bye时，结束。</p>
+<p>服务器：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.net.ServerSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ServerSocket ss = <span class="keyword">null</span>;</span><br><span class="line">        Socket s = <span class="keyword">null</span>;</span><br><span class="line">        BufferedReader br = <span class="keyword">null</span>;</span><br><span class="line">        PrintStream ps = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">//1，创建ServerSocket类型的对象并提供端口号；</span></span><br><span class="line">            ss = <span class="keyword">new</span> ServerSocket(<span class="number">3333</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//2，等待客户端的连接请求，调用accept()方法；</span></span><br><span class="line">            System.out.println(<span class="string">&quot;等待客户端连接..&quot;</span>);</span><br><span class="line">            s = ss.accept();</span><br><span class="line">            System.out.println(<span class="string">&quot;客户端连接成功!&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//3，使用输入输出流进行通信；</span></span><br><span class="line">            br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(s.getInputStream()));</span><br><span class="line">            ps = <span class="keyword">new</span> PrintStream(s.getOutputStream());</span><br><span class="line">            <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">                String s1 = br.readLine();</span><br><span class="line">                System.out.println(<span class="string">&quot;接收到客户端的消息是：&quot;</span> + s1);</span><br><span class="line">                <span class="comment">//如果是bye，取消循环</span></span><br><span class="line">                <span class="keyword">if</span>(<span class="string">&quot;bye&quot;</span>.equals(s1)) <span class="keyword">break</span>;</span><br><span class="line">                ps.println(<span class="string">&quot;收到&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//4，关闭Socket；</span></span><br><span class="line">            <span class="keyword">if</span>(ps != <span class="keyword">null</span>)&#123;</span><br><span class="line">                ps.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(br != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    br.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(s != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    s.close();</span><br><span class="line">                &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(ss != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    ss.close();</span><br><span class="line">                &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>客户端</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintStream;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Socket s = <span class="keyword">null</span>;</span><br><span class="line">        BufferedReader br = <span class="keyword">null</span>;</span><br><span class="line">        PrintStream ps = <span class="keyword">null</span>;</span><br><span class="line">        Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">//1, 创建Socket类型的对象并提供服务器的IP地址和端口号；</span></span><br><span class="line">            s = <span class="keyword">new</span> Socket(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">3333</span>);</span><br><span class="line">            System.out.println(<span class="string">&quot;成功连接服务器&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//2, 使用输入输出流进行通信；</span></span><br><span class="line">            ps = <span class="keyword">new</span> PrintStream(s.getOutputStream());</span><br><span class="line">            br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(s.getInputStream()));</span><br><span class="line">            <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;请输入内容：&quot;</span>);</span><br><span class="line">                String s1 = sc.next();</span><br><span class="line">                ps.println(s1);</span><br><span class="line">                <span class="comment">//如果是bye，取消循环</span></span><br><span class="line">                <span class="keyword">if</span>(<span class="string">&quot;bye&quot;</span>.equals(s1)) <span class="keyword">break</span>;</span><br><span class="line">                String s2 = br.readLine();</span><br><span class="line">                System.out.println(<span class="string">&quot;接收到服务器的消息是：&quot;</span> + s2);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//3, 关闭Socket；</span></span><br><span class="line">            <span class="keyword">if</span>(br != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    br.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(ps != <span class="keyword">null</span>)&#123;</span><br><span class="line">                ps.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(s != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    s.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基于上面案例，利用多线程，服务器应该如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.net.ServerSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ServerSocket ss = <span class="keyword">null</span>;</span><br><span class="line">        Socket s = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">//1，创建ServerSocket类型的对象并提供端口号；</span></span><br><span class="line">            ss = <span class="keyword">new</span> ServerSocket(<span class="number">3333</span>);</span><br><span class="line">            <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">                <span class="comment">//2，等待客户端的连接请求，调用accept()方法；</span></span><br><span class="line">                System.out.println(<span class="string">&quot;等待客户端连接..&quot;</span>);</span><br><span class="line">                s = ss.accept();</span><br><span class="line">                System.out.println(<span class="string">&quot;客户端连接成功!&quot;</span>);</span><br><span class="line">                <span class="comment">//启动线程</span></span><br><span class="line">                <span class="keyword">new</span> ServerThread(s).start();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//4，关闭Socket；</span></span><br><span class="line">            <span class="keyword">if</span>(s != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    s.close();</span><br><span class="line">                &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(ss != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    ss.close();</span><br><span class="line">                &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintStream;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Socket s;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ServerThread</span><span class="params">(Socket s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.s = s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//3，使用输入输出流进行通信；</span></span><br><span class="line">        BufferedReader br = <span class="keyword">null</span>;</span><br><span class="line">        PrintStream ps = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(s.getInputStream()));</span><br><span class="line">            ps = <span class="keyword">new</span> PrintStream(s.getOutputStream());</span><br><span class="line">            <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">                String s1 = br.readLine();</span><br><span class="line">                System.out.println(<span class="string">&quot;接收到客户端的消息是：&quot;</span> + s1 );</span><br><span class="line">                <span class="comment">//如果是bye，取消循环</span></span><br><span class="line">                <span class="keyword">if</span>(<span class="string">&quot;bye&quot;</span>.equals(s1)) <span class="keyword">break</span>;</span><br><span class="line">                ps.println(<span class="string">&quot;收到&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(ps != <span class="keyword">null</span>)&#123;</span><br><span class="line">                ps.close();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(br != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    br.close();</span><br><span class="line">                &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="UDP协议的编程模型"><a href="#UDP协议的编程模型" class="headerlink" title="UDP协议的编程模型"></a>UDP协议的编程模型</h3><h4 id="编程模型-1"><a href="#编程模型-1" class="headerlink" title="编程模型"></a>编程模型</h4><p>接收方：</p>
+<ul>
+<li>创建DatagramSocket类型的对象并提供端口号；</li>
+<li>创建DatagramPacket类型的对象并提供缓冲区；</li>
+<li>通过Socket接收数据内容存放到Packet中，调用receive方法；</li>
+<li>关闭Socket；</li>
+</ul>
+<p>发送方：</p>
+<ul>
+<li>创建DatagramSocket类型的对象；</li>
+<li>创建DatagramPacket类型的对象并提供接收方的通信地址；</li>
+<li>通过Socket将Packet中的数据内容发送出去，调用send方法；</li>
+<li>关闭Socket；</li>
+</ul>
+<h4 id="相关类和方法-1"><a href="#相关类和方法-1" class="headerlink" title="相关类和方法"></a>相关类和方法</h4><p><strong>DatagramSocket</strong></p>
+<p>java.net.DatagramSocket类主要用于描述发送和接收数据报的套接字(邮局)。换句话说，该类就是包裹投递服务的发送或接收点。</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DatagramSocket()</td>
+<td>使用无参的方式构造对象</td>
+</tr>
+<tr>
+<td>DatagramSocket(int port)</td>
+<td>根据参数指定的端口号来构造对象</td>
+</tr>
+<tr>
+<td>void   receive(DatagramPacket p)</td>
+<td>用于接收数据报存放到参数指定的位置</td>
+</tr>
+<tr>
+<td>void   send(DatagramPacket p)</td>
+<td>用于将参数指定的数据报发送出去</td>
+</tr>
+<tr>
+<td>void   close()</td>
+<td>关闭Socket并释放相关资源</td>
+</tr>
+</tbody></table>
+<p><strong>DatagramPacket</strong></p>
+<p>java.net.DatagramPacket类主要用于描述数据报，数据报用来实现无连接包裹投递服务。</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DatagramPacket(byte[] buf, int length)</td>
+<td>根据参数指定的数组来构造对象，用于接收长度为length的数据报</td>
+</tr>
+<tr>
+<td>DatagramPacket(byte[] buf, int length, InetAddress address, int port)</td>
+<td>根据参数指定数组来构造对象，将数据报发送到指定地址和端口</td>
+</tr>
+<tr>
+<td>InetAddress   getAddress()</td>
+<td>用于获取发送方或接收方的通信地址</td>
+</tr>
+<tr>
+<td>int   getPort()</td>
+<td>用于获取发送方或接收方的端口号</td>
+</tr>
+<tr>
+<td>int   getLength()</td>
+<td>用于获取发送数据或接收数据的长度</td>
+</tr>
+</tbody></table>
+<p><strong>InetAddress类</strong></p>
+<p>java.net.InetAddress类主要用于描述互联网通信地址信息。</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>static InetAddress getLocalHost()</td>
+<td>用于获取当前主机的通信地址</td>
+</tr>
+<tr>
+<td>static InetAddress getByName(String host)</td>
+<td>根据参数指定的主机名获取通信地址</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//接收方</span></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramPacket;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.SocketException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receive</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        DatagramSocket ds = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//1,创建DatagramSocket类型的对象并提供端口号；</span></span><br><span class="line">            ds = <span class="keyword">new</span> DatagramSocket(<span class="number">3333</span>);</span><br><span class="line">            <span class="comment">//2,创建DatagramPacket类型的对象并提供缓冲区；</span></span><br><span class="line">            System.out.println(<span class="string">&quot;等待接收数据。。&quot;</span>);</span><br><span class="line">            <span class="keyword">byte</span>[] bArr1 = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">20</span>];</span><br><span class="line">            DatagramPacket dp1 = <span class="keyword">new</span> DatagramPacket(bArr1, bArr1.length);</span><br><span class="line">            <span class="comment">//3,通过Socket接收数据内容存放到Packet中，调用receive方法；</span></span><br><span class="line">            ds.receive(dp1);</span><br><span class="line">            System.out.println(<span class="string">&quot;接收的数据：&quot;</span> + <span class="keyword">new</span> String(bArr1, <span class="number">0</span>, dp1.getLength()));</span><br><span class="line">            <span class="comment">//回复数据</span></span><br><span class="line">            <span class="keyword">byte</span>[] bArr2 = <span class="string">&quot;收到！&quot;</span>.getBytes();</span><br><span class="line">            DatagramPacket dp2 = <span class="keyword">new</span> DatagramPacket(bArr2, bArr2.length, dp1.getAddress(), dp1.getPort());</span><br><span class="line">            ds.send(dp2);</span><br><span class="line">        &#125; <span class="keyword">catch</span>(SocketException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//4,关闭Socket；</span></span><br><span class="line">            <span class="keyword">if</span>(ds != <span class="keyword">null</span>)&#123;</span><br><span class="line">                ds.close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//发送方</span></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramPacket;</span><br><span class="line"><span class="keyword">import</span> java.net.DatagramSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.InetAddress;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Send</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        DatagramSocket ds = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//1,创建DatagramSocket类型的对象；</span></span><br><span class="line">            ds = <span class="keyword">new</span> DatagramSocket();</span><br><span class="line">            <span class="comment">//2,创建DatagramPacket类型的对象并提供接收方的通信地址；</span></span><br><span class="line">            <span class="keyword">byte</span>[] bArr1 = <span class="string">&quot;hello&quot;</span>.getBytes();</span><br><span class="line">            DatagramPacket dp1 = <span class="keyword">new</span> DatagramPacket(bArr1, bArr1.length, InetAddress.getLocalHost(), <span class="number">3333</span>);</span><br><span class="line">            <span class="comment">//3,通过Socket将Packet中的数据内容发送出去，调用send方法；</span></span><br><span class="line">            ds.send(dp1);</span><br><span class="line">            System.out.println(<span class="string">&quot;发送数据成功！&quot;</span>);</span><br><span class="line">            <span class="comment">//接收回复</span></span><br><span class="line">            <span class="keyword">byte</span>[] bArr2 = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">20</span>];</span><br><span class="line">            DatagramPacket dp2 = <span class="keyword">new</span> DatagramPacket(bArr2, bArr2.length);</span><br><span class="line">            ds.receive(dp2);</span><br><span class="line">            System.out.println(<span class="string">&quot;接收到的内容是：&quot;</span> + <span class="keyword">new</span> String(bArr2, <span class="number">0</span>, dp2.getLength()));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//4,关闭Socket；</span></span><br><span class="line">            <span class="keyword">if</span>(ds != <span class="keyword">null</span>)&#123;</span><br><span class="line">                ds.close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="URL类"><a href="#URL类" class="headerlink" title="URL类"></a>URL类</h3><ul>
+<li>java.net.URL（Uniform Resource Identifier）类主要用于表示统一的资源定位器，也就是指向万维网上“资源”的指针。这个资源可以是简单的文件或目录，也可以是对复杂对象的引用，例如对数据库或搜索引擎的查询等。</li>
+<li>通过URL可以访问万维网上的网络资源，最常见的就是www和ftp站点，浏览器通过解析给定的</li>
+<li>URL可以在网络上查找相应的资源。<br>URL的基本结构如下：<br>&lt;传输协议&gt;://&lt;主机名&gt;:&lt;端口号&gt;/&lt;资源地址&gt;</li>
+</ul>
+<p>URL类的相关方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>URL(String spec)</td>
+<td>根据参数指定的字符串信息构造对象</td>
+</tr>
+<tr>
+<td>String getProtocol()</td>
+<td>获取协议名称</td>
+</tr>
+<tr>
+<td>String getHost()</td>
+<td>获取主机名称</td>
+</tr>
+<tr>
+<td>int getPort()</td>
+<td>获取端口号</td>
+</tr>
+<tr>
+<td>String getPath()</td>
+<td>获取路径信息</td>
+</tr>
+<tr>
+<td>String getFile()</td>
+<td>获取文件名</td>
+</tr>
+<tr>
+<td>URLConnection openConnection()</td>
+<td>获取URLConnection类的实例</td>
+</tr>
+</tbody></table>
+<p><strong>URLConnection类</strong></p>
+<p>java.net.URLConnection类是个抽象类，该类表示应用程序和URL之间的通信链接的所有类的超类，主要实现类有支持HTTP特有功能的HttpURLConnection类。</p>
+<p><strong>HttpURLConnection类的常用方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>InputStream getInputStream()</td>
+<td>获取输入流</td>
+</tr>
+<tr>
+<td>void disconnect()</td>
+<td>断开连接</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="keyword">import</span> java.net.HttpURLConnection;</span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">URLTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        URL url = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            url = <span class="keyword">new</span> URL(<span class="string">&quot;https://www.lagou.com&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;url的协议是：&quot;</span> + url.getProtocol());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的主机是：&quot;</span> + url.getHost());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的端口号是：&quot;</span> + url.getPort());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的路径信息是：&quot;</span> + url.getPath());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的文件名是：&quot;</span> + url.getFile());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;-------------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        HttpURLConnection con = <span class="keyword">null</span>;</span><br><span class="line">        BufferedReader br = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            con = (HttpURLConnection)url.openConnection();</span><br><span class="line">            br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(con.getInputStream()));</span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span>((s = br.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">                System.out.println(s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            con.disconnect();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2>]]></content>
       <categories>
         <category>jave</category>
       </categories>

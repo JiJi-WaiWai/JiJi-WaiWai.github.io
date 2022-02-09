@@ -5183,6 +5183,318 @@ c;
 </tbody></table>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.BufferedReader;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader;</span><br><span class="line"><span class="keyword">import</span> java.net.HttpURLConnection;</span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">URLTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        URL url = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            url = <span class="keyword">new</span> URL(<span class="string">&quot;https://www.lagou.com&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;url的协议是：&quot;</span> + url.getProtocol());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的主机是：&quot;</span> + url.getHost());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的端口号是：&quot;</span> + url.getPort());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的路径信息是：&quot;</span> + url.getPath());</span><br><span class="line">        System.out.println(<span class="string">&quot;url的文件名是：&quot;</span> + url.getFile());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;-------------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        HttpURLConnection con = <span class="keyword">null</span>;</span><br><span class="line">        BufferedReader br = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            con = (HttpURLConnection)url.openConnection();</span><br><span class="line">            br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(con.getInputStream()));</span><br><span class="line">            String s;</span><br><span class="line">            <span class="keyword">while</span>((s = br.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">                System.out.println(s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            con.disconnect();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2><ul>
+<li>通常情况下编写代码都是固定的，无论运行多少次执行的结果也是固定的，在某些特殊场合中编写代码时不确定要创建什么类型的对象，也不确定要调用什么样的方法，这些都希望通过运行时传递的参数来决定，该机制叫做动态编程技术，也就是反射机制。</li>
+<li>通俗来说，反射机制就是用于动态创建对象并且动态调用方法的机制。</li>
+<li>目前主流的框架底层都是采用反射机制实现的。</li>
+<li>如：<br>Person p = new Person();  - 表示声明Person类型的引用指向Person类型的对象<br>p.show();                              - 表示调用Person类中的成员方法show</li>
+</ul>
+<h3 id="Class类"><a href="#Class类" class="headerlink" title="Class类"></a>Class类</h3><ul>
+<li>java.lang.Class类的实例可以用于描述Java应用程序中的类和接口，也就是一种数据类型。</li>
+<li>该类没有公共构造方法，该类的实例由Java虚拟机和类加载器自动构造完成，本质上就是加载到内存中的运行时类。</li>
+</ul>
+<p><strong>获取Class对象的方式</strong></p>
+<ul>
+<li>使用数据类型.class的方式可以获取对应类型的Class对象（掌握）。</li>
+<li>使用引用/对象.getClass()的方式可以获取对应类型的Class对象。</li>
+<li>使用包装类.TYPE的方式可以获取对应基本数据类型的Class对象。</li>
+<li>使用Class.forName()的方式来获取参数指定类型的Class对象（掌握）。</li>
+<li>使用类加载器ClassLoader的方式获取指定类型的Class对象。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="comment">//1,使用数据类型.class的方式可以获取对应类型的Class对象（掌握）</span></span><br><span class="line">    Class c1 = <span class="keyword">int</span>.class;</span><br><span class="line">    System.out.println(<span class="string">&quot;c1 = &quot;</span>+ c1);    <span class="comment">//int</span></span><br><span class="line">    c1 = String.class;</span><br><span class="line">    System.out.println(<span class="string">&quot;c1 = &quot;</span> + c1);   <span class="comment">//class java.lang.String</span></span><br><span class="line">    System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//2,使用引用/对象.getClass()的方式可以获取对应类型的Class对象</span></span><br><span class="line">    String s = <span class="string">&quot;123&quot;</span>;</span><br><span class="line">    c1 = s.getClass();</span><br><span class="line">    System.out.println(<span class="string">&quot;c1 = &quot;</span> + c1);   <span class="comment">//class java.lang.String</span></span><br><span class="line">    System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//3,使用包装类.TYPE的方式可以获取对应基本数据类型的Class对象</span></span><br><span class="line">    c1 = Integer.TYPE;</span><br><span class="line">    System.out.println(<span class="string">&quot;c1 = &quot;</span> + c1);    <span class="comment">//int</span></span><br><span class="line">    System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//4,使用Class.forName()的方式来获取参数指定类型的Class对象（掌握）。</span></span><br><span class="line">    c1 = Class.forName(<span class="string">&quot;java.lang.String&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;c1 = &quot;</span> + c1);</span><br><span class="line">    System.out.println(<span class="string">&quot;----------------------&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//5,使用类加载器ClassLoader的方式获取指定类型的Class对象。</span></span><br><span class="line">    ClassLoader classLoader = ClassTest.class.getClassLoader();</span><br><span class="line">    c1 = classLoader.loadClass(<span class="string">&quot;java.lang.String&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;c1 = &quot;</span> + c1);    <span class="comment">//class java.lang.String</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>static Class&lt;?&gt; forName(String className)</td>
+<td>用于获取参数指定类型对应的Class对象并返回</td>
+</tr>
+<tr>
+<td>T newInstance()</td>
+<td>用于创建该Class对象所表示类的新实例，过时</td>
+</tr>
+</tbody></table>
+<h3 id="Constructor"><a href="#Constructor" class="headerlink" title="Constructor"></a>Constructor</h3><p>java.lang.reflect.Constructor类主要用于描述获取到的构造方法信息</p>
+<p><strong>Class方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Constructor getConstructor(Class&lt;?&gt;…parameterTypes)</td>
+<td>用于获取此Class对象所表示类型中参数指定的公共构造方法</td>
+</tr>
+<tr>
+<td>Constructor&lt;?&gt;[] getConstructors()</td>
+<td>用于获取此Class对象所表示类型中所有的公共构造方法</td>
+</tr>
+</tbody></table>
+<p><strong>Constructor方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T newInstance(Object…initargs)</td>
+<td>使用此Constructor对象描述的构造方法来构造Class对象代表类型的新实例</td>
+</tr>
+<tr>
+<td>int getModifiers()</td>
+<td>获取方法的访问修饰符</td>
+</tr>
+<tr>
+<td>String getName()</td>
+<td>获取方法的名称</td>
+</tr>
+<tr>
+<td>Class&lt;?&gt;[] getParameterTypes()</td>
+<td>获取方法所有参数的类型</td>
+</tr>
+</tbody></table>
+<p>获取单个构造方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;  <span class="comment">//测试阶段暂时抛出异常给jvm</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//常规使用构造方法，即创建对象</span></span><br><span class="line">    Person p1 = <span class="keyword">new</span> Person();</span><br><span class="line">    Person p2 = <span class="keyword">new</span> Person(<span class="string">&quot;zhangfei&quot;</span>, <span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用反射机制调用构造方法，创建对象</span></span><br><span class="line">    Class c1 = Class.forName(<span class="string">&quot;org.de3.Test_11.Person&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取无参构造方法,并创建对象</span></span><br><span class="line">    Constructor&lt;Person&gt; constructor1 = c1.getConstructor();</span><br><span class="line">    Person p3 = constructor1.newInstance();</span><br><span class="line">    <span class="comment">//获取有参构造方法,并创建对象</span></span><br><span class="line">    Constructor&lt;Person&gt; constructor2 = c1.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">    Person p4 = constructor2.newInstance(<span class="string">&quot;zhangfei&quot;</span>, <span class="number">30</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取所有构造方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    System.out.println(<span class="string">&quot;请输入类名称：&quot;</span>);</span><br><span class="line">    String s = sc.next();</span><br><span class="line">    Class c1 = Class.forName(s);</span><br><span class="line">    <span class="comment">//获取所有构造方法</span></span><br><span class="line">    Constructor[] constructors = c1.getConstructors();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(Constructor constructor : constructors)&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;构造方法的访问修饰符是：&quot;</span> + constructor.getModifiers());</span><br><span class="line">        System.out.println(<span class="string">&quot;构造方法的名称是：&quot;</span> + constructor.getName());</span><br><span class="line">        System.out.print(<span class="string">&quot;构造方法的参数类型是：&quot;</span>);</span><br><span class="line">        Class[] cArr = constructor.getParameterTypes();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Class c: cArr)&#123;</span><br><span class="line">            System.out.print(c+ <span class="string">&quot;, &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;\n======================================\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Field类"><a href="#Field类" class="headerlink" title="Field类"></a>Field类</h3><p>java.lang.reflect.Field类主要用于描述获取到的单个成员变量信息。</p>
+<p><strong>Class方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Field getDeclaredField(String name)</td>
+<td>用于获取此Class对象所表示类中参数指定的单个成员变量信息</td>
+</tr>
+<tr>
+<td>Field[] getDeclaredFields()</td>
+<td>用于获取此Class对象所表示类中所有成员变量信息</td>
+</tr>
+</tbody></table>
+<p><strong>Field方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Object get(Object obj)</td>
+<td>获取参数对象obj中此Field对象所表示成员变量的数值</td>
+</tr>
+<tr>
+<td>void set(Object obj, Object value)</td>
+<td>将参数对象obj中此Field对象表示成员变量的数值修改为参数 value的数值</td>
+</tr>
+<tr>
+<td>void setAccessible(boolean flag)</td>
+<td>当实参传递true时，则反射对象在使用时应该取消 Java 语言访问检查</td>
+</tr>
+<tr>
+<td>int getModifiers()</td>
+<td>获取成员变量的访问修饰符</td>
+</tr>
+<tr>
+<td>Class&lt;?&gt; getType()</td>
+<td>获取成员变量的数据类型</td>
+</tr>
+<tr>
+<td>String getName()</td>
+<td>获取成员变量的名称</td>
+</tr>
+</tbody></table>
+<p>获取单个成员变量</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//常规访问成员变量</span></span><br><span class="line">    Person p1 = <span class="keyword">new</span> Person(<span class="string">&quot;zhang&quot;</span>, <span class="number">30</span>);</span><br><span class="line">    System.out.println(p1.name);</span><br><span class="line">    p1.name = <span class="string">&quot;guanyu&quot;</span>;</span><br><span class="line">    System.out.println(p1.name);</span><br><span class="line">    System.out.println(<span class="string">&quot;==================================&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用反射访问成员变量</span></span><br><span class="line">    Class c1 = Class.forName(<span class="string">&quot;org.de3.Test_11.Person&quot;</span>);</span><br><span class="line">    <span class="comment">//创建实例对象p2</span></span><br><span class="line">    Constructor&lt;Person&gt; constructor = c1.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">    Person p2 = constructor.newInstance(<span class="string">&quot;zhang&quot;</span>, <span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取成员变量Field，即name</span></span><br><span class="line">    Field field = c1.getDeclaredField(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">    field.setAccessible(<span class="keyword">true</span>);   <span class="comment">//是否取消检测访问权限，即可以访问private的成员变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//打印对象p2的成员变量field，即name</span></span><br><span class="line">    System.out.println( field.get(p2) );  <span class="comment">//zhang</span></span><br><span class="line">    <span class="comment">//修改对象p2的成员变量field，即name</span></span><br><span class="line">    field.set(p2, <span class="string">&quot;guanyu&quot;</span>);</span><br><span class="line">    System.out.println( field.get(p2) );  <span class="comment">//guanyu</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取所有成员变量</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">    Class c1 = Class.forName(<span class="string">&quot;org.de3.Test_11.Person&quot;</span>);</span><br><span class="line">    Field[] fArr = c1.getDeclaredFields();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(Field field: fArr)&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;成员变量的访问权限是：&quot;</span> + field.getModifiers());</span><br><span class="line">        System.out.println(<span class="string">&quot;成员变量的数据类型是：&quot;</span> + field.getType());</span><br><span class="line">        System.out.println(<span class="string">&quot;成员变量的名称是：&quot;</span> + field.getName());</span><br><span class="line">        System.out.println(<span class="string">&quot;\n=======================================\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Method类"><a href="#Method类" class="headerlink" title="Method类"></a>Method类</h3><p>java.lang.reflect.Method类主要用于描述获取到的单个成员方法信息。</p>
+<p><strong>Class方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Method getMethod(String name, Class&lt;?&gt;… parameterTypes)</td>
+<td>用于获取该Class对象表示类中名字为name参数为 parameterTypes的指定公共成员方法</td>
+</tr>
+<tr>
+<td>Method[] getMethods()</td>
+<td>用于获取该Class对象表示类中所有公共成员方法</td>
+</tr>
+</tbody></table>
+<p><strong>Method方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Object invoke(Object obj, Object… args)</td>
+<td>使用对象obj来调用此Method对象所表示的成员方法，实参传递args</td>
+</tr>
+<tr>
+<td>int getModifiers()</td>
+<td>获取方法的访问修饰符</td>
+</tr>
+<tr>
+<td>Class&lt;?&gt; getReturnType()</td>
+<td>获取方法的返回值类型</td>
+</tr>
+<tr>
+<td>String getName()</td>
+<td>获取方法的名称</td>
+</tr>
+<tr>
+<td>Class&lt;?&gt;[] getParameterTypes()</td>
+<td>获取方法所有参数的类型</td>
+</tr>
+<tr>
+<td>Class&lt;?&gt;[] getExceptionTypes()</td>
+<td>获取方法的异常信息</td>
+</tr>
+</tbody></table>
+<p>获取单个成员方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//常规调用成员方法</span></span><br><span class="line">    Person p1 = <span class="keyword">new</span> Person(<span class="string">&quot;zhang&quot;</span>, <span class="number">30</span>);</span><br><span class="line">    p1.show(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用反射机制调用成员方法</span></span><br><span class="line">    Class c1 = Class.forName(<span class="string">&quot;org.de3.Test_11.Person&quot;</span>);</span><br><span class="line">    <span class="comment">//创建对象</span></span><br><span class="line">    Constructor&lt;Person&gt; constructor =  c1.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">    Person p2 = constructor.newInstance(<span class="string">&quot;zhang&quot;</span>, <span class="number">30</span>);</span><br><span class="line">    <span class="comment">//获取成员方法method， 即show()</span></span><br><span class="line">    Method method = c1.getMethod(<span class="string">&quot;show&quot;</span>, <span class="keyword">int</span>.class);</span><br><span class="line">    <span class="comment">//调用对象p2的成员方法method,即show();</span></span><br><span class="line">    method.invoke(p2, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取所有成员方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">    Class c1 = Class.forName(<span class="string">&quot;org.de3.Test_11.Person&quot;</span>);</span><br><span class="line">    Method[] methods = c1.getMethods();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(Method method: methods)&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;成员方法的修饰符是：&quot;</span> + method.getModifiers());</span><br><span class="line">        System.out.println(<span class="string">&quot;成员方法的返回值类型是：&quot;</span> + method.getReturnType());</span><br><span class="line">        System.out.println(<span class="string">&quot;成员方法的名称是：&quot;</span> + method.getName());</span><br><span class="line">        System.out.print(<span class="string">&quot;成员方法的参数类型是： &quot;</span>);</span><br><span class="line">        Class[] cArr = method.getParameterTypes();</span><br><span class="line">        <span class="keyword">for</span>(Class c: cArr)&#123;</span><br><span class="line">            System.out.print(c + <span class="string">&quot;, &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">        System.out.print(<span class="string">&quot;成员方法的异常类型是： &quot;</span>);</span><br><span class="line">        Class[] cArr2 = method.getExceptionTypes();</span><br><span class="line">        <span class="keyword">for</span>(Class c: cArr2)&#123;</span><br><span class="line">            System.out.print(c + <span class="string">&quot;, &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;\n==================================\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他结构信息"><a href="#其他结构信息" class="headerlink" title="其他结构信息"></a>其他结构信息</h3><p><strong>Class方法</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>功能介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Package getPackage()</td>
+<td>获取所在的包信息</td>
+</tr>
+<tr>
+<td>Class&lt;? super T&gt; getSuperclass()</td>
+<td>获取继承的父类信息</td>
+</tr>
+<tr>
+<td>Class&lt;?&gt;[] getInterfaces()</td>
+<td>获取实现的所有接口</td>
+</tr>
+<tr>
+<td>Annotation[] getAnnotations()</td>
+<td>获取注解信息</td>
+</tr>
+<tr>
+<td>Type[] getGenericInterfaces()</td>
+<td>获取泛型信息</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">    Class c1 = Class.forName(<span class="string">&quot;org.de3.Test_11.Person&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">&quot;类的包信息：&quot;</span> + c1.getPackage());</span><br><span class="line">    System.out.println(<span class="string">&quot;类的父类：&quot;</span> + c1.getSuperclass());</span><br><span class="line">    System.out.println(<span class="string">&quot;类的接口：&quot;</span> + c1.getInterfaces());</span><br><span class="line">    System.out.println(<span class="string">&quot;类的注解：&quot;</span> + c1.getAnnotations());</span><br><span class="line">    System.out.println(<span class="string">&quot;类的泛型：&quot;</span> + c1.getGenericInterfaces());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h2><p><strong>代理模式：</strong></p>
+<p>当一个对象不能直接使用，可以在客户和目标中间直接创建一个中介，这个中介就是代理。</p>
+<p>例：<br>    A类不能直接访问C类，可创建B类为中介，<br>    A类访问B类，B类访问C类，<br>    A类是客户，B类是代理，C类是目标。</p>
+<p><strong>作用：</strong></p>
+<ul>
+<li>控制访问，在代理中，控制是否可以调用目标对象的方法。</li>
+<li>功能增强，可以在完成目标方法的调用时，附加一些额外的功能。</li>
+</ul>
+<h3 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h3><p>代理类是手工实现的java文件，代理的目标对象是固定的</p>
+<p><strong>优点</strong>：容易理解，使用方便</p>
+<p><strong>缺点</strong>：在目标类比较多时，会产生大量的代理类。</p>
+<p>案例：<br>某人到商家买U盘，商家到厂家买U盘。某人是客户，商家是代理，厂家是目标。</p>
+<p>销售U盘的接口UsbCell</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UsbCell</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">float</span> <span class="title">cell</span><span class="params">(<span class="keyword">int</span> num)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>目标类：厂家，UsbFactory1</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UsbFactory1</span> <span class="keyword">implements</span> <span class="title">UsbCell</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">cell</span><span class="params">(<span class="keyword">int</span> num)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;目标类中的方法&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">85.0f</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代理类：商家，TaoBao1</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//代理类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaoBao1</span> <span class="keyword">implements</span> <span class="title">UsbCell</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> UsbFactory1 factory = <span class="keyword">new</span> UsbFactory1();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">cell</span><span class="params">(<span class="keyword">int</span> num)</span></span>&#123;</span><br><span class="line">        <span class="comment">//1，访问目标类方法</span></span><br><span class="line">        <span class="keyword">float</span> price = factory.cell(num);</span><br><span class="line">        <span class="comment">//2，功能增强</span></span><br><span class="line">        price = price + <span class="number">30</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;送一张优惠券！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试，客户买U盘</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        TaoBao1 taoBao = <span class="keyword">new</span> TaoBao1();</span><br><span class="line">        <span class="keyword">float</span> price = taoBao.cell(<span class="number">1</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;Usb的价格是：&quot;</span> + price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态代理-1"><a href="#动态代理-1" class="headerlink" title="动态代理"></a>动态代理</h3><p>使用反射机制，在程序执行中，创建代理类对象。</p>
+<p>特点：不用创建类文件，代理的目标类是活动的，可设置的</p>
+<p><strong>动态代理的实现</strong></p>
+<p>jdk动态代理：使用java.lang.reflect包里的三个类：</p>
+<p>InvocationHandler，Method， Proxy</p>
+<p><strong>InvocationHandler</strong>接口（调用处理器）：接口中就一个invoke()方法，</p>
+<ul>
+<li>invoke()：表示代理对象要执行的功能代码。代理类要完成的功能就写在invoke方法中。</li>
+<li>代理类完成的功能：调用目标类方法，功能增强</li>
+</ul>
+<p>方法原型：</p>
+<p>public Object invoke(Object proxy, Method method, Object[] args)</p>
+<p>参数：<br>Object proxy：jdk创建的代理对象，无需赋值<br>Method method：目标类中的方法，jdk提供method对象<br>Object[] args：目标类中的方法的参数</p>
+<p>用法：</p>
+<p>创建类实现InvocationHandler接口，重写invoke()方法，把代理内容写invoke()方法中。</p>
+<p><strong>Proxy</strong>类：中有静态方法 newProxyInstance()，创建代理对象</p>
+<p>方法原型：</p>
+<p>public static Object newProxyInstance（ClassLoader loader，Class&lt;&gt;[] interfaces, InvocationHandler h）</p>
+<p>参数：</p>
+<p>ClassLoader loader：类加载器，<br>Class&lt;&gt;[] interfaces：类的接口，<br>InvocationHandler h：我们自己写的，代理类要完成的功能</p>
+<p>返回值：就是代理对象</p>
+<p><strong>实现动态代理步骤</strong></p>
+<p>1，创建接口，定义目标类要完成的功能</p>
+<p>2，创建目标类，并实现接口</p>
+<p>3，创建InvocationHandler接口的实现类，在invoke方法中完成代理类的功能：<br>        调用目标方法，增强功能</p>
+<p>4，使用Proxy类的静态方法newProxyInstance()，创建代理对象，并发返回值转化成接口类型</p>
+<p>5，使用代理对象调用需要的方法。</p>
+<p>案例：<br>以静态代理为例，编写动态代码：</p>
+<p>销售U盘的接口：UsbCell</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UsbCell</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">float</span> <span class="title">cell</span><span class="params">(<span class="keyword">int</span> num)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>目标类：厂家，UsbFactory1</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UsbFactory1</span> <span class="keyword">implements</span> <span class="title">UsbCell</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">cell</span><span class="params">(<span class="keyword">int</span> num)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;目标类中的方法&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">85.0f</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建InvocationHandler接口的实现类：重写invoke方法，写代理内容</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="comment">//目标类</span></span><br><span class="line">    <span class="keyword">private</span> UsbCell target = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyInvocationHandler</span><span class="params">(UsbCell target)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 代理的内容写在invoke方法中</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> o :代理对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> method：需要执行的方法</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> objects：参数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Throwable</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object o, Method method, Object[] objects)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="comment">//1, 访问目标类的方法，</span></span><br><span class="line">        <span class="comment">// 动态，因为此时(方法method)，(目标类target)，(参数objects)都还没有确定</span></span><br><span class="line">        Object price = method.invoke(target, objects);</span><br><span class="line">        <span class="comment">//2, 功能增强</span></span><br><span class="line">        <span class="keyword">if</span>(price != <span class="keyword">null</span>)&#123;</span><br><span class="line">            Float f = (<span class="keyword">float</span>)price;</span><br><span class="line">            price = f + <span class="number">30</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;赠送一张优惠券！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试，买U盘</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//目标对象</span></span><br><span class="line">        UsbCell uc = <span class="keyword">new</span> UsbFactory1();</span><br><span class="line">        <span class="comment">//创建invocationHandler对象，目标类target确定为uc</span></span><br><span class="line">        MyInvocationHandler invocationHandler = <span class="keyword">new</span> MyInvocationHandler(uc);</span><br><span class="line">        <span class="comment">//创建动态代理对象</span></span><br><span class="line">        UsbCell proxy = (UsbCell)Proxy.newProxyInstance(uc.getClass().getClassLoader(),</span><br><span class="line">                uc.getClass().getInterfaces(),</span><br><span class="line">                invocationHandler);</span><br><span class="line">        <span class="comment">//方法method确定为cell, 参数objects确定为1</span></span><br><span class="line">        Object price = proxy.cell(<span class="number">1</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;价格为：&quot;</span> + price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>动态代理实际作用</strong></p>
+<p>可以在不改变原来的目标方法功能的前提下，在代理中增强自己的功能代码。</p>
+<p>比如：在项目中，有一个功能是其他人写好的，我可以使用。但是发现这个功能不能完全满足我的需求，需要增强自己的代码，就可以使用代理，在代理中访问目标类的方法，并且增加自己的代码(增强功能)。</p>
+<p>例如：现有接口Hello如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(String s)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>功能类GongNeng，实现了Hello接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GongNeng</span> <span class="keyword">implements</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在可以使用该GongNeng类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Hello h1 = <span class="keyword">new</span> GongNeng();</span><br><span class="line">h1.print(<span class="string">&quot;abc&quot;</span>);  </span><br><span class="line"><span class="comment">//结果：</span></span><br><span class="line"><span class="comment">//abc</span></span><br></pre></td></tr></table></figure>
+
+<p>假如现在不满足我的需求，我需要在打印后，再打印字符串“bye”，可以添加代理：</p>
+<p>创建InvocationHandler接口的实现类：重写invoke方法，写代理内容</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hello target;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyInvocationHandler</span><span class="params">(Hello target)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object o, Method method, Object[] objects)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        method.invoke(target, objects);</span><br><span class="line">        <span class="comment">//功能增强，增加自己的代码</span></span><br><span class="line">        System.out.println(<span class="string">&quot;bye&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    Hello h2 = <span class="keyword">new</span> GongNeng();</span><br><span class="line">    MyInvocationHandler invocationHandler = <span class="keyword">new</span> MyInvocationHandler(h2);</span><br><span class="line">    Hello proxy = (Hello)Proxy.newProxyInstance( h2.getClass().getClassLoader(),</span><br><span class="line">                                                h2.getClass().getInterfaces(),</span><br><span class="line">                                                invocationHandler);</span><br><span class="line">    proxy.print(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line">    <span class="comment">//结果：</span></span><br><span class="line">    <span class="comment">//abc</span></span><br><span class="line">    <span class="comment">//bye</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -5205,7 +5517,16 @@ c;
 
 
 
-<h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2>]]></content>
+
+
+
+
+
+
+
+
+
+]]></content>
       <categories>
         <category>jave</category>
       </categories>

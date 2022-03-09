@@ -6145,4 +6145,574 @@ c;
         <tag>java</tag>
       </tags>
   </entry>
+  <entry>
+    <title>MySQL</title>
+    <url>/2022/03/09/MySQL/</url>
+    <content><![CDATA[<p>这是一篇关于MySQL的个人笔记。</p>
+<p>包含MySql的基本语法，MySql表单、约束和事物，MySql多表、外键和数据库设计，Mysql索引、存储过程和触发器。</p>
+<span id="more"></span>
+
+<h1 id="MySql基础"><a href="#MySql基础" class="headerlink" title="MySql基础"></a>MySql基础</h1><p>什么是数据库？</p>
+<ul>
+<li>数据库(DataBase) 就是存储和管理数据的仓库</li>
+<li>其本质是一个文件系统, 还是以文件的方式,将数据保存在电脑上</li>
+</ul>
+<p>为什么用数据库？</p>
+<table>
+<thead>
+<tr>
+<th><strong>存储方式</strong></th>
+<th><strong>优点</strong></th>
+<th><strong>缺点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内存</td>
+<td>速度快</td>
+<td>不能够永久保存,数据是临时状态的</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>数据是可以永久保存的</td>
+<td>使用IO流操作文件, 不方便</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>1.数据可以永久保存  2.方便存储和管理数据   3.使用统一的方式操作数据库  (SQL)</td>
+<td>占用资源,有些数据库需要付费(比如Oracle数据  库)</td>
+</tr>
+</tbody></table>
+<p>通过上面的比较,我们可以看出,使用数据库存储数据, 用户可以非常方便对数据库中的数据进行增加, 删除, 修改及查询操作。</p>
+<p>常见数据库</p>
+<table>
+<thead>
+<tr>
+<th><strong>数据库名</strong></th>
+<th><strong>介绍</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MySql数据</strong>  <strong>库</strong></td>
+<td>开源免费的数据库  因为免费开源、运作简单的特点，常作为中小型的项目的数据库首选。  MySQL1996年开始运作，目前已经被Oracle公司收购了.  MySQL6.x开始收费</td>
+</tr>
+<tr>
+<td>Oracle数据  库</td>
+<td>收费的大型数据库，Oracle公司的核心产品。  安全性高</td>
+</tr>
+<tr>
+<td>DB2</td>
+<td>IBM公司的数据库产品,收费的超大型数据库。  常在银行系统中使用</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td>MicroSoft 微软公司收费的中型的数据库。  C#、.net等语言常使用。   但该数据库只能运行在windows机器上，扩展性、稳定性、安全性、性能都表现平平。</td>
+</tr>
+</tbody></table>
+<p>为什么选择MySQL ?</p>
+<ul>
+<li>功能强大,足以应付web应用开发</li>
+<li>开源, 免费</li>
+</ul>
+<p><strong>Mysql服务启动</strong>：</p>
+<p>1，打开任务管理器，在“服务”选项卡下将“MySQL”启动。</p>
+<p>2，win + R 快捷键，输入services.msc后进入，将“MySQL”启动。</p>
+<p>3，以管理员身份打开DOS命令行，输入“net start mysql57”启动，输入“net stop mysql57”关闭。</p>
+<p><strong>DOS命令行登入MySQL</strong>（前提是添加了环境变量）</p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysql -u 用户名 -p 密码</td>
+<td>使用指定用户名和密码登录当前计算机中的MySQL数据库</td>
+</tr>
+<tr>
+<td>mysql -h 主机IP -u 用户名  -p 密码</td>
+<td>-h 指定IP  方式,进行 登录</td>
+</tr>
+<tr>
+<td>exit 或  quit</td>
+<td>退出</td>
+</tr>
+</tbody></table>
+<h2 id="MySQL目录结构"><a href="#MySQL目录结构" class="headerlink" title="MySQL目录结构"></a>MySQL目录结构</h2><p><strong>MySQL安装目录</strong></p>
+<p>MySql的默认安装目录在 C:\Program Files\MySQL\MySQL Server 5.7</p>
+<table>
+<thead>
+<tr>
+<th><strong>目录</strong></th>
+<th><strong>目录内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bin</td>
+<td>放置一些可执行文件</td>
+</tr>
+<tr>
+<td>docs</td>
+<td>文档</td>
+</tr>
+<tr>
+<td>include</td>
+<td>包含(头)文件</td>
+</tr>
+<tr>
+<td>lib</td>
+<td>依赖库</td>
+</tr>
+<tr>
+<td>share</td>
+<td>用于存放字符集、语言等信息。</td>
+</tr>
+</tbody></table>
+<h2 id="数据库管理系统"><a href="#数据库管理系统" class="headerlink" title="数据库管理系统"></a>数据库管理系统</h2><p>数据库管理系统（DataBase Management System，DBMS）：指一种操作和管理维护数据库的大型软件。</p>
+<p>MySQL就是一个 数据库管理系统软件, 安装了Mysql的电脑,我们叫它数据库服务器.</p>
+<p><strong>作用</strong></p>
+<p> 用于建立、使用和维护数据库，对数据库进行统一的管理。</p>
+<p><strong>数据库管理系统、数据库 和表之间的关系</strong></p>
+<p> MySQL中管理着很多数据库，在实际开发环境中 一个数据库一般对应了一个的应用，数据库当中保存着多张表，每一张表对应着不同的业务，表中保存着对应业务的数据。</p>
+<p><strong>几个概念</strong> </p>
+<ul>
+<li>数据库：文件夹</li>
+<li>表：文件</li>
+<li>数据：文件中的记录</li>
+</ul>
+<h2 id="数据库表"><a href="#数据库表" class="headerlink" title="数据库表"></a>数据库表</h2><p>数据库中以表为组织单位存储数据</p>
+<p>表类似我们Java中的类,每个字段都有对应的数据类型，那么我们使用熟悉的Java程序来与关系型数据对比,就会发现以下关系: </p>
+<ul>
+<li>类————-&gt;表</li>
+<li>类中变量—–&gt;表中字段</li>
+<li>对象———-&gt;数据记录</li>
+</ul>
+<h1 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h1><p> 结构化查询语言(Structured Query Language)简称SQL，是一种特殊目的的编程语言，是一种数据库查询和程序设计语言，用于存取数据以及查询、更新和管理关系数据库系统。</p>
+<p><strong>作用</strong></p>
+<ul>
+<li>是所有关系型数据库的统一查询规范，不同的关系型数据库都支持SQL 所有的关系型数据库都可以使用SQL</li>
+<li>不同数据库之间的SQL 有一些区别  方言</li>
+</ul>
+<p><strong>SQL通用语法</strong></p>
+<ul>
+<li><p>SQL语句可以单行 或者 多行书写，以分号 结尾 ;   （Sqlyog中可以不用写分号） </p>
+</li>
+<li><p>可以使用空格和缩进来增加语句的可读性。</p>
+</li>
+<li><p>MySql中使用SQL不区分大小写，一般关键字大写，数据库名 表名列名 小写。</p>
+</li>
+<li><p>注释方式</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 空格	单行注释</span></span><br><span class="line"><span class="comment">/* */</span>	 多行注释</span><br><span class="line">#	     MySql特有的单行注释</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>SQL的分类</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>分类</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据定义语言</td>
+<td>简称DDL(Data Definition Language)，用来定义数据库对象：数据库，表，列等。</td>
+</tr>
+<tr>
+<td>数据操作语言</td>
+<td>简称DML(Data  Manipulation Language)，用来对数据库中表的记录进行更新。</td>
+</tr>
+<tr>
+<td>数据查询语言</td>
+<td>简称DQL(Data  Query Language)，用来查询数据库中表的记录。</td>
+</tr>
+<tr>
+<td>数据控制语言</td>
+<td>简称DCL(Date  Control Language)，用来定义数据库的访问权限和安全级别，及创建用户。(了解)</td>
+</tr>
+</tbody></table>
+<p><a href="https://imgtu.com/i/bR54AO"><img src="https://s1.ax1x.com/2022/03/09/bR54AO.png" alt="bR54AO.png"></a></p>
+<h2 id="DDL操作库"><a href="#DDL操作库" class="headerlink" title="DDL操作库"></a>DDL操作库</h2><p><strong>增，创建库</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>create database 数据库名；</td>
+<td>创建指定名称的数据库。</td>
+</tr>
+<tr>
+<td>create database 数据库名 character  set  字符集；</td>
+<td>创建指定名称的数据库，并且指定字符集（一般都指定utf8）</td>
+</tr>
+</tbody></table>
+<p><strong>删，删除库</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>drop database 数据库名</td>
+<td>从MySql中永久的删除某个数据库</td>
+</tr>
+</tbody></table>
+<p><strong>改，修改库</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>alter database 数据库名 character  set 字符集；</td>
+<td>数据库的字符集修改操作</td>
+</tr>
+</tbody></table>
+<p><strong>查，查询库</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>use 数据库</td>
+<td>切换数据库</td>
+</tr>
+<tr>
+<td>select database();</td>
+<td>查看当前正在使用的数据库</td>
+</tr>
+<tr>
+<td>show databases;</td>
+<td>查看Mysql中 都有哪些数据库</td>
+</tr>
+<tr>
+<td>show create database 数据库名；</td>
+<td>查看一个数据库的定义信息</td>
+</tr>
+</tbody></table>
+<h2 id="DDL操作表"><a href="#DDL操作表" class="headerlink" title="DDL操作表"></a>DDL操作表</h2><p><strong>MySQL的数据类型</strong></p>
+<p>常见类型</p>
+<table>
+<thead>
+<tr>
+<th><strong>类型</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int</td>
+<td>整型</td>
+</tr>
+<tr>
+<td>double</td>
+<td>浮点型</td>
+</tr>
+<tr>
+<td>char</td>
+<td>字符串型（固定长度）</td>
+</tr>
+<tr>
+<td>varchar</td>
+<td>字符串型（可变长度，根据实际内容）</td>
+</tr>
+<tr>
+<td>date</td>
+<td>日期类型，给是为  yyyy-MM-dd ,只有年月日，没有时分秒</td>
+</tr>
+</tbody></table>
+<p>其他类型</p>
+<p><a href="https://imgtu.com/i/bRIgPg"><img src="https://s1.ax1x.com/2022/03/09/bRIgPg.png" alt="bRIgPg.png"></a></p>
+<p>注意：MySQL中的 char类型与 varchar类型，都对应了 Java中的字符串类型，区别在于：</p>
+<ul>
+<li>char类型是固定长度的： 根据定义的字符串长度分配足够的空间。</li>
+<li>varchar类型是可变长度的： 只使用字符串长度所需的空间</li>
+</ul>
+<p>适用场景：</p>
+<ul>
+<li>char类型适合存储 固定长度的字符串，比如 密码 ，性别一类 </li>
+<li>varchar类型适合存储 在一定范围内，有长度变化的字符串 ，如姓名</li>
+</ul>
+<p><strong>增，创建表</strong></p>
+<p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE 表名(</span><br><span class="line">	字段名1 字段类型(长度),</span><br><span class="line">	字段名2 字段类型(长度),</span><br><span class="line">	字段名3 字段类型(长度)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> test(</span><br><span class="line">	id <span class="type">INT</span>,</span><br><span class="line">	uname <span class="type">VARCHAR</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>快速创建一个表test1，结构与表test相同（复制表结构）：</p>
+<p>CREATE TABLE test1 LIKE test;</p>
+<p><strong>删，删除表</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>drop table 表名；</td>
+<td>删除表（从数据库中永久删除某一张表）</td>
+</tr>
+<tr>
+<td>drop table if exists 表名；</td>
+<td>判断表是否存在， 存在的话就删除,不存在就不执行删除</td>
+</tr>
+</tbody></table>
+<p><strong>改，修改表</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 修改表名字rename</span></span><br><span class="line">RENAME <span class="keyword">TABLE</span> test <span class="keyword">TO</span> test1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表字符集alter</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test1 <span class="type">CHARACTER</span> <span class="keyword">SET</span> utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 给表添加一个字段alter,add</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test1 <span class="keyword">ADD</span> age <span class="type">INT</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表的字段信息alter, modify</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test1 MODIFY age <span class="type">VARCHAR</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表的字段名字和信息alter, change</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test1 CHANGE age uage <span class="type">INT</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 给表删除一个字段alter, drop</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> test1 <span class="keyword">DROP</span> uage;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查，查看表</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>show tables;</td>
+<td>查看当前数据库中的所有表名</td>
+</tr>
+<tr>
+<td>desc 表名；</td>
+<td>查看数据表的结构</td>
+</tr>
+<tr>
+<td>show create table 表名</td>
+<td>查看创建表的sql语句</td>
+</tr>
+</tbody></table>
+<h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><p>数据管理语言</p>
+<p><strong>增，插入数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into 表名 （字段名1，字段名2） values(字段值1，字段值2);  </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into 表名 values(字段值1，字段值2...所有字段);</span><br></pre></td></tr></table></figure>
+
+<p><strong>删，删除数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete from 表名 where 条件表达式;  删除表的指定条件的记录</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete from 表名;       删除表的所有记录，不推荐</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">truncate table 表名;    删除表的所有记录，推荐</span><br></pre></td></tr></table></figure>
+
+<p><strong>改，修改数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update 表名 set 列名 = 值;   修改表中所有数据</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update 表名 set 列名 = 值 where 条件表达式；  修改表中指定条件的数据</span><br></pre></td></tr></table></figure>
+
+<h2 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h2><p>数据查询语言</p>
+<p><strong>查，查询数据</strong></p>
+<p>select 列名 from 表名  where 条件表达式</p>
+<p><strong>简单查询</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT * FROM 表名;        查询所有字段，使用 * 表示所有列</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT id,uname FROM 表名;   查询指定的字段</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT uname AS &#x27;姓名&#x27; FROM 表名;  给查询出来的字段取别名   </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT id + 100 AS &#x27;编号&#x27;, uname FROM 表名;  查询出的结果可以进行运算</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT DISTINCT * FROM 表名;     使用DISTINCT去重操作</span><br></pre></td></tr></table></figure>
+
+<p><strong>运算符</strong></p>
+<p>比较运算符</p>
+<table>
+<thead>
+<tr>
+<th><strong>运算符</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&gt; &lt; &lt;= &gt;= = &lt;&gt; !=</td>
+<td>大于、小于、大于(小于)等于、不等于</td>
+</tr>
+<tr>
+<td>BETWEEN …AND…</td>
+<td>显示在某一区间的值  例如: 2000-10000之间：  Between 2000 and 10000</td>
+</tr>
+<tr>
+<td>IN(集合)</td>
+<td>集合表示多个值,使用逗号分隔,例如:  name in (悟空，八戒) in中的每个数据都会作为一次条件,只要满足条件就会显示</td>
+</tr>
+<tr>
+<td>LIKE ‘%张%’</td>
+<td>模糊查询，%表示任意多个字符，_表示任意一个字符</td>
+</tr>
+<tr>
+<td>IS NULL</td>
+<td>查询某一列为NULL的值, 注: 不能写 =  NULL</td>
+</tr>
+<tr>
+<td>IS NOT NULL</td>
+<td>查询某一列不为NULL的值</td>
+</tr>
+</tbody></table>
+<p>逻辑运算符</p>
+<table>
+<thead>
+<tr>
+<th><strong>运算符</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>And &amp;&amp;</td>
+<td>多个条件同时成立</td>
+</tr>
+<tr>
+<td>Or ||</td>
+<td>多个条件任一成立</td>
+</tr>
+<tr>
+<td>Not</td>
+<td>不成立，取反。</td>
+</tr>
+</tbody></table>
+<p><strong>条件查询</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 查询员工姓名为黄蓉的员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ename <span class="operator">=</span> <span class="string">&#x27;黄蓉&#x27;</span>; </span><br><span class="line"></span><br><span class="line"># 查询薪水价格为<span class="number">5000</span>的员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> salary <span class="operator">=</span> <span class="number">5000</span>; </span><br><span class="line"></span><br><span class="line"># 查询薪水价格不是<span class="number">5000</span>的所有员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> salary <span class="operator">!=</span> <span class="number">5000</span>; </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> salary <span class="operator">&lt;&gt;</span> <span class="number">5000</span>; </span><br><span class="line"></span><br><span class="line"># 查询薪水价格大于<span class="number">6000</span>元的所有员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> salary <span class="operator">&gt;</span> <span class="number">6000</span>;</span><br><span class="line"></span><br><span class="line"># 查询薪水价格在<span class="number">5000</span>到<span class="number">10000</span>之间所有员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> salary <span class="keyword">BETWEEN</span> <span class="number">5000</span> <span class="keyword">AND</span> <span class="number">10000</span>; </span><br><span class="line"></span><br><span class="line"># 查询薪水价格是<span class="number">3600</span>或<span class="number">7200</span>或者<span class="number">20000</span>的所有员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> salary <span class="operator">=</span> <span class="number">3600</span> <span class="keyword">OR</span> salary <span class="operator">=</span> <span class="number">7200</span> <span class="keyword">OR</span> salary <span class="operator">=</span> <span class="number">20000</span>; </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> salary <span class="keyword">IN</span>(<span class="number">3600</span>,<span class="number">7200</span>,<span class="number">20000</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>模糊查询</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 查询含有<span class="string">&#x27;精&#x27;</span>字的所有员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ename <span class="keyword">LIKE</span> <span class="string">&#x27;%精%&#x27;</span>; </span><br><span class="line"></span><br><span class="line"># 查询以<span class="string">&#x27;孙&#x27;</span>开头的所有员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ename <span class="keyword">LIKE</span> <span class="string">&#x27;孙%&#x27;</span>; </span><br><span class="line"></span><br><span class="line"># 查询第二个字为<span class="string">&#x27;兔&#x27;</span>的所有员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ename <span class="keyword">LIKE</span> <span class="string">&#x27;_兔%&#x27;</span>; </span><br><span class="line"></span><br><span class="line"># 查询没有部门的员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> dept_name <span class="keyword">IS</span> <span class="keyword">NULL</span>;</span><br><span class="line"></span><br><span class="line"># 查询有部门的员工信息 </span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> dept_name <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
 </search>

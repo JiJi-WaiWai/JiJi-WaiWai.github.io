@@ -6585,6 +6585,10 @@ c;
 
 
 
+<h1 id="你好呀"><a href="#你好呀" class="headerlink" title="你好呀"></a>你好呀</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">&quot;Hello Word!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 
 
 

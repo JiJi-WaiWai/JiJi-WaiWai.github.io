@@ -9691,7 +9691,621 @@ c;
     <title>单体架构项目</title>
     <url>/2022/07/14/%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84%E9%A1%B9%E7%9B%AE/</url>
     <content><![CDATA[<p>一个javaWeb项目实战，教育课程管理系统，前后端分离开发。</p>
-<span id="more"></span>]]></content>
+<span id="more"></span>
+
+<h1 id="前后端分离开发"><a href="#前后端分离开发" class="headerlink" title="前后端分离开发"></a>前后端分离开发</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>前后端分离已成为互联网项目开发的业界标准使用方式，将前端和后端的开发进行解耦。并且前后端分离会为以后的大型分布式架构、微服务架构、多端化服务（各种客户端，比如浏览器、车载终端、安卓、IOS等）打下坚实的基础。</p>
+<p><a href="https://imgtu.com/i/jWO7nK"><img src="https://s1.ax1x.com/2022/07/14/jWO7nK.jpg" alt="jWO7nK.jpg"></a></p>
+<h2 id="接口文档"><a href="#接口文档" class="headerlink" title="接口文档"></a>接口文档</h2><p><strong>什么是接口文档</strong></p>
+<p>​    在我们的项目中使用的是前后端分离开发方式，需要由前后端工程师共同定义接口，编写接口文档，之后大家都根据这个接口文档进行开发，到项目结束前都要一直进行接口文档的维护。 </p>
+<p><strong>为什么要写接口文档</strong></p>
+<ol>
+<li>项目开发过程中前后端工程师有一个统一的文件进行沟通交流,并行开发</li>
+<li>项目维护中或者项目人员更迭，方便后期人员查看、维护 </li>
+</ol>
+<p><strong>接口规范是什么</strong> </p>
+<p>一个接口的描述至少包括下面几项:</p>
+<ul>
+<li><p>名称: <strong>findCourseList</strong></p>
+</li>
+<li><p>描述:  根据条件查询课程信息</p>
+</li>
+<li><p>URL: <a href="http://localhost:8080/lagou_edu_home/course/">http://localhost:8080/lagou_edu_home/course/</a></p>
+</li>
+<li><p>请求方式: GET</p>
+</li>
+<li><p>请求参数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">methodName:&quot;findCourseList&quot;;</span><br></pre></td></tr></table></figure></li>
+<li><p>响应结果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;status&quot;: &quot;0&quot;,</span><br><span class="line">    &quot;msg&quot;: &quot;success&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p><strong>前后端耦合的开发方式</strong></p>
+<p>​    这种方式中 Java程序员又当爹又当妈，又搞前端，又搞后端。 正所谓术业有专攻，一个人如果什么都会，那么他肯定也什么都不精. </p>
+<p><strong>前后端分离的开发方式</strong></p>
+<ol>
+<li>前后端分离的模式下，如果发现Bug，可以快速定位是谁的问题，不会出现互相踢皮球的现象 </li>
+<li>前后端分离可以减少后端服务器的并发/负载压力。除了接口以外的其他所有HTTP请求全部转移到前端Nginx上，接口的请求则转发调用Tomcat.</li>
+<li>前后端分离的模式下，即使后端服务器暂时超时或宕机了，前端页面也会正常访问，只不过数据刷不出来而已。 </li>
+<li>前后端分离会更加合理的分配团队的工作量，减轻后端团队的工作量，提高了性能和可扩展性。 </li>
+</ol>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p><strong>后端</strong></p>
+<table>
+<thead>
+<tr>
+<th>后端技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Web层</strong></td>
+<td>a) Servlet：前端控制器<br />b) Filter：过滤器 <br />c) BeanUtils：数据封装</td>
+</tr>
+<tr>
+<td><strong>Service层</strong></td>
+<td>a) 业务处理</td>
+</tr>
+<tr>
+<td><strong>dao层</strong></td>
+<td>a) Mysql：数据库<br />b) Druid：数据库连接池<br />c) DBUtils: 操作数据库</td>
+</tr>
+</tbody></table>
+<p><strong>前端</strong></p>
+<table>
+<thead>
+<tr>
+<th>前端技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Vue.js</strong></td>
+<td>是一套用于构建用户界面的渐进式<strong>JavaScript框架</strong></td>
+</tr>
+<tr>
+<td><strong>Element UI库</strong></td>
+<td>element-ui 是饿了么前端出品的基于 Vue.js的 后台组件库，<br>方便程序员进行页面快速布局和构建</td>
+</tr>
+<tr>
+<td><strong>node.js</strong></td>
+<td>简单的说 Node.js 就是运行在服务端的 JavaScript 运行环境 .</td>
+</tr>
+<tr>
+<td><strong>axios</strong></td>
+<td>对ajax的封装, 简单来说就是ajax技术实现了局部数据的刷新，axios实现了对ajax的封装，</td>
+</tr>
+</tbody></table>
+<h2 id="项目开发环境"><a href="#项目开发环境" class="headerlink" title="项目开发环境"></a>项目开发环境</h2><ul>
+<li>开发工具<ul>
+<li>后端: IDEA 2019</li>
+<li>前端: VS code</li>
+<li>数据库: SQLYog</li>
+</ul>
+</li>
+<li>开发环境<ul>
+<li>JDK 11</li>
+<li>Maven 3.6.3</li>
+<li>MySQL 5.7</li>
+</ul>
+</li>
+</ul>
+<h1 id="后端开发"><a href="#后端开发" class="headerlink" title="后端开发"></a>后端开发</h1><h2 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a>Maven</h2><p><strong>介绍</strong></p>
+<p>​    Maven是一个跨平台的项目管理工具。作为Apache组织的一个颇为成功的开源项目，其主要服务于基于Java平台的项目创建，依赖管理和项目信息管理。maven是Apache的顶级项目，解释为“专家，内行”，它是一个项目管理的工具，maven自身是纯java开发的，可以使用maven对java项目进行构建、依赖管理。</p>
+<p><strong>Maven作用</strong></p>
+<ul>
+<li>依赖管理<ul>
+<li>依赖指的就是是 我们项目中需要使用的第三方Jar包, 一个大一点的工程往往需要几十上百个Jar包,按照我们之前的方式,每使用一种Jar,就需要导入到工程中,还要解决各种Jar冲突的问题.</li>
+<li>Maven可以对Jar包进行统一的管理,包括快速引入Jar包,以及对使用的 Jar包进行统一的版本控制</li>
+</ul>
+</li>
+<li>一键构建项目<ul>
+<li>之前我们创建项目,需要确定项目的目录结构,比如<code>src</code> 存放Java源码, <code>resources</code>存放配置文件,还要配置环境比如JDK的版本等等,如果有多个项目 那么就需要每次自己搞一套配置,十分麻烦</li>
+<li>Maven为我们提供了一个标准化的Java项目结构,我们可以通过Maven快速创建一个标准的Java项目.</li>
+</ul>
+</li>
+</ul>
+<h3 id="下载和配置"><a href="#下载和配置" class="headerlink" title="下载和配置"></a>下载和配置</h3><ul>
+<li>下载：</li>
+</ul>
+<p>使用 Maven 管理工具，我们首先要到官网去下载它的安装软件。<a href="http://maven.apache.org/download.cgi">http://maven.apache.org/download.cgi</a> </p>
+<p><a href="https://imgtu.com/i/jWXRDf"><img src="https://s1.ax1x.com/2022/07/14/jWXRDf.png" alt="jWXRDf.png"></a></p>
+<ul>
+<li>下载完成：</li>
+</ul>
+<p><a href="https://imgtu.com/i/jWXhVS"><img src="https://s1.ax1x.com/2022/07/14/jWXhVS.png" alt="jWXhVS.png"></a></p>
+<ul>
+<li>安装：</li>
+</ul>
+<p>Maven 下载后，将 Maven 解压到一个没有中文没有空格的路径下，比如D:\SoftwareStudy\maven 下面。 解压后目录结构如下：</p>
+<ol>
+<li>bin:存放了 maven 的命令</li>
+<li>boot:存放了一些 maven 本身的引导程序，如类加载器等</li>
+<li>conf:存放了 maven 的一些配置文件，如 setting.xml 文件 </li>
+<li>lib:存放了 maven 本身运行所需的一些 jar 包 </li>
+</ol>
+<ul>
+<li>配置环境变量：</li>
+</ul>
+<ol>
+<li><p>配置 MAVEN_HOME ，变量值就是你的 maven 安装的路径（bin 目录之前一级目录） </p>
+</li>
+<li><p>将MAVEN_HOME 添加到Path系统变量，指定到bin目录</p>
+</li>
+</ol>
+<ul>
+<li>测试</li>
+</ul>
+<p>打开命令行，输入 mvn –v命令。<br>看到 maven 的版本为 3.6.3 及 java 版本为 jdk-11 即为安装 成功。 </p>
+<h3 id="Maven仓库"><a href="#Maven仓库" class="headerlink" title="Maven仓库"></a>Maven仓库</h3><ul>
+<li><strong>本地仓库</strong>:    位于自己计算机中的仓库, 用来存储从远程仓库或中央仓库下载的插件和 jar 包，</li>
+<li><strong>远程仓库</strong>:    需要联网才可以使用的仓库，阿里提供了一个免费的maven 远程仓库。</li>
+<li><strong>中央仓库</strong>:    在 maven 软件中内置一个远程仓库地址 <a href="http://repo1.maven.org/maven2">http://repo1.maven.org/maven2</a> ，它是中 央仓库，服务于整个互联网，它是由 Maven 团队自己维护，里面存储了非常全的 jar 包，它包 含了世界上大部分流行的开源项目构件</li>
+</ul>
+<p><strong>Maven 本地仓库的配置</strong> </p>
+<ol>
+<li><p>maven仓库默认是在 C盘  .m2 目录下,我们不要将仓库放在C盘,所以重新配置一下.</p>
+</li>
+<li><p>创建一个文件夹作为本地仓库，如D:\SoftwareStudy\maven\repository（注意最好放在没有中文及空格的目录下）。 </p>
+</li>
+<li><p>在maven安装目录中,进入 conf\settings.xml 文件中, 我们在这个文件中, 进行本地仓库的配置，如下:</p>
+</li>
+</ol>
+<p><a href="https://imgtu.com/i/jWjodO"><img src="https://s1.ax1x.com/2022/07/14/jWjodO.png" alt="jWjodO.png"></a></p>
+<p><strong>配置阿里云远程仓库</strong></p>
+<p>Maven默认的远程仓库是在国外, 所以下载jar包时速度会非常慢, 这里推荐大家使用我大天朝的阿里云仓库</p>
+<ol>
+<li>打开 settings.xml,找到 <mirrors> 标签 , 下面的内容复制到  <mirrors> 中 即可</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        http://maven.aliyun.com/nexus/content/groups/public/</span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span>        </span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建Maven项目"><a href="#创建Maven项目" class="headerlink" title="创建Maven项目"></a>创建Maven项目</h3><h5 id="IDEA中配置Maven"><a href="#IDEA中配置Maven" class="headerlink" title="IDEA中配置Maven"></a><strong>IDEA中配置Maven</strong></h5><ol>
+<li><p>打开IDEA 创建一个新的project</p>
+</li>
+<li><p>首先打开IDEA 选择File –&gt; Settings  –&gt; 搜素maven,就会看到如下界面，修改</p>
+</li>
+</ol>
+<p><a href="https://imgtu.com/i/jWvEyq"><img src="https://s1.ax1x.com/2022/07/14/jWvEyq.png" alt="jWvEyq.png"></a></p>
+<h5 id="创建Maven工程"><a href="#创建Maven工程" class="headerlink" title="创建Maven工程"></a><strong>创建Maven工程</strong></h5><ol>
+<li>创建module，选中创建一个 maven 工程，点击 Next填写项目信息 </li>
+</ol>
+<p><a href="https://imgtu.com/i/jWv3lR"><img src="https://s1.ax1x.com/2022/07/14/jWv3lR.png" alt="jWv3lR.png"></a></p>
+<ol start="2">
+<li>创建好的工程,长这个样子</li>
+</ol>
+<p><a href="https://imgtu.com/i/jWvGOx"><img src="https://s1.ax1x.com/2022/07/14/jWvGOx.png" alt="jWvGOx.png"></a></p>
+<p>目录说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">src/main/java 		 —— 存放项目的.java 文件 </span><br><span class="line">src/main/resources 	 —— 存放项目资源文件，如数据库的配置文件 </span><br><span class="line">src/test/java 		—— 存放所有单元测试.java 文件，如 JUnit 测试类 </span><br><span class="line">target 			    —— 项目输出位置，编译后的class 文件会输出到此目录 </span><br><span class="line">pom.xml              ——maven 项目核心配置文件 </span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="Maven工程改造"><a href="#Maven工程改造" class="headerlink" title="Maven工程改造"></a><strong>Maven工程改造</strong></h5><p>当前创建的maven项目是一个 普通的Java项目,不是web项目,我们要进行一下改造</p>
+<ol>
+<li><p>在main目录下创建一个webapp文件夹</p>
+</li>
+<li><p>选择  project Structure —&gt; facets—&gt; 点击+号 添加web —&gt; 选择当前工程hello_maven</p>
+</li>
+<li><p>修改路径信息，修改为 刚刚创建的webapp目录</p>
+</li>
+</ol>
+<p><a href="https://imgtu.com/i/jWvD1A"><img src="https://s1.ax1x.com/2022/07/14/jWvD1A.png" alt="jWvD1A.png"></a></p>
+<ol start="4">
+<li>点击ok 后，项目就变为了web项目,webapp目录图标有个蓝色圆圈, 在webapp目录下再创建一个 index.jsp,就OK了</li>
+</ol>
+<h5 id="pom核心配置文件"><a href="#pom核心配置文件" class="headerlink" title="pom核心配置文件"></a><strong>pom核心配置文件</strong></h5><p>一个 maven 工程都有一个 pom.xml 文件，通过 pom.xml 文件定义项目的信息、项目依赖、引入插件等等。</p>
+<p>1)坐标概念</p>
+<p>一个Maven工程就是由<code>groupId</code>，<code>artifactId </code>和 <code>version</code> 作为唯一标识, 我们在引用其他第三方库的时候，也是通过这3个变量确定。</p>
+<p>在maven中坐标就是为了定位一个唯一确定的jar包。</p>
+<p>Maven坐标主要组成(GAV) - 确定一个jar在互联网位置 </p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>groupId</strong></td>
+<td>定义当前Maven组织名称,通常是公司名</td>
+</tr>
+<tr>
+<td><strong>artifactId</strong></td>
+<td>定义实际项目名称</td>
+</tr>
+<tr>
+<td><strong>version</strong></td>
+<td>定义当前项目的当前版本</td>
+</tr>
+<tr>
+<td><strong>packaging</strong></td>
+<td>打包类型<br />jar：执行 package 会打成 jar 包       war：执行 package 会打成 war 包</td>
+</tr>
+<tr>
+<td><strong>dependency</strong></td>
+<td>使用 <code>&lt;dependency&gt; </code>声明一个依赖后，Maven就会自动下载这个依赖包</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>pom.xml 文件中引入依赖包的坐标，例如servlet的jar包</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>dependencies</strong></td>
+<td>表示依赖关系</td>
+</tr>
+<tr>
+<td><strong>dependency</strong></td>
+<td>使用 <code>&lt;dependency&gt; </code>声明一个依赖后，Maven就会自动下载这个依赖包</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>依赖范围</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>compile</td>
+<td>编译范围，指 A在编译时依赖 B，此范围为默认依赖范围。编译范围的依赖会用在 编译、测试、运行，由于运行时需要所以编译范围的依赖会被打包。</td>
+</tr>
+<tr>
+<td>provided</td>
+<td>provided 依赖只有在当 JDK 或者一个容器已提供该依赖之后才使用， provided 依 赖在编译和测试时需要，在运行时不需要，比如：servlet api 被 tomcat 容器提供。</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>runtime 依赖在运行和测试系统的时候需要，但在编译的时候不需要。比如：jdbc 的驱动包。由于运行时需要所以 runtime 范围的依赖会被打包。</td>
+</tr>
+<tr>
+<td>test</td>
+<td>test 范围依赖 在编译和运行时都不需要，它们只有在测试编译和测试运行阶段可用， 比如：junit。由于运行时不需要所以test范围依赖不会被打包。</td>
+</tr>
+<tr>
+<td>system</td>
+<td>system 范围依赖与 provided 类似，但是你必须显式的提供一个对于本地系统中 JAR 文件的路径，需要指定 systemPath 磁盘路径，system依赖不推荐使用。</td>
+</tr>
+</tbody></table>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 项目名称 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 模块名称 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 版本信息 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 依赖范围 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    ...其他依赖包坐标</span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>坐标查找：</p>
+<p>输入网址,进入网址<a href="https://mvnrepository.com/">https://mvnrepository.com/</a> , 进行查询：</p>
+<p><a href="https://imgtu.com/i/jWzSPg"><img src="https://s1.ax1x.com/2022/07/14/jWzSPg.png" alt="jWzSPg.png"></a></p>
+<p>点击进入后,可以看到各个版本的信息,选择3.1.0</p>
+<p><a href="https://imgtu.com/i/jWzCxs"><img src="https://s1.ax1x.com/2022/07/14/jWzCxs.png" alt="jWzCxs.png"></a></p>
+<p>3)添加编译插件,  设置 jdk 编译版本 </p>
+<p>本教程使用 jdk11，需要设置编译版本为 11，这里需要使用 maven 的插件来设置</p>
+<p>在pom中加入如下配置: </p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- properties 是全局设置,可以设置整个maven项目的编译器 JDK版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 重点  --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>11<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>11<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 在build中 我们需要指定一下项目的JDK编译版本,maven默认使用1.5版本进行编译</span></span><br><span class="line"><span class="comment">    注意 build 与 dependencies是平级关系,标签不要写错位置  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.8.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">release</span>&gt;</span>11<span class="tag">&lt;/<span class="name">release</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="运行Maven项目"><a href="#运行Maven项目" class="headerlink" title="运行Maven项目"></a><strong>运行Maven项目</strong></h5><ol>
+<li><p>写项目代码</p>
+</li>
+<li><p>配置tomcat ,部署项目</p>
+</li>
+<li><p>运行项目, 默认访问 index.jsp</p>
+</li>
+</ol>
+<h5 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a><strong>常用命令</strong></h5><ol>
+<li>一个maven项目生命周期</li>
+</ol>
+<p>使用 maven 完成项目的构建，项目构建包括：清理、编译、测试、部署等过程，maven 将这些 过程规范为一个生命周期</p>
+<p>maven 通过执行一些简单命令即可实现上边生命周期的各个过程</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>mvn compile</strong></td>
+<td>完成编译操作 , 执行完毕后，会生成target目录，该目录中存放了编译后的字节码文件。</td>
+</tr>
+<tr>
+<td><strong>mvn clean</strong></td>
+<td>执行完毕后，会将target目录删除.</td>
+</tr>
+<tr>
+<td><strong>mvn test</strong></td>
+<td>执行完毕后，会在target目录中生成三个文件夹：<br />surefire、surefire-reports（测试报告）、test-classes（测试的字节码文件）</td>
+</tr>
+<tr>
+<td><strong>mvn package</strong></td>
+<td>完成打包操作, 执行完毕后，会在target目录中生成一个文件，该文件可能是 jar、war</td>
+</tr>
+<tr>
+<td><strong>mvn install</strong></td>
+<td>执行 mvn install命令，完成将打好的jar包安装到本地仓库的操作 ,<br /> 执行完毕后，会在本地仓库中出现安装后的jar包，方便其他工程引用</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>idea中安装好maven后, 在界面左侧有一个maven视图, 里面有对应的命令插件,可以执行上面表格中的命令</li>
+</ol>
+<p><a href="https://imgtu.com/i/jWzowV"><img src="https://s1.ax1x.com/2022/07/14/jWzowV.png" alt="jWzowV.png"></a></p>
+<ol start="3">
+<li>工具栏介绍</li>
+</ol>
+<p><a href="https://imgtu.com/i/jfSife"><img src="https://s1.ax1x.com/2022/07/14/jfSife.png" alt="jfSife.png"></a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.根据pom.xml文件重新导入所有Maven项目和依赖,刷新</span><br><span class="line">2.创建源码（重新编译）并更新目录</span><br><span class="line">3.下载源码或文档</span><br><span class="line">4.添加Maven项目</span><br><span class="line">5.执行生命周期中的阶段，选中lifecycle选项中生命周期中的一个阶段（phase），才能点击执行。</span><br><span class="line">6.运行Maven生命周期或插件</span><br><span class="line">7.切换离线模式，就是关闭和远程仓库的链接，从本地仓库中获取，也不能将jar包提交到远程仓库</span><br><span class="line">8.是否跳过测试，点击选中就可以跳过测试，在点击选择取消跳过测试</span><br><span class="line">9.展示当前选中的maven项目jar包的依赖，并且可以直接在图形化依赖图上进行排除依赖操作</span><br><span class="line">10.收起下面展开的视图</span><br><span class="line">11.跳转到maven的Setting页面</span><br></pre></td></tr></table></figure>
+
+<h2 id="后端搭建"><a href="#后端搭建" class="headerlink" title="后端搭建"></a>后端搭建</h2><h5 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h5><p>使用SQLYog 执行SQL脚本 ,导入数据库及表</p>
+<p><a href="https://imgtu.com/i/jfS51H"><img src="https://s1.ax1x.com/2022/07/14/jfS51H.png" alt="jfS51H.png"></a></p>
+<h5 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h5><p>1）创建项目</p>
+<p>2）改造成web项目</p>
+<p>3）添加其他目录</p>
+<p><a href="https://imgtu.com/i/jfplE6"><img src="https://s1.ax1x.com/2022/07/14/jfplE6.png" alt="jfplE6.png"></a></p>
+<h5 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h5><p>1）导入pom.xml（全局配置，依赖包，插件）</p>
+<p>2）导入工具类及配置文件</p>
+<p>3）导入表对应的实体类</p>
+<p>Lombok介绍<br>在项目中使用Lombok可以减少很多重复代码的书写。比如说getter/setter/toString等方法的编写。</p>
+<p>IDEA中安装 lombok插件<br>打开IDEA的Setting –&gt; 选择Plugins选项 –&gt; 搜索lombok –&gt; 点击安装 –&gt; 安装完成重启IDEA </p>
+<p>在项目中添加Lombok依赖jar，在pom.xml文件中添加如下部分:</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.18.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Lombok常用注解</p>
+<ul>
+<li><p>@Getter/@Setter:   作用类上，生成所有成员变量的getter/setter方法</p>
+</li>
+<li><p>@ToString :  作用于类，覆盖默认的toString()方法 ,可以通过of属性限定显示某些字段，通过exclude属性排除某些字段</p>
+</li>
+<li><p>@AllArgsConstructor：生成全参构造器</p>
+</li>
+<li><p>@NoArgsConstructor：生成无参构造器</p>
+</li>
+<li><p>@Data:  该注解使用在<strong>类</strong>上，该注解会提供 <code>getter</code>、<code>setter</code>、<code>equals</code>、<code>hashCode</code>、<code>toString</code> 方法。</p>
+</li>
+</ul>
+<h5 id="添加通用的Servlet"><a href="#添加通用的Servlet" class="headerlink" title="添加通用的Servlet"></a>添加通用的Servlet</h5><p>每个模块下都有很多的功能, 比如课程模块 的 新建课程, 上架课程,下架课程,根据课程名查询等等功能 , 每一个功能都是一个Servlet.</p>
+<p>问题:<br>一个功能就是一个Servlet, 那么一个项目下有海量的Servlet, 这种方式好吗 ?<br>Servlet太多了,不好管理, 而且Servlet越多 服务器运行就越慢,资源消耗就越多.</p>
+<p>解决：<br>我们使用一个Servlet对应一个模块的方式进行开发，包含多个功能</p>
+<p>要求请求参数要包含methodName。表示方法名</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  模拟课程模块 ,模块中有很多功能</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="meta">@WebServlet(&quot;/test&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  doGet()方法作为调度器 控制器,根据请求的功能不同,调用对应的方法</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//1.获取参数</span></span><br><span class="line">        <span class="comment">//获取要调用的方法名</span></span><br><span class="line">        String methodName = req.getParameter(<span class="string">&quot;methodName&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.业务处理</span></span><br><span class="line">        <span class="comment">//判断 执行对应的方法</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;addCourse&quot;</span>.equals(methodName))&#123;</span><br><span class="line">            addCourse(req,resp);</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">&quot;findByStatus&quot;</span>.equals(methodName))&#123;</span><br><span class="line">            findByName(req,resp);</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">&quot;findByStatus&quot;</span>.equals(methodName))&#123;</span><br><span class="line">            findByStatus(req,resp);</span><br><span class="line"></span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;访问的功能不存在!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        doGet(req,resp);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  2.模块对应的功能部分</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCourse</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;新建课程&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findByStatus</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;根据状态查询&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findByName</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;根据课程名称查询&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题：有多少功能，就要写多少个if判断，扩展性差，效率低</p>
+<p>解决：可以使用反射去对代码进行优化, 提升代码的可维护性/可扩展性.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//把if判断那部分，用反射代替</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">//1.获取参数</span></span><br><span class="line">    <span class="comment">//获取要调用的方法名</span></span><br><span class="line">    String methodName = req.getParameter(<span class="string">&quot;methodName&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.业务处理</span></span><br><span class="line">    <span class="keyword">if</span>(methodName != <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="comment">//通过反射优化代码,提升代码的可维护性</span></span><br><span class="line">        <span class="comment">//1.获取字节码对象  this = TestServlet对象</span></span><br><span class="line">        Class c = <span class="keyword">this</span>.getClass();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.根据传入的方法名, 获取对应方法对象,执行方法即可</span></span><br><span class="line">        Method method = c.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.调用Method对象的 invoke()方法,执行对应的功能</span></span><br><span class="line">        method.invoke(<span class="keyword">this</span>,req,resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;请求的功能不存在! !&quot;</span>);</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>问题：每个Servlet都需要写一份相同的反射代码，效率底</p>
+<p>解决：将反射相关的代码抽取到一个类中 <strong>BaseServlet</strong>, 让BaseServlet去继承HTTPServlet</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//1.获取参数</span></span><br><span class="line">            <span class="comment">//获取要调用的方法名</span></span><br><span class="line">            String methodName = req.getParameter(<span class="string">&quot;methodName&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//2.业务处理</span></span><br><span class="line">            <span class="keyword">if</span>(methodName != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="comment">//通过反射优化代码,提升代码的可维护性</span></span><br><span class="line">                <span class="comment">//1.获取字节码对象  this = TestServlet对象</span></span><br><span class="line">                Class c = <span class="keyword">this</span>.getClass();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//2.根据传入的方法名, 获取对应方法对象,执行方法即可</span></span><br><span class="line">                Method method = c.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//3.调用Method对象的 invoke()方法,执行对应的功能</span></span><br><span class="line">                method.invoke(<span class="keyword">this</span>,req,resp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;请求的功能不存在! !&quot;</span>);</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        doGet(req,resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1）以后写的servlet类，都去继承BaseServlet。</p>
+<p>2）Servlet中只保留 业务相关代码。</p>
+<p>3）当有请求访问到 Servlet时, 发现没有doGet和doPost方法,就回去父类中找,从而执行BaseServlet中的<br>doGet方法。</p>
+<h5 id="添加filter"><a href="#添加filter" class="headerlink" title="添加filter"></a>添加filter</h5><p>给所有url添加请求和响应的编码设置，解决乱码问题</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Filter 解决乱码</span></span><br><span class="line"><span class="meta">@WebFilter(&quot;/*&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EncodingFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">        HttpServletRequest request= (HttpServletRequest) servletRequest;</span><br><span class="line">        HttpServletResponse response= (HttpServletResponse)servletResponse;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//解决请求乱码</span></span><br><span class="line">        request.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//解决响应乱码</span></span><br><span class="line">        response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">        response.setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//放行</span></span><br><span class="line">        filterChain.doFilter(request,response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><h5 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h5><p>目前, 前后端的ajax通讯几乎用的都是json格式的了,所以在开发的过程中,我们经常会涉及到JSON数据的转换</p>
+<p>JSON的特点:</p>
+<ul>
+<li>JSON 是一种轻量级的数据交换格式。</li>
+<li>JSON采用完全独立于语言的文本格式，就是说不同的编程语言JSON数据是一致的。</li>
+<li>JSON易于人阅读和编写，同时也易于机器解析和生成(一般用于提升网络传输速率)。</li>
+</ul>
+<p>XML与JSON的区别：</p>
+<ul>
+<li><p>XML : 可扩展标记语言，是一种用于标记电子文件使其具有结构性的标记语言。 </p>
+</li>
+<li><p>JSON:  (JavaScript Object Notation, JS 对象简谱) 是一种轻量级的数据交换格式。</p>
+</li>
+<li><p>相同点:  </p>
+<ul>
+<li>它们都可以作为一种数据交换格式。</li>
+</ul>
+</li>
+<li><p>二者区别:</p>
+<ul>
+<li><p>XML是重量级的，JSON是轻量级的,XML在传输过程中比较占带宽，JSON占带宽少，易于压缩。</p>
+</li>
+<li><p>XML和json都用在项目交互下，XML多用于做配置文件，JSON用于数据交互</p>
+</li>
+<li><p>JSON独立于编程语言存在,任何编程语言都可以去解析json</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>语法格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;id&quot;: 110,</span><br><span class="line">	&quot;name&quot;: &quot;李会长&quot;,</span><br><span class="line">	&quot;age&quot;: 24</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//自定义JSON数据格式 (Java中的对象)</span><br><span class="line">&#123;&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;女&quot;, &quot;age&quot;:12&#125;;</span><br><span class="line"></span><br><span class="line">//数组格式</span><br><span class="line">&#123;&quot;person&quot;:[&#123;&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;女&quot;, &quot;age&quot;:12&#125;,&#123;&quot;name&quot;:&quot;jack&quot;,&quot;sex&quot;:&quot;男&quot;, &quot;age&quot;:22&#125;]&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//集合</span><br><span class="line">[&#123;&quot;name&quot;:&quot;老五&quot;,&quot;sex&quot;:&quot;女&quot;, &quot;age&quot;:12&#125;,&#123;&quot;name&quot;:&quot;会长&quot;,&quot;sex&quot;:&quot;男&quot;, &quot;age&quot;:12&#125;];</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="FastJson"><a href="#FastJson" class="headerlink" title="FastJson"></a>FastJson</h5><p>Fastjson 是一个 Java 库，可以将 Java 对象转换为 JSON 格式，当然它也可以将 JSON 字符串转换为 Java 对象。</p>
+<p>FastJson特点如下：</p>
+<ul>
+<li> 能够支持将java bean序列化成JSON字符串，也能够将JSON字符串反序列化成Java bean。</li>
+<li> 顾名思义，FastJson操作JSON的速度是非常快的。</li>
+<li> 无其他包的依赖, 使用比较方便。</li>
+</ul>
+<p><strong>引入</strong></p>
+<p>在Maven项目中使用FastJson库，需要提前在Maven的配置文件中添加此FastJson包的依赖 </p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.colobu<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson-jaxrs-json-provider<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>java对象转JSON格式</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String s = JSON.toJSONString(person);</span><br><span class="line"></span><br><span class="line">String s = JSON.toJSONString(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//SimplePropertyPreFilter 可以指定要转换的JSON字段</span></span><br><span class="line">SimplePropertyPreFilter filter = </span><br><span class="line"><span class="keyword">new</span> SimplePropertyPreFilter(Person.class,<span class="string">&quot;id&quot;</span>,<span class="string">&quot;name&quot;</span>);</span><br><span class="line">String s = JSON.toJSONString(person, filter);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>@JSONField 注解</strong></p>
+<p>通过 @JSONField 我们可以自定义字段的名称进行输出，并控制字段的排序，还可以进行序列化标记。</p>
+<p>注解添加到封装对象的成员变量上</p>
+<ul>
+<li>指定name属性, 字段的名称     </li>
+<li>使用 ordinal属性, 指定字段的顺序</li>
+<li>使用 serialize属性, 指定字段是否序列化</li>
+</ul>
+<p><strong>JSON格式转java对象</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Person person = JSON.parseObject(jsonString, Person.class);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; list  = JSON.parseArray(jsonString, Person.class);</span><br></pre></td></tr></table></figure>
+
+<h2 id="课程管理模块开发"><a href="#课程管理模块开发" class="headerlink" title="课程管理模块开发"></a>课程管理模块开发</h2><h3 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h3><p><strong>需求分析</strong></p>
+<p><strong>数据库表分析</strong></p>
+<p><strong>Dao接口及实现类编写</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 课程模块 DAO层接口</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CourseDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 课程模块 DAO层实现类</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CourseDaoImpl</span> <span class="keyword">implements</span> <span class="title">CourseDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Service接口及实现类编写</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  课程模块 Service层 接口</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CourseService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 课程模块Service层 实现类</span></span><br><span class="line"><span class="comment"> * */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CourseServiceImpl</span> <span class="keyword">implements</span> <span class="title">CourseService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Servlet编写</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@WebServlet(name=&quot;courseServlet&quot;,value=&quot;/course&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CourseServlet</span> <span class="keyword">extends</span> <span class="title">BaseServlet</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="功能一：查询课程列表信息"><a href="#功能一：查询课程列表信息" class="headerlink" title="功能一：查询课程列表信息"></a>功能一：查询课程列表信息</h3><h3 id="功能二：多条件查询课程信息"><a href="#功能二：多条件查询课程信息" class="headerlink" title="功能二：多条件查询课程信息"></a>功能二：多条件查询课程信息</h3><h3 id="功能三：新建课程营销"><a href="#功能三：新建课程营销" class="headerlink" title="功能三：新建课程营销"></a>功能三：新建课程营销</h3><p>涉及到图片文件上传。</p>
+<p><strong>前端</strong></p>
+<p>前端要执行的三要素</p>
+<ul>
+<li>1.表单提交方式: <strong>post</strong> (get方式提交有大小限制,post没有) </li>
+<li>2.表单的enctype属性:必须设置为   <strong>multipart/form-data.</strong>  <ul>
+<li>enctype就是encodetype就是编码类型的意思.</li>
+<li>multipart/form-data是多部件文件上传 , 指表单数据有多部分构成，既有文本数据，又有文件等二进制数据的意思。</li>
+</ul>
+</li>
+<li>3.表单必须有文件上传项: **file **,必须要有name属性和值 </li>
+</ul>
+<p><strong>后端</strong></p>
+<p>1）将图片上传到tomcat服务器上</p>
+<p>将部署方式改变为 war模式,把项目部署在tomcat的webapps下</p>
+<ul>
+<li>idea中部署项目两种方式<ul>
+<li>war模式：将项目以war包的形式上传真实到服务器的webapps目录中；</li>
+<li>war exploded模式：仅仅是目录的映射，就相当于tomcat在项目源文件夹中启动一样；</li>
+</ul>
+</li>
+</ul>
+<p>2）在webapps中创建upload目录</p>
+<p>upload目录专门用来保存上传过来的图片</p>
+<p>3）编写Servlet，无法直接通过request直接获取参数，所以不能继承BaseServlet</p>
+<p><strong>准备工作</strong></p>
+<p>FileUpload工具类，可以很容易地将文件上传到你的Web应用程序.</p>
+<p>导入FileUpload依赖包</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-fileupload<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-fileupload<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>BeanUtils工具类，用于简化JavaBean封装数据的操作</p>
+<p>导入BeanUtils依赖包</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;commons-beanutils&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-beanutils&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;<span class="number">1.8</span><span class="number">.3</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//将map中的数据封装到person中</span></span><br><span class="line">BeanUtils.populate(person, map);</span><br></pre></td></tr></table></figure>
+
+<p>编写Servlet，图片会保存到tomcat目录中webapps\upload下，数据库保存图片的路径</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/courseSalesInfo&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CourseSalesInfoServlet</span>  <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 保存课程营销信息</span></span><br><span class="line"><span class="comment">     *      收集表单数据,封装到course对象中,将图片上传到tomcat服务器中</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//1.创建Course对象</span></span><br><span class="line">            Course course = <span class="keyword">new</span> Course();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//2.创建Map集合,用来收集数据</span></span><br><span class="line">            Map&lt;String,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//3.创建磁盘工厂对象</span></span><br><span class="line">            DiskFileItemFactory factory = <span class="keyword">new</span> DiskFileItemFactory();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//4.文件上传核心对象</span></span><br><span class="line">            ServletFileUpload fileUpload = <span class="keyword">new</span> ServletFileUpload(factory);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//5.解析request对象,获取表单项集合</span></span><br><span class="line">            List&lt;FileItem&gt; list = fileUpload.parseRequest(req);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//6.遍历集合 判断哪些是普通的表单项,那些是文件表单项</span></span><br><span class="line">            <span class="keyword">for</span> (FileItem item : list) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">boolean</span> formField = item.isFormField();</span><br><span class="line">                <span class="keyword">if</span>(formField)&#123;</span><br><span class="line">                    <span class="comment">//是普通表单项,获取表单项中的数据,保存到map</span></span><br><span class="line">                    String fieldName = item.getFieldName();</span><br><span class="line">                    String value = item.getString(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">                    <span class="comment">//使用map收集数据</span></span><br><span class="line">                    map.put(fieldName,value);</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="comment">//文件上传项</span></span><br><span class="line">                    <span class="comment">//获取文件名</span></span><br><span class="line">                    String fileName = item.getName();</span><br><span class="line">                    String newFileName = UUIDUtils.getUUID()+<span class="string">&quot;_&quot;</span>+fileName;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//获取输入流</span></span><br><span class="line">                    InputStream in = item.getInputStream();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//获取webapps的目录路径</span></span><br><span class="line">                    String realPath = <span class="keyword">this</span>.getServletContext().getRealPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">                    String wabappsPath = realPath.substring(<span class="number">0</span>, realPath.indexOf(<span class="string">&quot;lagou_edu_home&quot;</span>));</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//创建输出流</span></span><br><span class="line">                    OutputStream out = <span class="keyword">new</span> FileOutputStream(wabappsPath+<span class="string">&quot;/upload/&quot;</span> + newFileName);</span><br><span class="line"></span><br><span class="line">                    IOUtils.copy(in,out);</span><br><span class="line">                    out.close();</span><br><span class="line">                    in.close();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//将图片路径进行保存</span></span><br><span class="line">                    map.put(<span class="string">&quot;course_img_url&quot;</span>, <span class="string">&quot;http://localhost:8080&quot;</span>+<span class="string">&quot;/upload/&quot;</span>+newFileName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//将map保存的数据全部封装到course中</span></span><br><span class="line">            BeanUtils.populate(course, map);</span><br><span class="line">            CourseService courseService = <span class="keyword">new</span> CourseServiceImpl();</span><br><span class="line">            String result;  <span class="comment">//存放结果</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//判断sourse中是否有id</span></span><br><span class="line">            <span class="keyword">if</span>(course.getId() == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="comment">//没有id，表示新建课程营销信息</span></span><br><span class="line">                result = courseService.insertCourseSalasInfo(course);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">//有id，表示修改课程营销信息</span></span><br><span class="line">                result = courseService.updateCourseSalasInfo(course);</span><br><span class="line">            &#125;</span><br><span class="line">            resp.getWriter().print(result);</span><br><span class="line">            </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        doGet(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）将tomcat作为图片服务器使用时，存储上传的图片后,如果想要图片可以访问,需要在idea中进行配置:<br>在部署中，选择external source —&gt; 找到webapps目录下的的upload文件夹</p>
+<p><strong>接口测试</strong></p>
+<p>postman测试上传文件：</p>
+<ol>
+<li><p>接口地址填写正确</p>
+</li>
+<li><p>将请求方式设置为POST</p>
+</li>
+<li><p>需要上传文件, 设置Headers:  <strong>“key”:”Content-Type”, “value”:”multipart/form-data”</strong> </p>
+</li>
+<li><p>Body选择form-data</p>
+</li>
+<li><p>key 右侧下拉选择file；value 点击Select Files选择文件 , 按照接口文档,补全测试参数</p>
+</li>
+</ol>
+<h3 id="功能四：修改课程营销"><a href="#功能四：修改课程营销" class="headerlink" title="功能四：修改课程营销"></a>功能四：修改课程营销</h3><p>1，数据回显</p>
+<p>2，修改课程信息</p>
+<p>新建营销信息和修改营销信息,访问的是同一个接口,所以在<strong>CourseSalesInfoServlet</strong>中,我们需要进行一下判断</p>
+<ul>
+<li>携带id 就是修改操作</li>
+<li>未携带id就是新增操作</li>
+</ul>
+<h3 id="功能五：修改课程状态"><a href="#功能五：修改课程状态" class="headerlink" title="功能五：修改课程状态"></a>功能五：修改课程状态</h3><h2 id="课程内容管理模块开发"><a href="#课程内容管理模块开发" class="headerlink" title="课程内容管理模块开发"></a>课程内容管理模块开发</h2><h3 id="开发流程-1"><a href="#开发流程-1" class="headerlink" title="开发流程"></a>开发流程</h3><p><strong>实体类一对多关系的表述</strong></p>
+<p>一个课程下对应多个章节，一个章节只属于一个课程下的。</p>
+<p> 在 Course 类中定义一个List集合,并指定List的泛型是 Course_Section 类型,表示 一个课程中可以包<br>含多个章节.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Course类 </span><br><span class="line">    <span class="comment">//添加list集合 泛型是 Course_Section </span></span><br><span class="line">    List&lt;Course_Section&gt; sectionList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>在 Course_Section 类中,定义一个Course类型的属性, 用来保存章节所对应的具体的课程信息</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Course_Section 类 </span><br><span class="line">    <span class="comment">//添加一个Course类型的属性 </span></span><br><span class="line">    <span class="keyword">private</span> Course course;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>章节与课时关系表述也是如此。</p>
+<h3 id="功能一：展示课程内容"><a href="#功能一：展示课程内容" class="headerlink" title="功能一：展示课程内容"></a>功能一：展示课程内容</h3><p>分析: 要展示的内容是对应课程下的 章节与课时</p>
+<p>数据库中可以用连接查询找到，但是开发中尽量避免使用连接查询</p>
+<p>dao层编写</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//通过 课程id 查询 章节列表信息，每个章节中又要包含课时信息列表</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Course_Section&gt; <span class="title">findSectionListByCourseId</span><span class="params">(<span class="keyword">int</span> courseId)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//1.创建QueryRunner</span></span><br><span class="line">        QueryRunner qr = <span class="keyword">new</span> QueryRunner(DruidUtils.getDataSource());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.准备sql</span></span><br><span class="line">        String sql = <span class="string">&quot;SELECT \n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;id,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;course_id,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;section_name,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;description,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;order_num,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;STATUS,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;create_time,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;update_time,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;is_del\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;FROM course_section\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;WHERE course_id = ?&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.执行sql</span></span><br><span class="line">        List&lt;Course_Section&gt; sectionList = qr.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Course_Section&gt;(Course_Section.class), courseId);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Course_Section section : sectionList)&#123;</span><br><span class="line">            <span class="comment">//通过章节id找到相关章节的课时列表信息</span></span><br><span class="line">            List&lt;Course_Lesson&gt; lessonList = findLessonListBySectionId( section.getId() );</span><br><span class="line">            <span class="comment">//章节添加相关的课时列表</span></span><br><span class="line">            section.setLessonList(lessonList);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sectionList;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过 章节id 查询 课时列表信息</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Course_Lesson&gt; <span class="title">findLessonListBySectionId</span><span class="params">(<span class="keyword">int</span> sectionId)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//1.获取QueryRunner</span></span><br><span class="line">        QueryRunner qr = <span class="keyword">new</span> QueryRunner(DruidUtils.getDataSource());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//2.准备sql</span></span><br><span class="line">        String sql = <span class="string">&quot;SELECT \n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;id,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;course_id,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;section_id,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;theme,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;duration,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;is_free,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;order_num,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;STATUS,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;create_time,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;update_time,\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;is_del\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;FROM course_lesson\n&quot;</span> +</span><br><span class="line">            <span class="string">&quot;WHERE section_id = ?;&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//3.执行sql</span></span><br><span class="line">        List&lt;Course_Lesson&gt; lessonList = qr.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Course_Lesson&gt;(Course_Lesson.class), sectionId);</span><br><span class="line">        <span class="keyword">return</span> lessonList;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="功能二：新建章节信息"><a href="#功能二：新建章节信息" class="headerlink" title="功能二：新建章节信息"></a>功能二：新建章节信息</h3><p>POST 请求方法常用的三种数据提交格式</p>
+<table>
+<thead>
+<tr>
+<th><strong>格式</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Content-Type : application/x-www-formurlencoded</td>
+<td>请求体中的数据会以普通表单形式  （键值对）发送到后端。</td>
+</tr>
+<tr>
+<td>Content-Type  : application/json ; charset=utf-8</td>
+<td>请求体中的数据会以json字符串的形式发送到后端。</td>
+</tr>
+<tr>
+<td>Content-Type : multipart/form-data</td>
+<td>多部件上传既可以上传键值对 也可以上传文件。</td>
+</tr>
+</tbody></table>
+<p>注意: 第二种JSON格式与第三种多部件上传,使用 getParameter() 方法都无法获取数据</p>
+<p><strong>修改BaseServlet</strong></p>
+<p>如果请求参数是键值对，那么还是使用getParameter() 方法获取参数。<br>如果请求参数是JSON格式的数, 我们可以通过获取一个流对象来进行读取.</p>
+<p>修改后的BaseServlet</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        String methodName = <span class="keyword">null</span>;</span><br><span class="line">        String contentType = req.getHeader(<span class="string">&quot;Content-Type&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;application/json&quot;</span>.equals(contentType))&#123;</span><br><span class="line">            <span class="comment">//是json格式的请求数据</span></span><br><span class="line">            String postJSON = getPostJSON(req);</span><br><span class="line">            <span class="comment">//将JSON格式的字符串转化为map</span></span><br><span class="line">            Map&lt;String, Object&gt; map = JSON.parseObject(postJSON, Map.class);</span><br><span class="line">            <span class="comment">//从map集合中获取 methodName</span></span><br><span class="line">            methodName = (String)map.get(<span class="string">&quot;methodName&quot;</span>);</span><br><span class="line">            <span class="comment">//将获取到的数据,保存到request域对象中</span></span><br><span class="line">            req.setAttribute(<span class="string">&quot;map&quot;</span>, map);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            methodName = req.getParameter(<span class="string">&quot;methodName&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(methodName != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//通过反射优化代码 提升代码的可维护性</span></span><br><span class="line">                Class c = <span class="keyword">this</span>.getClass();</span><br><span class="line">                Method method = c.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);</span><br><span class="line">                method.invoke(<span class="keyword">this</span>, req, resp);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;访问不存在！&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        doGet(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPostJSON</span><span class="params">(HttpServletRequest req)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//1.从request中获取 字符缓冲输入流对象</span></span><br><span class="line">            BufferedReader reader = req.getReader();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//2.创建 StringBuffer,用来保存读取出的数据</span></span><br><span class="line">            StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//3.循环读取</span></span><br><span class="line">            String line = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">while</span>( (line=reader.readLine()) != <span class="keyword">null</span> )&#123;</span><br><span class="line">                sb.append(line);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//4,返回字符串</span></span><br><span class="line">            <span class="keyword">return</span> sb.toString();</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果servlet中的请求方式是json格式，照样继承BaseServlet，可以这样获取请求参数：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1.获取参数 从域对象中获取 </span></span><br><span class="line">Map&lt;String,Object&gt; map = (Map)request.getAttribute(<span class="string">&quot;map&quot;</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">//2.创建Course_Section </span></span><br><span class="line">Course_Section section = <span class="keyword">new</span> Course_Section(); </span><br><span class="line"></span><br><span class="line"><span class="comment">//3.使用BeanUtils工具类,将map中的数据封装到 section </span></span><br><span class="line">BeanUtils.populate(section,map);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>接口测试</strong></p>
+<ol>
+<li>选择POST请求方式,</li>
+</ol>
+<p>2)设置Headers为：Content-Type = application/json</p>
+<p>3)在body中，选择raw</p>
+<p>4)填写JSON格式数据</p>
+<h3 id="功能三-章节信息修改"><a href="#功能三-章节信息修改" class="headerlink" title="功能三: 章节信息修改"></a>功能三: 章节信息修改</h3><p>新建章节信息和修改章节信息,访问的是同一个接口,所以在<strong>saveOrUpdateSection</strong>方法中中,我们要进行一下判断</p>
+<ul>
+<li>携带id 就是修改章节操作</li>
+<li>未携带id就是新增章节操作</li>
+</ul>
+<h3 id="功能四-章节状态管理"><a href="#功能四-章节状态管理" class="headerlink" title="功能四: 章节状态管理"></a>功能四: 章节状态管理</h3><h1 id="前端开发"><a href="#前端开发" class="headerlink" title="前端开发"></a>前端开发</h1><h2 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h2><p>可以轻松实现异步请求。即局部刷新，异步操作</p>
+<p>1，get方式，发送get异步请求</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">$.get(url, data, <span class="function"><span class="keyword">function</span>(<span class="params">para</span>)</span>&#123;&#125;, type)</span><br></pre></td></tr></table></figure>
+
+<p>2，post方式，发送post异步请求</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">$.post(url, data, <span class="function"><span class="keyword">function</span>(<span class="params">para</span>)</span>&#123;&#125;, type)</span><br></pre></td></tr></table></figure>
+
+<p>url：请求url<br>data：请求参数<br>function(para){}：回调函数<br>type：响应数据类型</p>
+<p>3，ajax方式</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    <span class="attr">url</span>:<span class="string">&quot;/login&quot;</span>,      <span class="comment">//请求url</span></span><br><span class="line">    <span class="attr">async</span>:<span class="literal">true</span>,        <span class="comment">//是否异步</span></span><br><span class="line">    <span class="attr">data</span>:&#123;<span class="attr">username</span>:<span class="string">&quot;giao&quot;</span>&#125;,  <span class="comment">//请求参数</span></span><br><span class="line">    <span class="attr">type</span>:<span class="string">&quot;POST&quot;</span>,       <span class="comment">//请求方式</span></span><br><span class="line">    <span class="attr">dataType</span>:<span class="string">&quot;text&quot;</span>,   <span class="comment">//响应数据类型</span></span><br><span class="line">    <span class="attr">success</span>:<span class="function"><span class="keyword">function</span>(<span class="params">para</span>)</span>&#123;   <span class="comment">//成功回调函数</span></span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">error</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;	<span class="comment">//失败回调函数</span></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+]]></content>
       <categories>
         <category>javaWeb</category>
       </categories>

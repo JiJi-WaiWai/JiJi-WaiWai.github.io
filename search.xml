@@ -9856,14 +9856,14 @@ c;
 </ol>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        http://maven.aliyun.com/nexus/content/groups/public/</span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span>        </span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="创建Maven项目"><a href="#创建Maven项目" class="headerlink" title="创建Maven项目"></a>创建Maven项目</h3><h5 id="IDEA中配置Maven"><a href="#IDEA中配置Maven" class="headerlink" title="IDEA中配置Maven"></a><strong>IDEA中配置Maven</strong></h5><ol>
+<h3 id="创建Maven项目"><a href="#创建Maven项目" class="headerlink" title="创建Maven项目"></a>创建Maven项目</h3><h4 id="IDEA中配置Maven"><a href="#IDEA中配置Maven" class="headerlink" title="IDEA中配置Maven"></a><strong>IDEA中配置Maven</strong></h4><ol>
 <li><p>打开IDEA 创建一个新的project</p>
 </li>
 <li><p>首先打开IDEA 选择File –&gt; Settings  –&gt; 搜素maven,就会看到如下界面，修改</p>
 </li>
 </ol>
 <p><a href="https://imgtu.com/i/jWvEyq"><img src="https://s1.ax1x.com/2022/07/14/jWvEyq.png" alt="jWvEyq.png"></a></p>
-<h5 id="创建Maven工程"><a href="#创建Maven工程" class="headerlink" title="创建Maven工程"></a><strong>创建Maven工程</strong></h5><ol>
+<h4 id="创建Maven工程"><a href="#创建Maven工程" class="headerlink" title="创建Maven工程"></a><strong>创建Maven工程</strong></h4><ol>
 <li>创建module，选中创建一个 maven 工程，点击 Next填写项目信息 </li>
 </ol>
 <p><a href="https://imgtu.com/i/jWv3lR"><img src="https://s1.ax1x.com/2022/07/14/jWv3lR.png" alt="jWv3lR.png"></a></p>
@@ -9876,7 +9876,7 @@ c;
 
 
 
-<h5 id="Maven工程改造"><a href="#Maven工程改造" class="headerlink" title="Maven工程改造"></a><strong>Maven工程改造</strong></h5><p>当前创建的maven项目是一个 普通的Java项目,不是web项目,我们要进行一下改造</p>
+<h4 id="Maven工程改造"><a href="#Maven工程改造" class="headerlink" title="Maven工程改造"></a><strong>Maven工程改造</strong></h4><p>当前创建的maven项目是一个 普通的Java项目,不是web项目,我们要进行一下改造</p>
 <ol>
 <li><p>在main目录下创建一个webapp文件夹</p>
 </li>
@@ -9889,7 +9889,7 @@ c;
 <ol start="4">
 <li>点击ok 后，项目就变为了web项目,webapp目录图标有个蓝色圆圈, 在webapp目录下再创建一个 index.jsp,就OK了</li>
 </ol>
-<h5 id="pom核心配置文件"><a href="#pom核心配置文件" class="headerlink" title="pom核心配置文件"></a><strong>pom核心配置文件</strong></h5><p>一个 maven 工程都有一个 pom.xml 文件，通过 pom.xml 文件定义项目的信息、项目依赖、引入插件等等。</p>
+<h4 id="pom核心配置文件"><a href="#pom核心配置文件" class="headerlink" title="pom核心配置文件"></a><strong>pom核心配置文件</strong></h4><p>一个 maven 工程都有一个 pom.xml 文件，通过 pom.xml 文件定义项目的信息、项目依赖、引入插件等等。</p>
 <p>1)坐标概念</p>
 <p>一个Maven工程就是由<code>groupId</code>，<code>artifactId </code>和 <code>version</code> 作为唯一标识, 我们在引用其他第三方库的时候，也是通过这3个变量确定。</p>
 <p>在maven中坐标就是为了定位一个唯一确定的jar包。</p>
@@ -9983,7 +9983,7 @@ c;
 
 
 
-<h5 id="运行Maven项目"><a href="#运行Maven项目" class="headerlink" title="运行Maven项目"></a><strong>运行Maven项目</strong></h5><ol>
+<h4 id="运行Maven项目"><a href="#运行Maven项目" class="headerlink" title="运行Maven项目"></a><strong>运行Maven项目</strong></h4><ol>
 <li><p>写项目代码</p>
 </li>
 <li><p>配置tomcat ,部署项目</p>
@@ -9991,7 +9991,7 @@ c;
 <li><p>运行项目, 默认访问 index.jsp</p>
 </li>
 </ol>
-<h5 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a><strong>常用命令</strong></h5><ol>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a><strong>常用命令</strong></h4><ol>
 <li>一个maven项目生命周期</li>
 </ol>
 <p>使用 maven 完成项目的构建，项目构建包括：清理、编译、测试、部署等过程，maven 将这些 过程规范为一个生命周期</p>
@@ -10038,13 +10038,16 @@ c;
 <p><a href="https://imgtu.com/i/jfSife"><img src="https://s1.ax1x.com/2022/07/14/jfSife.png" alt="jfSife.png"></a></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1.根据pom.xml文件重新导入所有Maven项目和依赖,刷新</span><br><span class="line">2.创建源码（重新编译）并更新目录</span><br><span class="line">3.下载源码或文档</span><br><span class="line">4.添加Maven项目</span><br><span class="line">5.执行生命周期中的阶段，选中lifecycle选项中生命周期中的一个阶段（phase），才能点击执行。</span><br><span class="line">6.运行Maven生命周期或插件</span><br><span class="line">7.切换离线模式，就是关闭和远程仓库的链接，从本地仓库中获取，也不能将jar包提交到远程仓库</span><br><span class="line">8.是否跳过测试，点击选中就可以跳过测试，在点击选择取消跳过测试</span><br><span class="line">9.展示当前选中的maven项目jar包的依赖，并且可以直接在图形化依赖图上进行排除依赖操作</span><br><span class="line">10.收起下面展开的视图</span><br><span class="line">11.跳转到maven的Setting页面</span><br></pre></td></tr></table></figure>
 
-<h2 id="后端搭建"><a href="#后端搭建" class="headerlink" title="后端搭建"></a>后端搭建</h2><h5 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h5><p>使用SQLYog 执行SQL脚本 ,导入数据库及表</p>
+<h2 id="后端搭建"><a href="#后端搭建" class="headerlink" title="后端搭建"></a>后端搭建</h2><p><strong>创建数据库</strong></p>
+<p>使用SQLYog 执行SQL脚本 ,导入数据库及表</p>
 <p><a href="https://imgtu.com/i/jfS51H"><img src="https://s1.ax1x.com/2022/07/14/jfS51H.png" alt="jfS51H.png"></a></p>
-<h5 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h5><p>1）创建项目</p>
+<p><strong>创建项目</strong></p>
+<p>1）创建maven项目</p>
 <p>2）改造成web项目</p>
 <p>3）添加其他目录</p>
 <p><a href="https://imgtu.com/i/jfplE6"><img src="https://s1.ax1x.com/2022/07/14/jfplE6.png" alt="jfplE6.png"></a></p>
-<h5 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h5><p>1）导入pom.xml（全局配置，依赖包，插件）</p>
+<p><strong>导入</strong></p>
+<p>1）导入pom.xml（全局配置，依赖包，插件）</p>
 <p>2）导入工具类及配置文件</p>
 <p>3）导入表对应的实体类</p>
 <p>Lombok介绍<br>在项目中使用Lombok可以减少很多重复代码的书写。比如说getter/setter/toString等方法的编写。</p>
@@ -10065,7 +10068,8 @@ c;
 <li><p>@Data:  该注解使用在<strong>类</strong>上，该注解会提供 <code>getter</code>、<code>setter</code>、<code>equals</code>、<code>hashCode</code>、<code>toString</code> 方法。</p>
 </li>
 </ul>
-<h5 id="添加通用的Servlet"><a href="#添加通用的Servlet" class="headerlink" title="添加通用的Servlet"></a>添加通用的Servlet</h5><p>每个模块下都有很多的功能, 比如课程模块 的 新建课程, 上架课程,下架课程,根据课程名查询等等功能 , 每一个功能都是一个Servlet.</p>
+<p><strong>添加通用的Servlet</strong></p>
+<p>每个模块下都有很多的功能, 比如课程模块 的 新建课程, 上架课程,下架课程,根据课程名查询等等功能 , 每一个功能都是一个Servlet.</p>
 <p>问题:<br>一个功能就是一个Servlet, 那么一个项目下有海量的Servlet, 这种方式好吗 ?<br>Servlet太多了,不好管理, 而且Servlet越多 服务器运行就越慢,资源消耗就越多.</p>
 <p>解决：<br>我们使用一个Servlet对应一个模块的方式进行开发，包含多个功能</p>
 <p>要求请求参数要包含methodName。表示方法名</p>
@@ -10082,10 +10086,11 @@ c;
 <p>1）以后写的servlet类，都去继承BaseServlet。</p>
 <p>2）Servlet中只保留 业务相关代码。</p>
 <p>3）当有请求访问到 Servlet时, 发现没有doGet和doPost方法,就回去父类中找,从而执行BaseServlet中的<br>doGet方法。</p>
-<h5 id="添加filter"><a href="#添加filter" class="headerlink" title="添加filter"></a>添加filter</h5><p>给所有url添加请求和响应的编码设置，解决乱码问题</p>
+<p><strong>添加filter</strong></p>
+<p>给所有url添加请求和响应的编码设置，解决乱码问题</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Filter 解决乱码</span></span><br><span class="line"><span class="meta">@WebFilter(&quot;/*&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EncodingFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">        HttpServletRequest request= (HttpServletRequest) servletRequest;</span><br><span class="line">        HttpServletResponse response= (HttpServletResponse)servletResponse;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//解决请求乱码</span></span><br><span class="line">        request.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//解决响应乱码</span></span><br><span class="line">        response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">        response.setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//放行</span></span><br><span class="line">        filterChain.doFilter(request,response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><h5 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h5><p>目前, 前后端的ajax通讯几乎用的都是json格式的了,所以在开发的过程中,我们经常会涉及到JSON数据的转换</p>
+<h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>目前, 前后端的ajax通讯几乎用的都是json格式的了,所以在开发的过程中,我们经常会涉及到JSON数据的转换</p>
 <p>JSON的特点:</p>
 <ul>
 <li>JSON 是一种轻量级的数据交换格式。</li>
@@ -10121,7 +10126,7 @@ c;
 
 
 
-<h5 id="FastJson"><a href="#FastJson" class="headerlink" title="FastJson"></a>FastJson</h5><p>Fastjson 是一个 Java 库，可以将 Java 对象转换为 JSON 格式，当然它也可以将 JSON 字符串转换为 Java 对象。</p>
+<h3 id="FastJson"><a href="#FastJson" class="headerlink" title="FastJson"></a>FastJson</h3><p>Fastjson 是一个 Java 库，可以将 Java 对象转换为 JSON 格式，当然它也可以将 JSON 字符串转换为 Java 对象。</p>
 <p>FastJson特点如下：</p>
 <ul>
 <li> 能够支持将java bean序列化成JSON字符串，也能够将JSON字符串反序列化成Java bean。</li>

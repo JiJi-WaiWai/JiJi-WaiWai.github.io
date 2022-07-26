@@ -10247,7 +10247,7 @@ c;
 
 
 
-<p>章节与课时关系表述也是如此。</p>
+<p>章节与课时关系表述也是如此。一对多关系。</p>
 <h3 id="功能一：展示课程内容"><a href="#功能一：展示课程内容" class="headerlink" title="功能一：展示课程内容"></a>功能一：展示课程内容</h3><p>分析: 要展示的内容是对应课程下的 章节与课时</p>
 <p>数据库中可以用连接查询找到，但是开发中尽量避免使用连接查询</p>
 <p>dao层编写</p>
@@ -10883,6 +10883,12 @@ c;
 
 <p><strong>启动图形化界面工具SQLyog连接虚拟机中Mysql数据库</strong></p>
 <p>输入服务器IP地址，用户名，密码，端口号，连接即可。</p>
+<h2 id="防火墙相关设置"><a href="#防火墙相关设置" class="headerlink" title="防火墙相关设置"></a>防火墙相关设置</h2><p><strong>端口设置：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看已经开放的端口：</span> </span><br><span class="line">firewall-cmd --list-ports </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">1，开启端口(永久)</span> </span><br><span class="line">firewall-cmd --zone=public --add-port=8080/tcp --permanent </span><br><span class="line"><span class="meta">#</span><span class="bash">命令含义：</span> </span><br><span class="line">–zone #作用域 </span><br><span class="line">–add-port=8080/tcp #添加端口，格式为：端口/通讯协议 </span><br><span class="line">–permanent #永久生效，没有此参数重启后失效 </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">2，开启端口（暂时开通，重启失效）</span></span><br><span class="line">/sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p><strong>防火墙设置</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看默认防火墙状态（关闭后显示notrunning，开启后显示running）</span></span><br><span class="line">firewall-cmd --state </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">重启防火墙</span> </span><br><span class="line">firewall-cmd --reload #重启firewall </span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">关闭防火墙</span> </span><br><span class="line">systemctl stop firewalld.service #停止firewall </span><br><span class="line">systemctl disable firewalld.service #禁止firewall开机启动 </span><br></pre></td></tr></table></figure>
+
 <h1 id="shell编程-熟悉"><a href="#shell编程-熟悉" class="headerlink" title="shell编程(熟悉)"></a>shell编程(熟悉)</h1><p><strong>概念</strong></p>
 <p>Shell是一个命令行解释器，可以接收应用程序或用户命令，然后访问操作系统内核。<br>Shell是一个功能相当强大的编程语言，易编写、易调试、灵活性强；</p>
 <p><strong>编写第一个程序</strong></p>
@@ -12693,6 +12699,20 @@ c;
       <tags>
         <tag>java</tag>
         <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue</title>
+    <url>/2022/07/26/vue/</url>
+    <content><![CDATA[<p>记录了vue的使用方法，基本语法，还有用vueCli脚手架管理项目</p>
+<span id="more"></span>]]></content>
+      <categories>
+        <category>vue</category>
+      </categories>
+      <tags>
+        <tag>前端框架</tag>
+        <tag>vue</tag>
+        <tag>vueCli</tag>
       </tags>
   </entry>
 </search>

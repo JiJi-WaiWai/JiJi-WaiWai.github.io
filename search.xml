@@ -13924,37 +13924,32 @@ c;
 
 <h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">一对一配置：使用&lt;resultMap&gt;+&lt;association&gt;做配置，通过column 条件，执行 select 查询</span><br><span class="line"></span><br><span class="line">一对多配置：使用&lt;resultMap&gt;+&lt;collection&gt;做配置，通过column 条件，执行 select 查询</span><br><span class="line"></span><br><span class="line">多对多配置：使用&lt;resultMap&gt;+&lt;collection&gt;做配置，通过column 条件，执行 select 查询</span><br><span class="line"></span><br><span class="line">优点：简化多表查询操作</span><br><span class="line">缺点：执行多次sql 语句，浪费数据库性能</span><br></pre></td></tr></table></figure>
 
+<h2 id="延迟加载"><a href="#延迟加载" class="headerlink" title="延迟加载"></a>延迟加载</h2><p>一对一，一对多，多对多的查询时，可以实现对象的关联查询。</p>
+<p>不需要总是在加载用户信息时就一定要加载他的订单信息。</p>
+<p><strong>延迟加载</strong></p>
+<p>就是查询用户信息时，在需要用到订单信息时才进行加载，不需要用到订单信息时不加载数据。<br>延迟加载也称懒加载。</p>
+<p><strong>优点</strong></p>
+<p>先从单表查询，需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表 速度要快。</p>
+<p><strong>缺点</strong></p>
+<p>因为只有当需要用到数据时，才会进行数据库查询，这样在大批量数据查询时，因为查询工作也要消耗时 间，所以可能造成用户等待时间变长，造成用户体验下降。</p>
+<p><strong>结论</strong></p>
+<p>一对多，多对多：通常情况下采用延迟加载<br>一对一（多对一）：通常情况下采用立即加载<br>延迟加载是基于嵌套查询来实现的</p>
+<h3 id="全局延迟加载"><a href="#全局延迟加载" class="headerlink" title="全局延迟加载"></a>全局延迟加载</h3><p>默认，全局是立即加载</p>
+<p>在Mybatis的核心配置文件中可以使用setting标签修改全局的加载策略。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!--开启全局延迟加载功能--&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;lazyLoadingEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="局部延迟加载"><a href="#局部延迟加载" class="headerlink" title="局部延迟加载"></a>局部延迟加载</h3><p>局部的加载策略优先级高于全局的加载策略。</p>
+<p>在映射文件中，association和collection标签中都有一个fetchType属性，通过修改它的值，可以修改局部的加载策略。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;userWithOrderMap&quot;</span> <span class="attr">type</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">&quot;id&quot;</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;username&quot;</span> <span class="attr">column</span>=<span class="string">&quot;username&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;birthday&quot;</span> <span class="attr">column</span>=<span class="string">&quot;birthday&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;address&quot;</span> <span class="attr">column</span>=<span class="string">&quot;address&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">&quot;sex&quot;</span> <span class="attr">column</span>=<span class="string">&quot;sex&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--根据用户 id，查询订单表--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        fetchType=&quot;lazy&quot; 懒加载策略 </span></span><br><span class="line"><span class="comment">        fetchType=&quot;eager&quot; 立即加载策略 </span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>=<span class="string">&quot;orderList&quot;</span> <span class="attr">ofType</span>=<span class="string">&quot;order&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">select</span>=<span class="string">&quot;com.de.mapper.OrderMapper.findByUid&quot;</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> </span></span><br><span class="line"><span class="tag">                <span class="attr">fetchType</span>=<span class="string">&quot;lazy&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAllWithOrder&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;userWithOrderMap&quot;</span>&gt;</span></span><br><span class="line">    select * from User</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="触发延迟加载的方法"><a href="#触发延迟加载的方法" class="headerlink" title="触发延迟加载的方法"></a>触发延迟加载的方法</h3><p>调用当前对象的equals、clone、hashCode、toString方法时也会触发关联对象表的查询。</p>
+<p>可以在核心配置文件中使用lazyLoadTriggerMethods配置项覆盖掉上面四个方法。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!--所有方法都会延迟加载--&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;lazyLoadTriggerMethods&quot;</span> <span class="attr">value</span>=<span class="string">&quot;toString()&quot;</span>/&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//延迟加载测试</span></span><br><span class="line"><span class="comment">//查询所有用户，此同时查询出该用户具所有订单</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">    UserMapper mapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">    List&lt;User&gt; userList = mapper.findAllWithOrder();</span><br><span class="line">    <span class="keyword">for</span> (User user : userList) &#123;</span><br><span class="line">        System.out.println(user);  <span class="comment">//无订单信息</span></span><br><span class="line">        <span class="comment">//有需求时,才触发关联对象表的查询</span></span><br><span class="line">        System.out.println( user.getOrderList() );<span class="comment">//订单信息出现</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2>]]></content>
       <categories>
         <category>javaWeb</category>
       </categories>

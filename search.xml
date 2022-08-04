@@ -2698,6 +2698,7 @@
 <p>AUTO_INCREMENT： 表示自动增长(字段类型必须是整数类型) </p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp2( </span><br><span class="line">    <span class="comment">-- 关键字 AUTO_INCREMENT,主键类型必须是整数类型 </span></span><br><span class="line">    eid <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT, </span><br><span class="line">    ename <span class="type">VARCHAR</span>(<span class="number">20</span>), </span><br><span class="line">    sex <span class="type">CHAR</span>(<span class="number">1</span>) </span><br><span class="line">)AUTO_INCREMENT<span class="operator">=</span><span class="number">100</span>;  <span class="comment">-- 还可以定义自增主键的起始值</span></span><br></pre></td></tr></table></figure>
 
+<p>插入记录，主键自增，<code>select last_insert_id();</code>语句可以获取刚刚新增记录的主键是多少</p>
 <p><strong>删除表中数据对自增主键的影响</strong></p>
 <table>
 <thead>
@@ -9852,7 +9853,7 @@ c;
 <p><strong>配置阿里云远程仓库</strong></p>
 <p>Maven默认的远程仓库是在国外, 所以下载jar包时速度会非常慢, 这里推荐大家使用我大天朝的阿里云仓库</p>
 <ol>
-<li>打开 settings.xml,找到 <mirrors> 标签 , 下面的内容复制到  <mirrors> 中 即可</li>
+<li>打开 settings.xml,找到 mirrors 标签 , 下面的内容复制到  mirrors中 即可</li>
 </ol>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        http://maven.aliyun.com/nexus/content/groups/public/</span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span>        </span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -13514,6 +13515,21 @@ c;
         <tag>前端框架</tag>
         <tag>vue</tag>
         <tag>vueCli</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ssm</title>
+    <url>/2022/08/04/ssm/</url>
+    <content><![CDATA[<p>针对与javaWeb的：表现层(Servlet)、业务层(Service)、持久层(Dao)，分别提供了框架：Spring、SpringMVC、Mybatis，简称ssm。</p>
+<span id="more"></span>]]></content>
+      <categories>
+        <category>javaWeb</category>
+      </categories>
+      <tags>
+        <tag>javaWeb</tag>
+        <tag>Mybatis</tag>
+        <tag>Spring</tag>
+        <tag>SpringMVC</tag>
       </tags>
   </entry>
 </search>

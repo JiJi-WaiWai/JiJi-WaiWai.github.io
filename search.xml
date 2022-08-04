@@ -13603,7 +13603,7 @@ c;
 
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 删除语句使用delete标签 </span><br><span class="line">- Sql语句中使用#&#123;任意字符串&#125;方式引用传递的单个参数 </span><br><span class="line">- 删除操作使用的API是sqlSession.delete(“命名空间.id”,Object);</span><br></pre></td></tr></table></figure>
 
-<h2 id="核心配置文件"><a href="#核心配置文件" class="headerlink" title="核心配置文件"></a>核心配置文件</h2><p>配置文档的顶层结构如下：</p>
+<h2 id="核心配置文件"><a href="#核心配置文件" class="headerlink" title="核心配置文件"></a>核心配置文件</h2><p>配置文档的顶层结构如下：有先后顺序</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">configuration（配置）</span><br><span class="line">    properties（属性）</span><br><span class="line">    settings（设置）</span><br><span class="line">    typeAliases（类型别名）</span><br><span class="line">    typeHandlers（类型处理器）</span><br><span class="line">    objectFactory（对象工厂）</span><br><span class="line">    plugins（插件）</span><br><span class="line">    environments（环境配置）</span><br><span class="line">        environment（环境变量）</span><br><span class="line">            transactionManager（事务管理器）</span><br><span class="line">            dataSource（数据源）</span><br><span class="line">    databaseIdProvider（数据库厂商标识）</span><br><span class="line">    mappers（映射器）</span><br></pre></td></tr></table></figure>
 
 <h3 id="environments标签"><a href="#environments标签" class="headerlink" title="environments标签"></a>environments标签</h3><p>数据库环境的配置，支持多环境配置</p>
@@ -13624,7 +13624,7 @@ c;
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--  给类取别名  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--  单个类取别名   --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">type</span>=<span class="string">&quot;com.de.domain.User&quot;</span> <span class="attr">alias</span>=<span class="string">&quot;user&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--  给一个包下所有类取别名，即类名自身，且不区分大小写  --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;com.de.domain&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="mappers标签"><a href="#mappers标签" class="headerlink" title="mappers标签"></a>mappers标签</h3><p>该标签的作用是加载映射文件的，加载方式有如下几种：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">1. 使用相对于类路径的资源引用，例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">&quot;org/mybatis/builder/userMapper.xml&quot;</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line">2. 使用完全限定资源定位符（URL），可引用项目外路径,例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">url</span>=<span class="string">&quot;file:///var/mappers/userMapper.xml&quot;</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">《下面两种mapper代理开发中使用》 </span><br><span class="line">3. 使用映射器接口实现类的完全限定类名，例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">class</span>=<span class="string">&quot;org.mybatis.builder.userMapper&quot;</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line">4. 将包内的映射器接口实现全部注册为映射器，例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;org.mybatis.builder&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">1. 使用相对于类路径的资源引用，例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">&quot;com/de/mapper/UserMapper.xml&quot;</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line">2. 使用完全限定资源定位符（URL），可引用项目外路径,例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">url</span>=<span class="string">&quot;file:///var/mappers/userMapper.xml&quot;</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">《下面两种mapper代理开发中使用》 </span><br><span class="line">3. 使用映射器接口实现类的完全限定类名，例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">class</span>=<span class="string">&quot;com.de.mapper.UserMapper&quot;</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line">4. 将包内的映射器接口实现全部注册为映射器，例如： </span><br><span class="line"><span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;com.de.mapper&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="plugins-标签"><a href="#plugins-标签" class="headerlink" title="plugins 标签"></a>plugins 标签</h3><p>MyBatis 可以使用第三方的插件来对功能进行扩展</p>
 <p>例如：分页助手PageHelper 是将分页的复杂操作进行封装，使用简单的方式即可获得分页的相关数据</p>
@@ -13721,86 +13721,48 @@ c;
 <p>3，测试</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    InputStream in = Resources.getResourceAsStream(<span class="string">&quot;sqlMapConfig.xml&quot;</span>);</span><br><span class="line">    SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(in);</span><br><span class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获得Mapper代理对象</span></span><br><span class="line">    UserMapper mapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">    <span class="comment">//代理对象执行方法</span></span><br><span class="line">    List&lt;User&gt; userList = mapper.finAll();</span><br><span class="line">    <span class="keyword">for</span> (User user : userList) &#123;</span><br><span class="line">        System.out.println(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h2 id="高级查询"><a href="#高级查询" class="headerlink" title="高级查询"></a>高级查询</h2><h3 id="ResutlMap-属性"><a href="#ResutlMap-属性" class="headerlink" title="ResutlMap 属性"></a>ResutlMap 属性</h3><ul>
+<li>resultType<br>如果实体的属性名与表中字段名一致，将查询结果自动封装到实体类中</li>
+<li>ResutlMap<br>如果实体的属性名与表中字段名不一致，可以使用ResutlMap 实现手动封装到实体类中</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;userResultMap&quot;</span> <span class="attr">type</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> <span class="attr">property</span>=<span class="string">&quot;id&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;username&quot;</span> <span class="attr">property</span>=<span class="string">&quot;usernameabc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;birthday&quot;</span> <span class="attr">property</span>=<span class="string">&quot;birthdayabc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;sex&quot;</span> <span class="attr">property</span>=<span class="string">&quot;sexabc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;address&quot;</span> <span class="attr">property</span>=<span class="string">&quot;addressabc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;userResultMap&quot;</span>&gt;</span></span><br><span class="line">    select * from User</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h3><p>需求：根据id 和username 查询 user 表</p>
+<p><strong>方式一</strong></p>
+<p>使用 <code>#&#123;arg0&#125;-#&#123;argn&#125;</code> 或者 <code>#&#123;param1&#125;-#&#123;paramn&#125;</code> 获取参数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">findByIdAndUsername1</span><span class="params">(Integer id, String username)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByIdAndUsername1&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- select * from user where id=#&#123;arg0&#125; and username=#&#123;arg1&#125; --&gt;</span></span><br><span class="line">    select * from user where id=#&#123;param1&#125; and username=#&#123;param2&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p><strong>方式二：</strong></p>
+<p>使用注解，引入 <code>@Param()</code> 注解获取参数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">findByIdAndUsername2</span><span class="params">(<span class="meta">@Param(&quot;id&quot;)</span> Integer id, <span class="meta">@Param(&quot;username&quot;)</span> String username)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByIdAndUsername2&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    select * from user where id=#&#123;id&#125; and username=#&#123;username&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p><strong>方式三：</strong></p>
+<p>使用javaBean对象传递参数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">findByIdAndUsername3</span><span class="params">(User user)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByIdAndUsername3&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    select * from user where id=#&#123;id&#125; and username=#&#123;username&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h3><p>根据username 模糊查询user 表</p>
+<p>接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">findByUsername</span><span class="params">(String username)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>方式一：</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByUsername&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;string&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    select * from user where username like #&#123;username&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">UserMapper mapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">List&lt;User&gt; userList = mapper.findByUsername(<span class="string">&quot;%小%&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (User user : userList) &#123;</span><br><span class="line">    System.out.println(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>方式二：</strong></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByUsername&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;string&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">		推荐使用，concat() 字符串拼接函数</span></span><br><span class="line"><span class="comment">		注意：在 Oracle 中，concat() 函数只能传递二次参数，我们解决方案是嵌套拼接</span></span><br><span class="line"><span class="comment">	--&gt;</span></span><br><span class="line">    select * from user where username like concat( concat(&quot;%&quot;,#&#123;username&#125;) ,&quot;%&quot;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p>测试：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">UserMapper mapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">List&lt;User&gt; userList = mapper.findByUsername(<span class="string">&quot;小&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (User user : userList) &#123;</span><br><span class="line">    System.out.println(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<h3 id="和-区别"><a href="#和-区别" class="headerlink" title="#{}和${}区别"></a><code>#&#123;&#125;</code>和<code>$&#123;&#125;</code>区别</h3><p>${} 与 #{} 区别【面试题】<br>#{} :表示一个占位符号<br>通过#{} 可以实现 preparedStatement 向占位符中设置值，自动进行 java 类型和 jdbc 类型转换，#<br>{}可以有效防止sql 注入。<br>#{} 可以接收简单类型值或 pojo 属性值。<br>如果 parameterType 传输单个简单类型值， #{} 括号中可以是value 或其它名称。<br>${} :表示拼接sql 串<br>通过${} 可以将 parameterType 传入的内容拼接在 sql 中且不进行jdbc 类型转换，会出现 sql 注入<br>问题。<br>${} 可以接收简单类型值或 pojo 属性值。<br>如果 parameterType 传输单个简单类型值， ${} 括号中只能是value。</p>
 ]]></content>
       <categories>
         <category>javaWeb</category>

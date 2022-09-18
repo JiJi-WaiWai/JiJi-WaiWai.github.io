@@ -15076,7 +15076,7 @@ c;
 
 <h3 id="返回ModelAndView"><a href="#返回ModelAndView" class="headerlink" title="返回ModelAndView"></a>返回ModelAndView</h3><p>1，在Controller中方法创建并返回ModelAndView对象，并且设置视图名称</p>
 <p>2，在Controller中方法形参上直接声明ModelAndView，无需在方法中自己创建，在方法中直接使用该对象设置视图，同样可以跳转页面</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/responseTest&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseTestController</span> </span>&#123;     </span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">test</span><span class="params">(ModelAndView modelAndView)</span></span>&#123;</span><br><span class="line">        <span class="comment">//ModelAndView modelAndView = new ModelAndView();</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置模型数据</span></span><br><span class="line">        modelAndView.addObject(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;李四&quot;</span>);</span><br><span class="line">        <span class="comment">//设置视图名称</span></span><br><span class="line">        modelAndView.setViewName(<span class="string">&quot;success&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> modelAndView;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/responseTest&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseTestController</span> </span>&#123;     </span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">test</span><span class="params">(ModelAndView modelAndView)</span></span>&#123;</span><br><span class="line">        <span class="comment">//ModelAndView modelAndView = new ModelAndView();</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置模型数据</span></span><br><span class="line">        modelAndView.addObject(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;李四&quot;</span>);</span><br><span class="line">        <span class="comment">//设置视图名称，会经过视图解析器</span></span><br><span class="line">        modelAndView.setViewName(<span class="string">&quot;success&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> modelAndView;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="直接返回字符串数据"><a href="#直接返回字符串数据" class="headerlink" title="直接返回字符串数据"></a>直接返回字符串数据</h3><p>Servlet相关API实现直接返回字符串数据</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/responseTest&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseTestController</span> </span>&#123;    </span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        response.setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line">        response.getWriter().println(<span class="string">&quot;&lt;h1 style=&#x27;color:red;&#x27;&gt;返回数据了哦!&lt;h1&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -15188,133 +15188,55 @@ c;
 <p>Controlle</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/filesUpload&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">fliesUpload</span><span class="params">(String username, MultipartFile[] filePics)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        System.out.println(username);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (MultipartFile filePic : filePics) &#123;</span><br><span class="line">            <span class="comment">//获取文件名</span></span><br><span class="line">            String filename = filePic.getOriginalFilename();</span><br><span class="line">            <span class="comment">//保存文件</span></span><br><span class="line">            filePic.transferTo(<span class="keyword">new</span> File(<span class="string">&quot;D:/abc/&quot;</span> + filename));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>在Java中，对于异常的处理一般有两种方式:</p>
+<ul>
+<li>一种是当前方法捕获处理（try-catch），这种处理方式会造成业务代码和异常处理代码的耦合。</li>
+<li>另一种是自己不处理，而是抛给调用者处理（throws），调用者再抛给它的调用者，也就是一直向上抛。<br>在这种方法的基础上，衍生出了SpringMVC的异常处理机制。</li>
+</ul>
+<p>系统的dao、service、controller出现都通过throws Exception向上抛出，最后由springmvc前端控制器交由异常处理器进行异常处理，如下图：</p>
+<p><img src="https://pic.imgdb.cn/item/6326891616f2c2beb106da7d.jpg"></p>
+<h3 id="自定义异常处理器"><a href="#自定义异常处理器" class="headerlink" title="自定义异常处理器"></a>自定义异常处理器</h3><p>1，创建异常处理器类实现HandlerExceptionResolver</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobalExpectionResolver</span> <span class="keyword">implements</span> <span class="title">HandlerExceptionResolver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ModelAndView <span class="title">resolveException</span><span class="params">(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        ModelAndView modelAndView = <span class="keyword">new</span> ModelAndView();</span><br><span class="line">        modelAndView.addObject(<span class="string">&quot;error&quot;</span>, e.getMessage());</span><br><span class="line">        modelAndView.setViewName(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> modelAndView;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2，编写异常页面error.jsp</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="string">&quot;java&quot;</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h2&gt;错误信息：$&#123;error&#125;&lt;/h2&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>3，spring-mvc.xml配置异常处理器，即创建权交给IOC容器</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;globalExpectionResolver&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.de.exception.GlobalExpectionResolver&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobalExpectionResolver</span> <span class="keyword">implements</span> <span class="title">HandlerExceptionResolver</span> </span>&#123;</span><br><span class="line">	.....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4，测试异常跳转</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestTestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;test&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">1</span>/<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="web的处理异常机制"><a href="#web的处理异常机制" class="headerlink" title="web的处理异常机制"></a>web的处理异常机制</h3><p>在web.xml中配置各种错误状态码跳转到不同的jsp页面</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--处理500异常--&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">error-page</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">error-code</span>&gt;</span>500<span class="tag">&lt;/<span class="name">error-code</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">location</span>&gt;</span>/500.jsp<span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">error-page</span>&gt;</span></span><br><span class="line"> <span class="comment">&lt;!--处理404异常--&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">error-page</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="name">error-code</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">location</span>&gt;</span>/404.jsp<span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">error-page</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p>Spring MVC 的拦截器类似于 Servlet 开发中的过滤器 Filter，用于对处理器进行预处理和后处理。</p>
+<p>将拦截器按一定的顺序联结成一条链，这条链称为拦截器链（InterceptorChain）。<br>在访问被拦截的方法或字段时，拦截器链中的拦截器就会按其之前定义的顺序被调用。拦截器也是AOP思想的体实现。</p>
+<p><strong>拦截器和过滤器区别</strong></p>
+<p><img src="https://pic.imgdb.cn/item/63268fd116f2c2beb10dbb45.jpg"></p>
+<h3 id="自定义拦截器"><a href="#自定义拦截器" class="headerlink" title="自定义拦截器"></a>自定义拦截器</h3><p>1，创建拦截器类实现HandlerInterceptor接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Interceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在目标方法执行之前 执行，返回值为是否放行</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Interceptor的preHandle执行了&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在目标方法执行之后,视图对象返回之前 执行</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Interceptor的postHandle执行了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在流程都执行完毕后 执行</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Interceptor的afterCompletion执行了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2，spring-mvc.xml中配置拦截器</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">&quot;/**&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.de.Interceptor.Interceptor&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3，测试拦截器的拦截效果</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestTestController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;test&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;目标方法执行了。。&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;success&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行流程：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">访问路径时会被拦截器拦截，执行流程如下：</span><br><span class="line"></span><br><span class="line">放行的情况：</span><br><span class="line">拦截器的preHandle方法执行，并且放行 --&gt;</span><br><span class="line">目标方法执行  --&gt;</span><br><span class="line">拦截器的postHandle方法执行 --&gt;</span><br><span class="line">目标方法返回视图页面 --&gt;</span><br><span class="line">拦截器的afterCompletion方法执行</span><br><span class="line"></span><br><span class="line">不放行的情况：</span><br><span class="line">拦截器的preHandle方法执行，并且不放行 --&gt; 结束</span><br></pre></td></tr></table></figure>
+
+<h3 id="拦截器链"><a href="#拦截器链" class="headerlink" title="拦截器链"></a>拦截器链</h3><p>开发中拦截器可以单独使用，也可以同时使用多个拦截器形成一条拦截器链。<br>开发步骤和单个拦截器是一样的，只不过注册的时候注册多个，注意这里注册的顺序就代表拦截器执行的顺序。</p>
+<p>例如三个拦截器</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:interceptors</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 拦截器1 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">&quot;/**&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.de.Interceptor.Interceptor1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 拦截器2 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">&quot;/**&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.de.Interceptor.Interceptor2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 拦截器3 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mvc:mapping</span> <span class="attr">path</span>=<span class="string">&quot;/**&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.de.Interceptor.Interceptor3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mvc:interceptor</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:interceptors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>拦截流程：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">访问路径时会被拦截器拦截链，执行流程如下：</span><br><span class="line"></span><br><span class="line">放行的情况：</span><br><span class="line">拦截器1的preHandle方法执行，并且放行 --&gt;</span><br><span class="line">拦截器2的preHandle方法执行，并且放行 --&gt;</span><br><span class="line">拦截器3的preHandle方法执行，并且放行 --&gt;</span><br><span class="line">目标方法执行  --&gt;</span><br><span class="line">拦截器3的postHandle方法执行 --&gt;</span><br><span class="line">拦截器2的postHandle方法执行 --&gt;</span><br><span class="line">拦截器1的postHandle方法执行 --&gt;</span><br><span class="line">目标方法返回视图页面 --&gt;</span><br><span class="line">拦截器3的afterCompletion方法执行 --&gt;</span><br><span class="line">拦截器2的afterCompletion方法执行 --&gt;</span><br><span class="line">拦截器1的afterCompletion方法执行 --&gt;</span><br><span class="line"></span><br><span class="line">不放行的情况：</span><br><span class="line">拦截器1的preHandle方法执行，并且放行 --&gt;</span><br><span class="line">拦截器2的preHandle方法执行，并且不放行 --&gt;</span><br><span class="line">拦截器1的afterCompletion方法执行</span><br></pre></td></tr></table></figure>
+
+<h1 id="ssm"><a href="#ssm" class="headerlink" title="ssm"></a>ssm</h1>]]></content>
       <categories>
         <category>javaWeb</category>
       </categories>

@@ -8901,9 +8901,10 @@
       </tags>
   </entry>
   <entry>
-    <title>ssm</title>
+    <title></title>
     <url>/2022/08/04/ssm/</url>
-    <content><![CDATA[<p>针对与javaWeb的：表现层(Servlet)、业务层(Service)、持久层(Dao)，分别提供了框架：SpringMVC、Spring、Mybatis，简称ssm。</p>
+    <content><![CDATA[<p>title: ssm<br>date: 2022-08-04 09:53:33<br>tags:<br>    - javaWeb<br>    - Mybatis<br>    - Spring<br>    - SpringMVC<br>categories: javaWeb</p>
+<p>针对与javaWeb的：表现层(Servlet)、业务层(Service)、持久层(Dao)，分别提供了框架：SpringMVC、Spring、Mybatis，简称ssm。</p>
 <span id="more"></span>
 
 <h1 id="框架介绍"><a href="#框架介绍" class="headerlink" title="框架介绍"></a>框架介绍</h1><p><strong>三层架构</strong></p>
@@ -10804,7 +10805,7 @@
 <p>2）ssm_utils，ssm_domain，ssm_dao，ssm_service，ssm_web为5个子工程（按照层进行拆分）</p>
 <p>3）所有子工程继承父工程，父工程对所有子工程聚合</p>
 <p>3）子工程之间存在依赖关系：<br>        ssm_web依赖ssm_service依赖ssm_dao依赖ssm_domain依赖ssm_utils</p>
-<p><img src="C:\Users\17536\AppData\Roaming\Typora\typora-user-images\image-20221018120126007.png" alt="image-20221018120126007"></p>
+<p><img src="https://pic1.imgdb.cn/item/634e258d16f2c2beb1d5f490.jpg"></p>
 <h2 id="工程创建"><a href="#工程创建" class="headerlink" title="工程创建"></a>工程创建</h2><p>1，父工程lagou_edu_home_parent构建。</p>
 <p>2，子工程ssm_utils构建，选择要继承的父工程。</p>
 <p><img src="https://pic1.imgdb.cn/item/634e263d16f2c2beb1d7158a.jpg"></p>
@@ -10853,15 +10854,6 @@
 
 <p>tomcat启动ssm_web子工程测试。</p>
 ]]></content>
-      <categories>
-        <category>javaWeb</category>
-      </categories>
-      <tags>
-        <tag>javaWeb</tag>
-        <tag>Mybatis</tag>
-        <tag>Spring</tag>
-        <tag>SpringMVC</tag>
-      </tags>
   </entry>
   <entry>
     <title>JavaSE</title>
@@ -15484,5 +15476,10 @@ c;
         <tag>java</tag>
         <tag>基础</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>git</title>
+    <url>/2022/10/18/git/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>

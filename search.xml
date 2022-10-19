@@ -15698,7 +15698,35 @@ c;
 <p>4，推送操作</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push 远程仓库分支 本地仓库分支</span><br></pre></td></tr></table></figure>
 
-<h1 id="在Idea中使用git"><a href="#在Idea中使用git" class="headerlink" title="在Idea中使用git"></a>在Idea中使用git</h1>]]></content>
+<h1 id="在Idea中使用git"><a href="#在Idea中使用git" class="headerlink" title="在Idea中使用git"></a>在Idea中使用git</h1><p>在Idea中配置Git：</p>
+<p>选择File→Settings打开设置窗口，找到Version Control下的Git选项，手动配置下Git的路径：<br><img src="https://pic1.imgdb.cn/item/634fac0016f2c2beb142b645.jpg" style="zoom: 80%;" /></p>
+<h2 id="本地仓库操作"><a href="#本地仓库操作" class="headerlink" title="本地仓库操作"></a>本地仓库操作</h2><p><strong>将maven工程交给Git管理</strong></p>
+<img src="https://pic1.imgdb.cn/item/634fac5516f2c2beb1432b80.jpg" style="zoom:50%;" />
+
+
+
+<p><strong>配置忽略文件</strong><br><img src="https://pic1.imgdb.cn/item/634fac9416f2c2beb14388a2.jpg" style="zoom: 67%;" /></p>
+<p><strong>添加到缓冲区</strong></p>
+<p>右击文件，选择 Git &gt;&gt; Add 命令<br><img src="https://pic1.imgdb.cn/item/634fad9316f2c2beb144feb1.jpg" style="zoom:67%;" /></p>
+<p><strong>提交到本地仓库</strong><br><img src="https://pic1.imgdb.cn/item/634fadd116f2c2beb1454786.jpg" style="zoom:67%;" /></p>
+<p><strong>重置文件到修改前</strong></p>
+<p>选择文件，右键 &gt;&gt; 选择Git &gt;&gt; Rollback<br><img src="https://pic1.imgdb.cn/item/634fb0bc16f2c2beb14997d6.jpg" style="zoom:67%;" /></p>
+<p><strong>查看版本</strong></p>
+<p>右击 &gt;&gt; Git &gt;&gt; Show History</p>
+<h2 id="远程仓库操作"><a href="#远程仓库操作" class="headerlink" title="远程仓库操作"></a>远程仓库操作</h2><p><strong>本地仓库 推送到 远程仓库</strong></p>
+<p>1，VCS菜单 &gt;&gt; Git &gt;&gt; Push<br><img src="https://pic1.imgdb.cn/item/634fae5716f2c2beb145f786.jpg" style="zoom: 67%;" /></p>
+<p>2，设置 远程仓库<br><img src="https://pic1.imgdb.cn/item/634faec016f2c2beb146b769.jpg" style="zoom:80%;" /></p>
+<p><strong>远程仓库 拉取到 本地仓库</strong><br><img src="https://pic1.imgdb.cn/item/634fb1a116f2c2beb14addb8.jpg" style="zoom: 50%;" /></p>
+<p><strong>远程仓库 克隆到 本地</strong></p>
+<p>1，打开Idea，选择”Get from Version Control”<br><img src="https://pic1.imgdb.cn/item/634faf3816f2c2beb147b38f.jpg" style="zoom:67%;" /></p>
+<p>2，设置好，要克隆的远程仓库地址，和本地存放项目的路径（空文件夹）<br><img src="https://pic1.imgdb.cn/item/634faf7916f2c2beb148128f.jpg"></p>
+<p><strong>解决冲突</strong></p>
+<p>1，拉取操作，可能会出现代码冲突，会如下弹框，选择Merge：<br><img src="https://pic1.imgdb.cn/item/634fb26a16f2c2beb14bfe88.jpg" style="zoom:50%;" /></p>
+<p>2，手动解决代码冲突<br><img src="https://pic1.imgdb.cn/item/634fb2e416f2c2beb14cbb4e.jpg" style="zoom: 67%;" /></p>
+<h2 id="分支管理-1"><a href="#分支管理-1" class="headerlink" title="分支管理"></a>分支管理</h2><p>VCS菜单 &gt;&gt; Git &gt;&gt; Branches：<br><img src="https://pic1.imgdb.cn/item/634fb3cb16f2c2beb14defdf.jpg" style="zoom:67%;" /></p>
+<p>弹框如下，关于分支的操作都在里面：<br><img src="https://pic1.imgdb.cn/item/634fb76a16f2c2beb1530df5.jpg" style="zoom:67%;" /></p>
+<p>鼠标移动某分支上后，弹框如下：<br><img src="https://pic1.imgdb.cn/item/634fb87316f2c2beb1547cd6.jpg" style="zoom:80%;" /></p>
+]]></content>
       <categories>
         <category>工具</category>
       </categories>

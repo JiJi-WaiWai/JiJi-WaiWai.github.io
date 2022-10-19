@@ -15630,9 +15630,9 @@ c;
 <p><strong>删除分支</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 删除 dev 分支</span><br><span class="line">git branch -d dev</span><br></pre></td></tr></table></figure>
 
-<h1 id="Git远程仓库"><a href="#Git远程仓库" class="headerlink" title="Git远程仓库"></a>Git远程仓库</h1><p><strong>搭建远程仓库</strong></p>
+<h1 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h1><p><strong>搭建远程仓库</strong></p>
 <p>如何搭建Git远程仓库呢？</p>
-<p>可以借助互联网上提供的一些代码托管服务平台来实现，<br>其中比较常用的有GitHub（<a href="https://github.com/">https://github.com/</a> ）、码云（<a href="https://gitee.com/%EF%BC%89%E7%AD%89%E3%80%82">https://gitee.com/）等。</a></p>
+<p>可以借助互联网上提供的一些代码托管服务平台来实现，<br>其中比较常用的有GitHub（<a href="https://github.com/">https://github.com/</a> ）、码云（<a href="https://gitee.com/">https://gitee.com/</a> ）等。</p>
 <p>注册并登入GitHub，创建远程仓库：</p>
 <img src="https://pic1.imgdb.cn/item/634eafe316f2c2beb13bf849.jpg" style="zoom:33%;" />
 
@@ -15640,7 +15640,7 @@ c;
 
 
 
-<p><strong>本地仓库 同步 远程仓库</strong></p>
+<p><strong>git 同步 github</strong></p>
 <p>Github支持两种同步方式“https”和“ssh”。</p>
 <p>使用SSH方式同步：</p>
 <p>1，生成 ssh密钥</p>
@@ -15649,12 +15649,56 @@ c;
 
 <p>2，获取 ssh密钥</p>
 <p>在  C盘&gt;Users&gt;用户名&gt;.ssh 目录下生成 私匙 和 公匙</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">id_rsa  # 私匙</span><br><span class="line">id_rsa.pub # 公匙</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">id_rsa  # 私匙文件</span><br><span class="line">id_rsa.pub # 公匙文件</span><br></pre></td></tr></table></figure>
 
 <p>3，配置 ssh密钥</p>
 <p>获取密钥后，在github上配置密钥，本地仓库才可以顺利访问远程仓库。</p>
 <p>点击头像下拉列表 &gt;&gt; 选择“Settings” &gt;&gt; 选择左侧的“SSH and GPC keys”选项 &gt;&gt; “new SSH key”按钮 &gt;&gt; 在key文本框中将id_rsa.pub公钥文件内容复制进去 &gt;&gt; “Add SSH key”按钮完成配置</p>
-<h1 id="远程仓库的操作"><a href="#远程仓库的操作" class="headerlink" title="远程仓库的操作"></a>远程仓库的操作</h1>]]></content>
+<h1 id="远程仓库的操作"><a href="#远程仓库的操作" class="headerlink" title="远程仓库的操作"></a>远程仓库的操作</h1><p><strong>查看远程仓库</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看远程仓库</span><br><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>添加远程仓库</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 为本地仓库添加远程仓库</span><br><span class="line">git remote add 远程仓库起个名称 远程仓库地址</span><br></pre></td></tr></table></figure>
+
+<p>远程仓库地址：<br><img src="https://pic1.imgdb.cn/item/634f668b16f2c2beb1f1391e.jpg" style="zoom:80%;" /></p>
+<p><strong>本地仓库内容 推送到 远程仓库</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 本地仓库master分支 推送到 远程仓库origin分支</span><br><span class="line"></span><br><span class="line"># 第一次推送时使用，可以简化后面的推送或者拉取命令使用</span><br><span class="line">git push -u origin master</span><br><span class="line"># 之后推送时</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+<p>注意：推送之前，需要先pull拉取远端仓库，如果发现提交版本不一致，出现错误</p>
+<p> <strong>远程仓库内容 拉取到 本地仓库</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 远程仓库origin 拉取到 本地仓库master分支</span><br><span class="line"></span><br><span class="line">git fetch origin master</span><br><span class="line"># 或</span><br><span class="line">git pull origin master</span><br></pre></td></tr></table></figure>
+
+<p>git fetch 和 git pull 之间的区别：</p>
+<ul>
+<li>git fetch 是仅仅获取远程仓库的更新内容，并不会自动做合并。</li>
+<li>git pull 在获取远程仓库的内容后，会自动做合并，可以看成 git fetch 之后 git merge 。</li>
+</ul>
+<p><strong>移除无效的远程仓库</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 本地仓库 移除 远程仓库</span><br><span class="line">git remote rm 远程仓库名称</span><br></pre></td></tr></table></figure>
+
+<p>注意：此命令只是从 本地仓库 移除 远程仓库 的记录，并不会真正影响到 远程仓库</p>
+<p><strong>从远程仓库克隆</strong></p>
+<p>新建空目录，右击Git Bash，执行远程仓库克隆，会自动创建本地仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 通过 https 协议，克隆 Github 上 git 仓库的源码</span><br><span class="line">git clone https://github.com/lagou-zimu/repo1.git</span><br><span class="line"></span><br><span class="line"># 通过 ssh 协议，克隆 Github 上 git 仓库的源码</span><br><span class="line">git clone git@github.com:lagou-zimu/repo1.git</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>解决合并冲突</strong></p>
+<p>本地仓库内容 推送到 远程仓库 前，为了保证本地仓库是最新版本数据，要先执行 拉取 操作。</p>
+<p>拉取时可能存在冲突问题，解决：</p>
+<p>1，先拉取操作</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull 远程仓库名称 本地仓库分支</span><br></pre></td></tr></table></figure>
+
+<p>2，解决冲突代码</p>
+<p>3，添加到缓冲区，提交到本地仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add ./</span><br><span class="line"></span><br><span class="line">git commit -m &#x27;冲突已解决&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>4，推送操作</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push 远程仓库分支 本地仓库分支</span><br></pre></td></tr></table></figure>
+
+<h1 id="在Idea中使用git"><a href="#在Idea中使用git" class="headerlink" title="在Idea中使用git"></a>在Idea中使用git</h1>]]></content>
       <categories>
         <category>工具</category>
       </categories>

@@ -15740,7 +15740,64 @@ c;
     <title>nginx</title>
     <url>/2022/11/03/nginx/</url>
     <content><![CDATA[<p>web服务器</p>
-<span id="more"></span>]]></content>
+<span id="more"></span>
+
+<h1 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h1><p>Nginx（发音同 engine x）是一款轻量级的Web 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，并在一个BSD-like 协议下发行。</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>占用内存少，并发能力强</li>
+<li>Nginx专为性能优化而开发, 在高连接并发的情况下，能够支持高达 50,000 个并发连接数的响应.</li>
+<li>Nginx支持热部署, 可以在不间断服务的情况下,对软件版本进行升级.</li>
+</ul>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>http服务器</strong>: Nginx是一个http服务可以独立提供http服务。可以做网页静态服务器。</li>
+<li><strong>虚拟主机</strong>: 可以实现在一台服务器虚拟出多个网站。例如个人网站使用的虚拟主机。</li>
+<li><strong>反向代理，负载均衡</strong> :  当网站的访问量达到一定程度后，单台服务器不能满足用户的请求时，需要用多台服务器集群可以使用nginx做反向代理。并且多台服务器可以平均分担负载，不会因为某台服务器负载高宕机而某台服务器闲置的情况。</li>
+</ul>
+<h1 id="Nginx安装"><a href="#Nginx安装" class="headerlink" title="Nginx安装"></a>Nginx安装</h1><p>下载nginx, 官方网站：<a href="http://nginx.org/">http://nginx.org/</a></p>
+<p>我们使用的版本是1.17.8版本。<br><img src="https://pic1.imgdb.cn/item/6363350f16f2c2beb1224563.jpg" style="zoom: 67%;" /></p>
+<p>Nginx在Linux下安装,只提供了源代码,所以我们需要进行编译.</p>
+<h2 id="安装环境配置"><a href="#安装环境配置" class="headerlink" title="安装环境配置"></a>安装环境配置</h2><p>1，因为Nginx是C语言编写的,所以需要配置C语言编译环境 (一定要在联网状态下安装)</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">需要安装gcc的环境。执行命令: </span><br><span class="line">su root		//先进入root级别</span><br><span class="line">yum install gcc-c++</span><br></pre></td></tr></table></figure>
+
+<p>注意: 如果执行命令出现这样的提示<br><img src="https://pic1.imgdb.cn/item/6363358316f2c2beb122c0e3.jpg" style="zoom: 67%;" /></p>
+<p>解决办法:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">问题是 yum在锁定状态中,强制关掉yum进程即可</span><br><span class="line">rm -f /var/run/yum.pid</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2，第三方的开发包, 在编译之前需要安装这些第三方包。</p>
+<ul>
+<li><p><code>PCRE</code><br>nginx的http模块使用pcre来解析正则表达式，所以需要在linux上安装pcre库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">安装命令:</span><br><span class="line">yum install -y pcre pcre-devel</span><br></pre></td></tr></table></figure></li>
+<li><p><code>zlib</code><br>nginx使用zlib对http包的内容进行gzip，所以需要在linux上安装zlib库。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">安装命令:</span><br><span class="line">yum install -y zlib zlib-devel</span><br></pre></td></tr></table></figure></li>
+<li><p><code>openssl</code><br>OpenSSL 是一个强大的安全套接字层密码库,nginx不仅支持http协议，还支持https,所以需要在linux安装openssl库。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">安装命令:</span><br><span class="line">yum install -y openssl openssl-devel</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="安装Nginx-步骤"><a href="#安装Nginx-步骤" class="headerlink" title="安装Nginx 步骤"></a>安装Nginx 步骤</h2><p>1，将Nginx的源码包上传到 Linux</p>
+<p>2，解压Nginx， <code>tar -xvf nginx-1.17.8.tar </code></p>
+<p>3，进入到解压之后的目录 nginx-1.17.8</p>
+<p>4，执行命令 configure，生成 Mikefile 文件 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./configure \</span><br><span class="line">--prefix=/usr/local/nginx \</span><br><span class="line">--pid-path=/var/run/nginx/nginx.pid \</span><br><span class="line">--lock-path=/var/lock/nginx.lock \</span><br><span class="line">--error-log-path=/var/log/nginx/error.log \</span><br><span class="line">--http-log-path=/var/log/nginx/access.log \</span><br><span class="line">--with-http_gzip_static_module \</span><br><span class="line">--http-client-body-temp-path=/var/temp/nginx/client \</span><br><span class="line">--http-proxy-temp-path=/var/temp/nginx/proxy \</span><br><span class="line">--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \</span><br><span class="line">--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \</span><br><span class="line">--http-scgi-temp-path=/var/temp/nginx/scgi</span><br></pre></td></tr></table></figure>
+
+<p>5，创建临时文件目录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir /var/temp/nginx/client -p</span><br></pre></td></tr></table></figure>
+
+<p>6，执行make命令,进行编译 <code>make</code></p>
+<p>7，安装 <code>make install</code></p>
+<p>此时，nginx的安装目录在：<code>/usr/local/nginx/</code></p>
+<p>8，启动并访问：</p>
+<ul>
+<li><p>进入到nginx 安装目录  <code>cd /usr/local/nginx/</code></p>
+</li>
+<li><p>进入到 sbin目录，执行命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./nginx   启动</span><br><span class="line">./nginx -s stop 关闭</span><br><span class="line">ps aux | grep nginx 查看进程</span><br></pre></td></tr></table></figure></li>
+<li><p>通过浏览器进行访问  ,默认端口 80  (注意：是否关闭防火墙。)</p>
+</li>
+</ul>
+]]></content>
       <tags>
         <tag>web服务器</tag>
       </tags>

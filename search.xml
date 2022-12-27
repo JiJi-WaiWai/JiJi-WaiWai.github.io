@@ -15818,358 +15818,6 @@ c;
       </tags>
   </entry>
   <entry>
-    <title>zookeeper</title>
-    <url>/2022/11/12/%E5%88%86%E5%B8%83%E5%BC%8F/</url>
-    <content><![CDATA[<p>zookeeper</p>
-<span id="more"></span>
-
-<h1 id="zookeeper"><a href="#zookeeper" class="headerlink" title="zookeeper"></a>zookeeper</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>介绍</strong></p>
-<ul>
-<li>美团，饿了么，淘宝，58同城等等应用都是zookeeper的现实生活版</li>
-<li>例如开了个饭店，如何才能让大家都能吃到我们的饭菜？需要入驻美团，这样大家就可以在美团app中看到我的饭店，下订单，从而完成一次交易</li>
-<li>Zookeeper是一个开源的分布式（多台服务器干一件事）的，为分布式应用提供协调服务的Apache项目。</li>
-<li>在大数据技术生态圈中，zookeeper（动物管理员），Hadoop（大象），Hive（蜜蜂），Pig（猪）等技术</li>
-</ul>
-<p><strong>工作机制</strong></p>
-<ul>
-<li><p>Zookeeper从设计模式角度来理解：是一个基于观察者模式（一个人干活，有人盯着他）设计的分布式服务管理框架</p>
-</li>
-<li><p>它负责 存储 和 管理 大家都关心的数据</p>
-<ul>
-<li>然后接受观察者的注册，一旦这些数据的发生变化</li>
-<li>Zookeeper就将负责通知已经注册的那些观察者做出相应的反应</li>
-<li>从而实现集群中类似Master/Slave管理模式</li>
-</ul>
-</li>
-<li><p>Zookeeper = 文件系统 + 通知机制</p>
-</li>
-</ul>
-<img src="https://pic1.imgdb.cn/item/636efe4d16f2c2beb1409472.jpg" style="zoom: 33%;" />
-
-<ol>
-<li>商家营业并入驻</li>
-<li>获取到当前营业的饭店列表</li>
-<li>服务器节点下线</li>
-<li>服务器节点上下线事件通知</li>
-<li>重新再去获取服务器列表，并注册监听</li>
-</ol>
-<p><strong>分布式和集群的区别</strong></p>
-<p>无论分布式和集群，都是很多人在做事情。具体区别如下：</p>
-<ul>
-<li>分布式：招聘1个厨师，1个服务员，1个前台，三个人负责的工作不一样，但是最终目的都是为饭店工作</li>
-<li>集群：招聘3个服务员，3个人的工作一样</li>
-</ul>
-<p>集群特点：</p>
-<img src="https://pic1.imgdb.cn/item/636eff5016f2c2beb142a481.jpg" style="zoom: 33%;" />
-
-<ol>
-<li><p>是一个leader和多个follower来组成的集群（狮群中，一头雄狮，N头母狮）</p>
-</li>
-<li><p>集群中只要有半数以上的节点存活，Zookeeper就能正常工作（5台服务器挂2台，没问题；6台服务器挂3台，就停止；所以服务器奇数台）</p>
-</li>
-<li><p>全局数据一致性，每台服务器都保存一份相同的数据副本，无论client连接哪台server，数据都是一致的</p>
-</li>
-<li><p>数据更新原子性，一次数据要么成功，要么失败（不成功便成仁）</p>
-</li>
-<li><p>实时性，在一定时间范围内，client能读取到最新数据</p>
-</li>
-<li><p>更新的请求按照顺序执行，会按照发送过来的顺序，逐一执行（发来123，执行123，而不是321或者别的）</p>
-</li>
-</ol>
-<p><strong>数据结构</strong></p>
-<img src="https://pic1.imgdb.cn/item/636f005116f2c2beb14503d4.jpg" style="zoom:33%;" />
-
-<ul>
-<li>ZooKeeper数据模型的结构与linux文件系统很类似，整体上可以看作是一棵树，每个节点称做一个ZNode（ZookeeperNode）。</li>
-<li>每一个ZNode默认能够存储1MB的数据（元数据），每个ZNode的路径都是唯一的</li>
-<li>元数据（Metadata），又称中介数据、中继数据，为描述数据的数据（data aboutdata），主要是描述数据属性（property）的信息，用来支持如指示存储位置、历史数据、资源查找、文件记录等功能</li>
-</ul>
-<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>提供的服务包括：统一命名服务、统一配置管理、统一集群管理、服务器节点动态上下线、软负载均衡等</p>
-<p><strong>统一命名服务</strong></p>
-<p>在分布式环境下，通常需要对应用或服务进行统一的命名，便于识别<br>例如：服务器的IP地址不容易记，但域名相比之下却是很容易记住</p>
-<p><strong>统一配置管理</strong></p>
-<p>分布式环境下，配置文件做同步是必经之路<br>1000台服务器，如果配置文件作出修改，那一台一台的修改，运维人员肯定会疯，<br>如何做到修改一处就快速同步到每台服务器上</p>
-<p>将配置管理交给Zookeeper<br>1、将配置信息写入到Zookeeper的某个节点上<br>2、每个客户端都监听这个节点<br>3、一旦节点中的数据文件被修改，Zookeeper这个话匣子就会通知每台客户端服务器</p>
-<p><strong>服务器节点动态上下线</strong></p>
-<p>客户端能实时获取服务器上下线的变化</p>
-<p>在美团APP上实时可以看到商家是否正在营业或打样</p>
-<p><strong>软负载均衡</strong></p>
-<p>Zookeeper会记录每台服务器的访问数，让访问数最少的服务器去处理最新的客户请求（雨露均沾）</p>
-<h2 id="下载和使用"><a href="#下载和使用" class="headerlink" title="下载和使用"></a>下载和使用</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>镜像库地址：<a href="http://archive.apache.org/dist/zookeeper/">http://archive.apache.org/dist/zookeeper/</a></p>
-<img src="https://pic1.imgdb.cn/item/636f048d16f2c2beb149d8d3.jpg" style="zoom: 50%;" />
-
-<img src="https://pic1.imgdb.cn/item/636f049f16f2c2beb149e989.jpg" style="zoom:50%;" />
-
-<ul>
-<li>apache-zookeeper-3.6.0.tar.gz需要安装maven，然后再运行mvn clean install 和mvn javadoc:aggregate，前一个命令会下载安装好多jar包，不知道要花多长时间</li>
-<li>（推荐）apache-zookeeper-3.6.0-bin.tar.gz已经自带所需要的各种jar包</li>
-</ul>
-<h3 id="本地模式安装"><a href="#本地模式安装" class="headerlink" title="本地模式安装"></a>本地模式安装</h3><ol>
-<li>前提：安装jdk</li>
-<li>拷贝apache-zookeeper-3.6.0-bin.tar.gz到usr目录</li>
-<li>解压安装包<code>tar -zxvf apache-zookeeper-3.6.0-bin.tar.gz</code></li>
-<li>重命名<code>mv apache-zookeeper-3.6.0-bin zookeeper</code></li>
-</ol>
-<h3 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h3><ol>
-<li><p>进入/usr/zookeeper/这个目录上创建zkData和zkLog目录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir zkData</span><br><span class="line">mkdir zkLog</span><br></pre></td></tr></table></figure></li>
-<li><p>进入/usr/zookeeper/conf这个目录，复制一份 zoo_sample.cfg 文件并命名为 zoo.cfg</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure></li>
-<li><p>编辑zoo.cfg文件，修改dataDir路径 和 添加dataLogDir路径：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 修改</span></span><br><span class="line">dataDir=/usr/zookeeper/zkData</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加</span></span><br><span class="line">dataLogDir=/usr/zookeeper/zkLog</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="配置参数解读"><a href="#配置参数解读" class="headerlink" title="配置参数解读"></a>配置参数解读</h3><p>Zookeeper中的配置文件 conf/zoo.cfg 中参数含义解读如下：</p>
-<ul>
-<li><strong>tickTime =2000</strong>：通信心跳数，Zookeeper服务器与客户端心跳时间，单位毫秒<br>Zookeeper使用的基本时间，服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个tickTime时间就会发送一个心跳，时间单位为毫秒。</li>
-<li><strong>initLimit =10</strong>：LF初始通信时限<br>集群中的Follower跟随者服务器与Leader领导者服务器之间，<strong>启动时</strong>能容忍的最多心跳数<br>10 * 2000（10个心跳时间）如果领导和跟随者没有发出心跳通信，就视为失效的连接，领导和跟随者彻底断开</li>
-<li><strong>syncLimit =5</strong>：LF同步通信时限<br>集群<strong>启动后</strong>，Leader与Follower之间的最大响应时间单位，假如响应超过syncLimit * tickTime-&gt;10秒，Leader就认为Follwer已经死掉，会将Follwer从服务器列表中删除</li>
-<li><strong>dataDir</strong>：数据文件目录+数据持久化路径<br>主要用于保存Zookeeper中的数据。</li>
-<li><strong>dataLogDir</strong>：日志文件目录</li>
-<li><strong>clientPort</strong> =2181：客户端连接端口<br>监听客户端连接的端口。</li>
-</ul>
-<h3 id="操作Zookeeper"><a href="#操作Zookeeper" class="headerlink" title="操作Zookeeper"></a>操作Zookeeper</h3><p>进入 /usr/zookeeper/bin/ 目录，执行命令：</p>
-<ol>
-<li><p>启动Zookeeper</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh start</span><br></pre></td></tr></table></figure></li>
-<li><p>关闭Zookeeper</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh stop</span><br></pre></td></tr></table></figure></li>
-<li><p>查看进程是否启动，</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jps</span><br><span class="line"><span class="meta">#</span><span class="bash"> QuorumPeerMain：是zookeeper集群的启动入口类，是用来加载配置启动QuorumPeer线程的</span></span><br></pre></td></tr></table></figure></li>
-<li><p>查看状态</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh status</span><br></pre></td></tr></table></figure></li>
-<li><p>启动客户端</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkCli.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>退出客户端</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">quit</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="Zookeeper内部原理"><a href="#Zookeeper内部原理" class="headerlink" title="Zookeeper内部原理"></a>Zookeeper内部原理</h2><h3 id="选举机制"><a href="#选举机制" class="headerlink" title="*选举机制"></a>*选举机制</h3><ul>
-<li>半数机制：集群中半数以上机器存活，集群可用。所以Zookeeper适合安装奇数台服务器</li>
-<li>虽然在配置文件中并没有指定Master和Slave。但是，Zookeeper工作时，是有一个节点为Leader，其他则为Follower，Leader是通过内部的选举机制临时产生的</li>
-</ul>
-<img src="https://pic1.imgdb.cn/item/636f17cc16f2c2beb1638ad0.jpg" style="zoom:50%;" />
-
-<ol>
-<li>Server1先投票，投给自己，自己为1票，没有超过半数，根本无法成为leader，顺水推舟将票数<br>投给了id比自己大的Server2</li>
-<li>Server2也把自己的票数投给了自己，再加上Server1给的票数，总票数为2票，没有超过半数，也<br>无法成为leader，也学习Server1，顺水推舟，将自己所有的票数给了id比自己大的Server3</li>
-<li>Server3得到了Server1和Server2的两票，再加上自己投给自己的一票。3票超过半数，顺利成为<br>leader</li>
-<li>Server4和Server5都投给自己，但是无法改变Server3的票数，只好听天由命，承认Server3是<br>leader</li>
-</ol>
-<h3 id="节点类型"><a href="#节点类型" class="headerlink" title="节点类型"></a>节点类型</h3><ul>
-<li><p>持久型（persistent）：</p>
-<ul>
-<li><strong>持久化目录节点</strong>（persistent）客户端与zookeeper断开连接后，该节点依旧存在</li>
-<li><strong>持久化顺序编号目录节点</strong>（persistent_sequential）客户端与zookeeper断开连接后，该节点依旧存在，创建znode时设置<strong>顺序</strong>标识，znode名称后会附加一个值，顺序号是一个单调递增的计数器，由父节点维护，例如：Znode001，Znode002…</li>
-</ul>
-</li>
-<li><p>短暂型（ephemeral）：</p>
-<ul>
-<li><strong>临时目录节点</strong>（ephemeral）客户端和服务器端断开连接后，创建的节点自动删除</li>
-<li><strong>临时顺序编号目录节点</strong>（ephemeral_sequential）客户端与zookeeper断开连接后，该节点被删除，创建znode时设置<strong>顺序</strong>标识，znode名称后会附加一个值，顺序号是一个单调递增的计数器，由父节点维护，例如：Znode001，Znode002…</li>
-</ul>
-</li>
-</ul>
-<p>注意：序号是相当于i++，和数据库中的自增长类似</p>
-<h3 id="监听器原理"><a href="#监听器原理" class="headerlink" title="*监听器原理"></a>*监听器原理</h3><img src="https://pic1.imgdb.cn/item/636f18c516f2c2beb164ecf3.jpg" style="zoom:50%;" />
-
-<ol>
-<li><p>在main方法中创建Zookeeper客户端的同时就会创建两个线程，一个负责网络连接通信，一个负责监听</p>
-</li>
-<li><p>监听事件就会通过网络通信发送给zookeeper</p>
-</li>
-<li><p>zookeeper获得注册的监听事件后，立刻将监听事件添加到监听列表里</p>
-</li>
-<li><p>zookeeper监听到 数据变化 或 路径变化，就会将这个消息发送给监听线程</p>
-</li>
-<li><p>监听线程就会在内部调用process方法（需要我们实现process方法内容）</p>
-</li>
-</ol>
-<h3 id="写数据流程"><a href="#写数据流程" class="headerlink" title="写数据流程"></a>写数据流程</h3><img src="https://pic1.imgdb.cn/item/636f19a116f2c2beb165d85b.jpg" style="zoom: 33%;" />
-
-<ol>
-<li>Client 想向 ZooKeeper 的 Server1 上写数据，必须的先发送一个写的请求</li>
-<li>如果Server1不是Leader，那么Server1 会把接收到的请求进一步转发给Leader。</li>
-<li>这个Leader 会将写请求广播给各个Server，各个Server写成功后就会通知Leader。</li>
-<li>当Leader收到半数以上的 Server 数据写成功了，那么就说明数据写成功了。</li>
-<li>随后，Leader会告诉Server1数据写成功了。</li>
-<li>Server1会反馈通知 Client 数据写成功了，整个流程结束</li>
-</ol>
-<h2 id="Zookeeper实战"><a href="#Zookeeper实战" class="headerlink" title="Zookeeper实战"></a>Zookeeper实战</h2><h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>集群思路：先搞定一台服务器，再克隆出两台，形成集群！</p>
-<p><strong>配置第一台台服务器</strong></p>
-<p><strong>1，配置服务器编号</strong></p>
-<ul>
-<li>在 /usr/zookeeper/zkData 创建myid文件</li>
-<li>在文件中添加与server对应的编号：1</li>
-<li>其余两台服务器应该分别对应2和3</li>
-</ul>
-<p><strong>2，配置zoo.cfg文件</strong></p>
-<p>打开 /usr/zookeeper/conf/zoo.cfg 文件，增加如下配置</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">######################cluster##########################</span></span></span><br><span class="line">server.1=192.168.146.128:2888:3888</span><br><span class="line">server.2=192.168.146.129:2888:3888</span><br><span class="line">server.3=192.168.146.130:2888:3888</span><br></pre></td></tr></table></figure>
-
-<p>配置参数解读 server.A=B:C:D</p>
-<ul>
-<li>A：一个数字，表示第几号服务器<br>集群模式下配置的/usr/zookeeper/zkData/myid文件里面的数据就是A的值</li>
-<li>B：服务器的ip地址</li>
-<li>C：与集群中Leader服务器交换信息的端口</li>
-<li>D：选举时专用端口，万一集群中的Leader服务器挂了，需要一个端口来重新进行选举，选出一个新的Leader，而这个端口就是用来执行选举时服务器相互通信的端口。</li>
-</ul>
-<p><strong>配置其余两台服务器</strong></p>
-<ul>
-<li>克隆第一台服务器</li>
-<li>进入克隆的服务器，修改linux中的ip地址</li>
-<li>修改/usr/zookeeper/zkData/myid中的数值为2</li>
-</ul>
-<p>第三台服务器，重复上面的步骤</p>
-<h3 id="集群操作"><a href="#集群操作" class="headerlink" title="集群操作"></a>集群操作</h3><ol>
-<li><p>每台服务器的防火墙<strong>必须关闭</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure></li>
-<li><p>启动第1台服务器</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin目录下</span></span><br><span class="line">./zkServer.sh start</span><br></pre></td></tr></table></figure></li>
-<li><p>查看状态</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh status</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/zookeeper/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Error contacting service. It is probably not running.</span><br></pre></td></tr></table></figure>
-
-<p>注意：因为没有超过半数以上的服务器，所以集群失败 （防火墙没有关闭也会导致失败）</p>
-</li>
-<li><p>当启动第2台服务器时</p>
-<p>查看第1台的状态：Mode: <strong>follower</strong></p>
-<p>查看第2台的状态：Mode: <strong>leader</strong></p>
-</li>
-</ol>
-<h3 id="客户端命令行操作"><a href="#客户端命令行操作" class="headerlink" title="客户端命令行操作"></a>客户端命令行操作</h3><ul>
-<li><p>启动客户端</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkCli.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>退出客户端</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">quit</span><br></pre></td></tr></table></figure></li>
-<li><p>显示所有操作命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">help</span><br></pre></td></tr></table></figure></li>
-<li><p>查看当前znode中所包含的内容</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls /</span><br></pre></td></tr></table></figure></li>
-<li><p>查看当前节点详细数据</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 替代老版本的 ls2 /</span></span><br><span class="line">ls -s /   </span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>cZxid：创建节点的事务<br>每次修改ZooKeeper状态都会收到一个zxid形式的时间戳，也就是ZooKeeper事务ID。<br>事务ID是ZooKeeper中所有修改总的次序。<br>每个修改都有唯一的zxid，如果zxid1小于zxid2，那么zxid1在zxid2之前发生。</li>
-<li>ctime：被创建的毫秒数(从1970年开始)</li>
-<li>mZxid：最后更新的事务zxid</li>
-<li>mtime：最后修改的毫秒数(从1970年开始)</li>
-<li>pZxid：最后更新的子节点zxid</li>
-<li>cversion：创建版本号，子节点修改次数</li>
-<li>dataVersion：数据变化版本号</li>
-<li>aclVersion：权限版本号</li>
-<li>ephemeralOwner：如果是临时节点，这个是znode拥有者的session id。如果不是临时节点则是0。</li>
-<li>dataLength：数据长度</li>
-<li>numChildren：子节点数</li>
-</ul>
-</li>
-<li><p>创建节点</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 普通节点</span></span><br><span class="line">create /china</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 普通节点，并保存数据</span></span><br><span class="line">create /ru &quot;pujing&quot;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 多级节点，必须一级一级的创建</span></span><br><span class="line">create /japan</span><br><span class="line">create /japan/Tokyo</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 短暂节点，退出客户端就消失</span></span><br><span class="line">create -e /uk</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 自带序号的节点</span></span><br><span class="line">create -s /ru/city  # 执行三次</span><br><span class="line">ls /ru   #[city0000000000, city0000000001, city0000000002]</span><br></pre></td></tr></table></figure></li>
-<li><p>获得节点的数据值</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get /ru</span><br></pre></td></tr></table></figure></li>
-<li><p>修改节点的数据值</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">set /ru &quot;aaaa&quot;</span><br></pre></td></tr></table></figure></li>
-<li><p>删除节点</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">delete /china</span><br></pre></td></tr></table></figure></li>
-<li><p>递归删除节点 （非空节点，节点下有子节点），节点和子节点全部删除</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deleteall /ru</span><br></pre></td></tr></table></figure></li>
-<li><p>监听 <strong>节点的值变化</strong> 或 <strong>子节点变化（路径变化）</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1,在server3主机上注册监听/japan节点的数据变化</span></span><br><span class="line">addWatch /japan</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2,在Server1主机上，对/japan节点进行：修改节点数据，创建子节点，删除节点 等操作时</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3，Server3会立刻响应</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="API应用"><a href="#API应用" class="headerlink" title="API应用"></a>API应用</h2><h3 id="IDEA环境搭建"><a href="#IDEA环境搭建" class="headerlink" title="IDEA环境搭建"></a>IDEA环境搭建</h3><ol>
-<li><p>创建一个Maven工程</p>
-</li>
-<li><p>pom文件添加依赖</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.zookeeper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.6.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>在resources下创建log4j.properties日志文件</p>
-<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">log4j.rootLogger</span>=<span class="string">INFO, stdout</span></span><br><span class="line"><span class="meta">log4j.appender.stdout</span>=<span class="string">org.apache.log4j.ConsoleAppender</span></span><br><span class="line"><span class="meta">log4j.appender.stdout.layout</span>=<span class="string">org.apache.log4j.PatternLayout</span></span><br><span class="line"><span class="meta">log4j.appender.stdout.layout.ConversionPattern</span>=<span class="string">%d %p [%c] - %m%n</span></span><br><span class="line"></span><br><span class="line"><span class="meta">log4j.appender.logfile</span>=<span class="string">org.apache.log4j.FileAppender</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.File</span>=<span class="string">target/zk.log</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.layout</span>=<span class="string">org.apache.log4j.PatternLayout</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.layout.ConversionPattern</span>=<span class="string">%d %p [%c] - %m%n</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="创建ZooKeeper客户端"><a href="#创建ZooKeeper客户端" class="headerlink" title="创建ZooKeeper客户端"></a>创建ZooKeeper客户端</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZkTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//集群ip</span></span><br><span class="line">    <span class="keyword">private</span> String connStr = </span><br><span class="line">        <span class="string">&quot;192.168.146.128:2181,192.168.146.129:2181,192.168.146.130:2181&quot;</span>;</span><br><span class="line">    <span class="comment">//超时时间:60秒</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sessionTimeout = <span class="number">1000</span> * <span class="number">60</span>;</span><br><span class="line">    <span class="comment">//zk客户端</span></span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zkCli;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建zk客户端</span></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createZkCli</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//监听器</span></span><br><span class="line">        Watcher watcher = <span class="keyword">new</span> Watcher() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent watchedEvent)</span> </span>&#123;</span><br><span class="line">                System.out.println( watchedEvent.getType() );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//创建zk，参数：1集群ip，2超时时间，3监听器</span></span><br><span class="line">        zkCli = <span class="keyword">new</span> ZooKeeper(connStr, sessionTimeout, watcher);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h3><p>节点权限：</p>
-<ul>
-<li>OPEN_ACL_UNSAFE：创建开放节点，允许任意操作 （用的最多，其余的权限用的很少）</li>
-<li>READ_ACL_UNSAFE：创建只读节点</li>
-<li>CREATOR_ALL_ACL：创建者才有全部权限</li>
-</ul>
-<p>节点类型：</p>
-<ul>
-<li>persistent：持久化目录节点</li>
-<li>persistent_sequential：持久化顺序编号目录节点</li>
-<li>ephemeral：临时目录节点</li>
-<li>ephemeral_sequential：临时顺序编号目录节点</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建节点</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createNode</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建zkNode节点，参数：1节点路径，2节点数据，3节点权限，4节点的类型</span></span><br><span class="line">    String node = zkCli.create(<span class="string">&quot;/china&quot;</span>, <span class="string">&quot;good&quot;</span>.getBytes(),</span><br><span class="line">                               ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line"></span><br><span class="line">    System.out.println(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="查询节点的值"><a href="#查询节点的值" class="headerlink" title="查询节点的值"></a>查询节点的值</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取节点的值</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getNodeData</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//查询节点数据，参数：1节点路径，2是否监听，3存放到stat</span></span><br><span class="line">    <span class="keyword">byte</span>[] data = zkCli.getData(<span class="string">&quot;/china&quot;</span>, <span class="keyword">false</span>, <span class="keyword">new</span> Stat());</span><br><span class="line">    String s = <span class="keyword">new</span> String(data);</span><br><span class="line">    System.out.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改节点的值"><a href="#修改节点的值" class="headerlink" title="修改节点的值"></a>修改节点的值</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//修改节点的值</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateNodeData</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//修改节点数据，参数：1节点路径，2修改数据，3节点版本(ls -s /china可查询到)</span></span><br><span class="line">    Stat stat = zkCli.setData(<span class="string">&quot;/china&quot;</span>, <span class="string">&quot;very good&quot;</span>.getBytes(), <span class="number">0</span>);</span><br><span class="line">    System.out.println(stat);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//删除节点</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//删除节点，参数：1节点路径，2节点版本(ls -s /china可查询到)</span></span><br><span class="line">    zkCli.delete(<span class="string">&quot;/china&quot;</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="获取子节点"><a href="#获取子节点" class="headerlink" title="获取子节点"></a>获取子节点</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取子节点</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChildren</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取子节点，参数：1节点路径，2是否监听</span></span><br><span class="line">    List&lt;String&gt; childrenList = zkCli.getChildren(<span class="string">&quot;/&quot;</span>, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String children : childrenList) &#123;</span><br><span class="line">        System.out.println(children);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="获取子节点，并监听"><a href="#获取子节点，并监听" class="headerlink" title="获取子节点，并监听"></a>获取子节点，并监听</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取子节点，并且监听</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChildren2</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取子节点，参数：1节点路径，2是否监听</span></span><br><span class="line">    List&lt;String&gt; childrenList = zkCli.getChildren(<span class="string">&quot;/&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String children : childrenList) &#123;</span><br><span class="line">        System.out.println(children);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 让线程不停止，等待监听的响应</span></span><br><span class="line">    System.in.read();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>程序在运行的过程中，我们在linux的zk客户端下创建一个节点<br>IDEA的控制台就会做出响应，调用监听器，打印：NodeChildrenChanged–/</p>
-<h3 id="判断Znode是否存在"><a href="#判断Znode是否存在" class="headerlink" title="判断Znode是否存在"></a>判断Znode是否存在</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//判断节点是否存在</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exist</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断节点是否存在，参数：1节点路径，2是否监听</span></span><br><span class="line">    Stat exists = zkCli.exists(<span class="string">&quot;/china&quot;</span>, <span class="keyword">false</span>);</span><br><span class="line">    System.out.println(exists==<span class="keyword">null</span>?<span class="string">&quot;不存在&quot;</span>:<span class="string">&quot;存在&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>案例-模拟美团商家上下线</p>
-<p>需求：<br>模拟美团服务平台，商家营业或打烊，用户会接收到消息<br>提前在根节点下，创建好 /meituan 节点</p>
-<h3 id="商家服务类"><a href="#商家服务类" class="headerlink" title="商家服务类"></a>商家服务类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//商家服务类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShopServer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String connStr = </span><br><span class="line">        <span class="string">&quot;192.168.146.128:2181,192.168.146.129:2181,192.168.146.130:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sessionTimeout = <span class="number">60</span> * <span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接zk客户端（商家联系美团）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getConnect</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        zk = <span class="keyword">new</span> ZooKeeper(connStr, sessionTimeout, <span class="keyword">new</span> Watcher()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent watchedEvent)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将服务器节点注册（商家入住美团）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(String shopName)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//EPHEMERAL_SEQUENTIAL是短暂有序型的节点</span></span><br><span class="line">        zk.create(<span class="string">&quot;/meituan/shop&quot;</span>, shopName.getBytes(),</span><br><span class="line">                ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//业务逻辑处理（做生意）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">business</span><span class="params">(String shopName)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(shopName + <span class="string">&quot;正在营业中。。。&quot;</span>);</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ShopServer shopServer = <span class="keyword">new</span> ShopServer();</span><br><span class="line">        <span class="comment">//连接zk客户端（商家联系美团）</span></span><br><span class="line">        shopServer.getConnect();</span><br><span class="line">        <span class="comment">//将服务器节点注册（商家入住美团）</span></span><br><span class="line">        shopServer.register(args[<span class="number">0</span>]);</span><br><span class="line">        <span class="comment">//业务逻辑处理（商家做生意）</span></span><br><span class="line">        shopServer.business(args[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="顾客类"><a href="#顾客类" class="headerlink" title="顾客类"></a>顾客类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//顾客类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customers</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String connStr = </span><br><span class="line">        <span class="string">&quot;192.168.146.128:2181,192.168.146.129:2181,192.168.146.130:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sessionTimeout = <span class="number">60</span> * <span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接zk客户端（客户打开美团）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getConnet</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        zk = <span class="keyword">new</span> ZooKeeper(connStr, sessionTimeout, <span class="keyword">new</span> Watcher()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent watchedEvent)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//重新获取所有商家</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    getShopList();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取/meituan的子节点信息，从中获取服务器信息列表，并监听（从美团中获取商家列表）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getShopList</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; shopList = zk.getChildren(<span class="string">&quot;/meituan&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; shops = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String shop : shopList) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] data = zk.getData(<span class="string">&quot;/meituan/&quot;</span> + shop, <span class="keyword">false</span>, <span class="keyword">new</span> Stat());</span><br><span class="line">            shops.add(<span class="keyword">new</span> String(data));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;正在印业的商家：&quot;</span> + shops);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//业务进程启动 （对比商家，点餐）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">business</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;顾客正在浏览商家。。。&quot;</span>);</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Customers customers = <span class="keyword">new</span> Customers();</span><br><span class="line">        <span class="comment">//连接zk客户端（客户打开美团）</span></span><br><span class="line">        customers.getConnet();</span><br><span class="line">        <span class="comment">//获取/meituan的子节点信息，从中获取服务器信息列表，并监听（从美团中获取商家列表）</span></span><br><span class="line">        customers.getShopList();</span><br><span class="line">        <span class="comment">//业务进程启动 （对比商家，点餐）</span></span><br><span class="line">        customers.business();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><ol>
-<li><p>运行顾客类，就会得到商家列表</p>
-</li>
-<li><p>首先在linux的客户端中添加或删除商家，然后观察顾客类的控制台输出（商家列表会立刻更新出最新商家）</p>
-</li>
-<li><p>运行商家类（以main方法带参数的形式运行）run –&gt; Edit Configurations命令</p>
- <img src="https://pic1.imgdb.cn/item/637059db16f2c2beb1446d06.jpg" style="zoom: 67%;" /></li>
-</ol>
-<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>在zookeeper中使用传统的锁引发的 “羊群效应” ：1000个人创建节点，只有一个人能成功，999人需要等待！</p>
-<p>避免“羊群效应”，zookeeper采用分布式锁<br><img src="https://pic1.imgdb.cn/item/63705aa616f2c2beb1454361.jpg" style="zoom: 50%;" /></p>
-<p><strong>原理：</strong></p>
-<ol>
-<li>所有请求进来，在/lock下创建 临时顺序节点 ，放心，zookeeper会帮你编号排序</li>
-<li>判断自己是不是/lock下最小的节点</li>
-<li>是，获得锁（创建节点）</li>
-<li>否，对前面小我一级的节点进行监听</li>
-<li>获得锁请求，处理完业务逻辑，释放锁（删除节点），后一个节点得到通知（比你年轻的死了，你成为最嫩的了）</li>
-<li>重复步骤2</li>
-</ol>
-<p><strong>实现：</strong></p>
-<p>基于zookeeper原生态的客户端类实现分布式是非常麻烦的，我们使用apahce提供了一个zookeeper客户端来实现，<strong>Curator</strong>：<a href="http://curator.apache.org/">http://curator.apache.org/</a></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.curator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>curator-recipes<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span> <span class="comment">&lt;!-- 网友投票最牛逼版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在控制层中加入分布式锁的逻辑代码</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductAction</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProductService productService;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String connectString = </span><br><span class="line">        <span class="string">&quot;192.168.204.141:2181,192.168.204.142:2181,192.168.204.143:2181&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/product/reduce&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">reduce</span><span class="params">( <span class="keyword">int</span> id)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 重试策略 （1000毫秒试1次，最多试3次）</span></span><br><span class="line">        RetryPolicy retryPolicy = <span class="keyword">new</span> ExponentialBackoffRetry(<span class="number">1000</span>, <span class="number">3</span>);</span><br><span class="line">        <span class="comment">//1.创建curator工具对象</span></span><br><span class="line">        CuratorFramework client =</span><br><span class="line">       	CuratorFrameworkFactory.newClient(connectString, retryPolicy);</span><br><span class="line">        client.start();</span><br><span class="line">        <span class="comment">//2.根据工具对象创建“内部互斥锁”</span></span><br><span class="line">        InterProcessMutex lock = <span class="keyword">new</span> InterProcessMutex(client, <span class="string">&quot;/product_&quot;</span>+id);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//3.加锁</span></span><br><span class="line">            lock.acquire();</span><br><span class="line">            productService.reduceStock(id);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            <span class="keyword">if</span>(e <span class="keyword">instanceof</span> RuntimeException)&#123;</span><br><span class="line">            	<span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//4.释放锁</span></span><br><span class="line">            lock.release();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;ok&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>分布式</category>
-      </categories>
-      <tags>
-        <tag>zookeeper</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RabbitMQ</title>
     <url>/2022/12/27/RabbitMQ/</url>
     <content><![CDATA[<p>rabbitMQ</p>
@@ -17153,6 +16801,358 @@ c;
       </categories>
       <tags>
         <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>zookeeper</title>
+    <url>/2022/11/12/Zookeeper/</url>
+    <content><![CDATA[<p>zookeeper </p>
+<span id="more"></span>
+
+<h1 id="zookeeper"><a href="#zookeeper" class="headerlink" title="zookeeper"></a>zookeeper</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>介绍</strong></p>
+<ul>
+<li>美团，饿了么，淘宝，58同城等等应用都是zookeeper的现实生活版</li>
+<li>例如开了个饭店，如何才能让大家都能吃到我们的饭菜？需要入驻美团，这样大家就可以在美团app中看到我的饭店，下订单，从而完成一次交易</li>
+<li>Zookeeper是一个开源的分布式（多台服务器干一件事）的，为分布式应用提供协调服务的Apache项目。</li>
+<li>在大数据技术生态圈中，zookeeper（动物管理员），Hadoop（大象），Hive（蜜蜂），Pig（猪）等技术</li>
+</ul>
+<p><strong>工作机制</strong></p>
+<ul>
+<li><p>Zookeeper从设计模式角度来理解：是一个基于观察者模式（一个人干活，有人盯着他）设计的分布式服务管理框架</p>
+</li>
+<li><p>它负责 存储 和 管理 大家都关心的数据</p>
+<ul>
+<li>然后接受观察者的注册，一旦这些数据的发生变化</li>
+<li>Zookeeper就将负责通知已经注册的那些观察者做出相应的反应</li>
+<li>从而实现集群中类似Master/Slave管理模式</li>
+</ul>
+</li>
+<li><p>Zookeeper = 文件系统 + 通知机制</p>
+</li>
+</ul>
+<img src="https://pic1.imgdb.cn/item/636efe4d16f2c2beb1409472.jpg" style="zoom: 33%;" />
+
+<ol>
+<li>商家营业并入驻</li>
+<li>获取到当前营业的饭店列表</li>
+<li>服务器节点下线</li>
+<li>服务器节点上下线事件通知</li>
+<li>重新再去获取服务器列表，并注册监听</li>
+</ol>
+<p><strong>分布式和集群的区别</strong></p>
+<p>无论分布式和集群，都是很多人在做事情。具体区别如下：</p>
+<ul>
+<li>分布式：招聘1个厨师，1个服务员，1个前台，三个人负责的工作不一样，但是最终目的都是为饭店工作</li>
+<li>集群：招聘3个服务员，3个人的工作一样</li>
+</ul>
+<p>集群特点：</p>
+<img src="https://pic1.imgdb.cn/item/636eff5016f2c2beb142a481.jpg" style="zoom: 33%;" />
+
+<ol>
+<li><p>是一个leader和多个follower来组成的集群（狮群中，一头雄狮，N头母狮）</p>
+</li>
+<li><p>集群中只要有半数以上的节点存活，Zookeeper就能正常工作（5台服务器挂2台，没问题；6台服务器挂3台，就停止；所以服务器奇数台）</p>
+</li>
+<li><p>全局数据一致性，每台服务器都保存一份相同的数据副本，无论client连接哪台server，数据都是一致的</p>
+</li>
+<li><p>数据更新原子性，一次数据要么成功，要么失败（不成功便成仁）</p>
+</li>
+<li><p>实时性，在一定时间范围内，client能读取到最新数据</p>
+</li>
+<li><p>更新的请求按照顺序执行，会按照发送过来的顺序，逐一执行（发来123，执行123，而不是321或者别的）</p>
+</li>
+</ol>
+<p><strong>数据结构</strong></p>
+<img src="https://pic1.imgdb.cn/item/636f005116f2c2beb14503d4.jpg" style="zoom:33%;" />
+
+<ul>
+<li>ZooKeeper数据模型的结构与linux文件系统很类似，整体上可以看作是一棵树，每个节点称做一个ZNode（ZookeeperNode）。</li>
+<li>每一个ZNode默认能够存储1MB的数据（元数据），每个ZNode的路径都是唯一的</li>
+<li>元数据（Metadata），又称中介数据、中继数据，为描述数据的数据（data aboutdata），主要是描述数据属性（property）的信息，用来支持如指示存储位置、历史数据、资源查找、文件记录等功能</li>
+</ul>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>提供的服务包括：统一命名服务、统一配置管理、统一集群管理、服务器节点动态上下线、软负载均衡等</p>
+<p><strong>统一命名服务</strong></p>
+<p>在分布式环境下，通常需要对应用或服务进行统一的命名，便于识别<br>例如：服务器的IP地址不容易记，但域名相比之下却是很容易记住</p>
+<p><strong>统一配置管理</strong></p>
+<p>分布式环境下，配置文件做同步是必经之路<br>1000台服务器，如果配置文件作出修改，那一台一台的修改，运维人员肯定会疯，<br>如何做到修改一处就快速同步到每台服务器上</p>
+<p>将配置管理交给Zookeeper<br>1、将配置信息写入到Zookeeper的某个节点上<br>2、每个客户端都监听这个节点<br>3、一旦节点中的数据文件被修改，Zookeeper这个话匣子就会通知每台客户端服务器</p>
+<p><strong>服务器节点动态上下线</strong></p>
+<p>客户端能实时获取服务器上下线的变化</p>
+<p>在美团APP上实时可以看到商家是否正在营业或打样</p>
+<p><strong>软负载均衡</strong></p>
+<p>Zookeeper会记录每台服务器的访问数，让访问数最少的服务器去处理最新的客户请求（雨露均沾）</p>
+<h2 id="下载和使用"><a href="#下载和使用" class="headerlink" title="下载和使用"></a>下载和使用</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>镜像库地址：<a href="http://archive.apache.org/dist/zookeeper/">http://archive.apache.org/dist/zookeeper/</a></p>
+<img src="https://pic1.imgdb.cn/item/636f048d16f2c2beb149d8d3.jpg" style="zoom: 50%;" />
+
+<img src="https://pic1.imgdb.cn/item/636f049f16f2c2beb149e989.jpg" style="zoom:50%;" />
+
+<ul>
+<li>apache-zookeeper-3.6.0.tar.gz需要安装maven，然后再运行mvn clean install 和mvn javadoc:aggregate，前一个命令会下载安装好多jar包，不知道要花多长时间</li>
+<li>（推荐）apache-zookeeper-3.6.0-bin.tar.gz已经自带所需要的各种jar包</li>
+</ul>
+<h3 id="本地模式安装"><a href="#本地模式安装" class="headerlink" title="本地模式安装"></a>本地模式安装</h3><ol>
+<li>前提：安装jdk</li>
+<li>拷贝apache-zookeeper-3.6.0-bin.tar.gz到usr目录</li>
+<li>解压安装包<code>tar -zxvf apache-zookeeper-3.6.0-bin.tar.gz</code></li>
+<li>重命名<code>mv apache-zookeeper-3.6.0-bin zookeeper</code></li>
+</ol>
+<h3 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h3><ol>
+<li><p>进入/usr/zookeeper/这个目录上创建zkData和zkLog目录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir zkData</span><br><span class="line">mkdir zkLog</span><br></pre></td></tr></table></figure></li>
+<li><p>进入/usr/zookeeper/conf这个目录，复制一份 zoo_sample.cfg 文件并命名为 zoo.cfg</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure></li>
+<li><p>编辑zoo.cfg文件，修改dataDir路径 和 添加dataLogDir路径：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 修改</span></span><br><span class="line">dataDir=/usr/zookeeper/zkData</span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加</span></span><br><span class="line">dataLogDir=/usr/zookeeper/zkLog</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="配置参数解读"><a href="#配置参数解读" class="headerlink" title="配置参数解读"></a>配置参数解读</h3><p>Zookeeper中的配置文件 conf/zoo.cfg 中参数含义解读如下：</p>
+<ul>
+<li><strong>tickTime =2000</strong>：通信心跳数，Zookeeper服务器与客户端心跳时间，单位毫秒<br>Zookeeper使用的基本时间，服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个tickTime时间就会发送一个心跳，时间单位为毫秒。</li>
+<li><strong>initLimit =10</strong>：LF初始通信时限<br>集群中的Follower跟随者服务器与Leader领导者服务器之间，<strong>启动时</strong>能容忍的最多心跳数<br>10 * 2000（10个心跳时间）如果领导和跟随者没有发出心跳通信，就视为失效的连接，领导和跟随者彻底断开</li>
+<li><strong>syncLimit =5</strong>：LF同步通信时限<br>集群<strong>启动后</strong>，Leader与Follower之间的最大响应时间单位，假如响应超过syncLimit * tickTime-&gt;10秒，Leader就认为Follwer已经死掉，会将Follwer从服务器列表中删除</li>
+<li><strong>dataDir</strong>：数据文件目录+数据持久化路径<br>主要用于保存Zookeeper中的数据。</li>
+<li><strong>dataLogDir</strong>：日志文件目录</li>
+<li><strong>clientPort</strong> =2181：客户端连接端口<br>监听客户端连接的端口。</li>
+</ul>
+<h3 id="操作Zookeeper"><a href="#操作Zookeeper" class="headerlink" title="操作Zookeeper"></a>操作Zookeeper</h3><p>进入 /usr/zookeeper/bin/ 目录，执行命令：</p>
+<ol>
+<li><p>启动Zookeeper</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh start</span><br></pre></td></tr></table></figure></li>
+<li><p>关闭Zookeeper</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh stop</span><br></pre></td></tr></table></figure></li>
+<li><p>查看进程是否启动，</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jps</span><br><span class="line"><span class="meta">#</span><span class="bash"> QuorumPeerMain：是zookeeper集群的启动入口类，是用来加载配置启动QuorumPeer线程的</span></span><br></pre></td></tr></table></figure></li>
+<li><p>查看状态</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh status</span><br></pre></td></tr></table></figure></li>
+<li><p>启动客户端</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkCli.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>退出客户端</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">quit</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="Zookeeper内部原理"><a href="#Zookeeper内部原理" class="headerlink" title="Zookeeper内部原理"></a>Zookeeper内部原理</h2><h3 id="选举机制"><a href="#选举机制" class="headerlink" title="*选举机制"></a>*选举机制</h3><ul>
+<li>半数机制：集群中半数以上机器存活，集群可用。所以Zookeeper适合安装奇数台服务器</li>
+<li>虽然在配置文件中并没有指定Master和Slave。但是，Zookeeper工作时，是有一个节点为Leader，其他则为Follower，Leader是通过内部的选举机制临时产生的</li>
+</ul>
+<img src="https://pic1.imgdb.cn/item/636f17cc16f2c2beb1638ad0.jpg" style="zoom:50%;" />
+
+<ol>
+<li>Server1先投票，投给自己，自己为1票，没有超过半数，根本无法成为leader，顺水推舟将票数<br>投给了id比自己大的Server2</li>
+<li>Server2也把自己的票数投给了自己，再加上Server1给的票数，总票数为2票，没有超过半数，也<br>无法成为leader，也学习Server1，顺水推舟，将自己所有的票数给了id比自己大的Server3</li>
+<li>Server3得到了Server1和Server2的两票，再加上自己投给自己的一票。3票超过半数，顺利成为<br>leader</li>
+<li>Server4和Server5都投给自己，但是无法改变Server3的票数，只好听天由命，承认Server3是<br>leader</li>
+</ol>
+<h3 id="节点类型"><a href="#节点类型" class="headerlink" title="节点类型"></a>节点类型</h3><ul>
+<li><p>持久型（persistent）：</p>
+<ul>
+<li><strong>持久化目录节点</strong>（persistent）客户端与zookeeper断开连接后，该节点依旧存在</li>
+<li><strong>持久化顺序编号目录节点</strong>（persistent_sequential）客户端与zookeeper断开连接后，该节点依旧存在，创建znode时设置<strong>顺序</strong>标识，znode名称后会附加一个值，顺序号是一个单调递增的计数器，由父节点维护，例如：Znode001，Znode002…</li>
+</ul>
+</li>
+<li><p>短暂型（ephemeral）：</p>
+<ul>
+<li><strong>临时目录节点</strong>（ephemeral）客户端和服务器端断开连接后，创建的节点自动删除</li>
+<li><strong>临时顺序编号目录节点</strong>（ephemeral_sequential）客户端与zookeeper断开连接后，该节点被删除，创建znode时设置<strong>顺序</strong>标识，znode名称后会附加一个值，顺序号是一个单调递增的计数器，由父节点维护，例如：Znode001，Znode002…</li>
+</ul>
+</li>
+</ul>
+<p>注意：序号是相当于i++，和数据库中的自增长类似</p>
+<h3 id="监听器原理"><a href="#监听器原理" class="headerlink" title="*监听器原理"></a>*监听器原理</h3><img src="https://pic1.imgdb.cn/item/636f18c516f2c2beb164ecf3.jpg" style="zoom:50%;" />
+
+<ol>
+<li><p>在main方法中创建Zookeeper客户端的同时就会创建两个线程，一个负责网络连接通信，一个负责监听</p>
+</li>
+<li><p>监听事件就会通过网络通信发送给zookeeper</p>
+</li>
+<li><p>zookeeper获得注册的监听事件后，立刻将监听事件添加到监听列表里</p>
+</li>
+<li><p>zookeeper监听到 数据变化 或 路径变化，就会将这个消息发送给监听线程</p>
+</li>
+<li><p>监听线程就会在内部调用process方法（需要我们实现process方法内容）</p>
+</li>
+</ol>
+<h3 id="写数据流程"><a href="#写数据流程" class="headerlink" title="写数据流程"></a>写数据流程</h3><img src="https://pic1.imgdb.cn/item/636f19a116f2c2beb165d85b.jpg" style="zoom: 33%;" />
+
+<ol>
+<li>Client 想向 ZooKeeper 的 Server1 上写数据，必须的先发送一个写的请求</li>
+<li>如果Server1不是Leader，那么Server1 会把接收到的请求进一步转发给Leader。</li>
+<li>这个Leader 会将写请求广播给各个Server，各个Server写成功后就会通知Leader。</li>
+<li>当Leader收到半数以上的 Server 数据写成功了，那么就说明数据写成功了。</li>
+<li>随后，Leader会告诉Server1数据写成功了。</li>
+<li>Server1会反馈通知 Client 数据写成功了，整个流程结束</li>
+</ol>
+<h2 id="Zookeeper实战"><a href="#Zookeeper实战" class="headerlink" title="Zookeeper实战"></a>Zookeeper实战</h2><h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><p>集群思路：先搞定一台服务器，再克隆出两台，形成集群！</p>
+<p><strong>配置第一台台服务器</strong></p>
+<p><strong>1，配置服务器编号</strong></p>
+<ul>
+<li>在 /usr/zookeeper/zkData 创建myid文件</li>
+<li>在文件中添加与server对应的编号：1</li>
+<li>其余两台服务器应该分别对应2和3</li>
+</ul>
+<p><strong>2，配置zoo.cfg文件</strong></p>
+<p>打开 /usr/zookeeper/conf/zoo.cfg 文件，增加如下配置</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">######################cluster##########################</span></span></span><br><span class="line">server.1=192.168.146.128:2888:3888</span><br><span class="line">server.2=192.168.146.129:2888:3888</span><br><span class="line">server.3=192.168.146.130:2888:3888</span><br></pre></td></tr></table></figure>
+
+<p>配置参数解读 server.A=B:C:D</p>
+<ul>
+<li>A：一个数字，表示第几号服务器<br>集群模式下配置的/usr/zookeeper/zkData/myid文件里面的数据就是A的值</li>
+<li>B：服务器的ip地址</li>
+<li>C：与集群中Leader服务器交换信息的端口</li>
+<li>D：选举时专用端口，万一集群中的Leader服务器挂了，需要一个端口来重新进行选举，选出一个新的Leader，而这个端口就是用来执行选举时服务器相互通信的端口。</li>
+</ul>
+<p><strong>配置其余两台服务器</strong></p>
+<ul>
+<li>克隆第一台服务器</li>
+<li>进入克隆的服务器，修改linux中的ip地址</li>
+<li>修改/usr/zookeeper/zkData/myid中的数值为2</li>
+</ul>
+<p>第三台服务器，重复上面的步骤</p>
+<h3 id="集群操作"><a href="#集群操作" class="headerlink" title="集群操作"></a>集群操作</h3><ol>
+<li><p>每台服务器的防火墙<strong>必须关闭</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure></li>
+<li><p>启动第1台服务器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin目录下</span></span><br><span class="line">./zkServer.sh start</span><br></pre></td></tr></table></figure></li>
+<li><p>查看状态</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkServer.sh status</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/zookeeper/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Error contacting service. It is probably not running.</span><br></pre></td></tr></table></figure>
+
+<p>注意：因为没有超过半数以上的服务器，所以集群失败 （防火墙没有关闭也会导致失败）</p>
+</li>
+<li><p>当启动第2台服务器时</p>
+<p>查看第1台的状态：Mode: <strong>follower</strong></p>
+<p>查看第2台的状态：Mode: <strong>leader</strong></p>
+</li>
+</ol>
+<h3 id="客户端命令行操作"><a href="#客户端命令行操作" class="headerlink" title="客户端命令行操作"></a>客户端命令行操作</h3><ul>
+<li><p>启动客户端</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./zkCli.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>退出客户端</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">quit</span><br></pre></td></tr></table></figure></li>
+<li><p>显示所有操作命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">help</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前znode中所包含的内容</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ls /</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前节点详细数据</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 替代老版本的 ls2 /</span></span><br><span class="line">ls -s /   </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>cZxid：创建节点的事务<br>每次修改ZooKeeper状态都会收到一个zxid形式的时间戳，也就是ZooKeeper事务ID。<br>事务ID是ZooKeeper中所有修改总的次序。<br>每个修改都有唯一的zxid，如果zxid1小于zxid2，那么zxid1在zxid2之前发生。</li>
+<li>ctime：被创建的毫秒数(从1970年开始)</li>
+<li>mZxid：最后更新的事务zxid</li>
+<li>mtime：最后修改的毫秒数(从1970年开始)</li>
+<li>pZxid：最后更新的子节点zxid</li>
+<li>cversion：创建版本号，子节点修改次数</li>
+<li>dataVersion：数据变化版本号</li>
+<li>aclVersion：权限版本号</li>
+<li>ephemeralOwner：如果是临时节点，这个是znode拥有者的session id。如果不是临时节点则是0。</li>
+<li>dataLength：数据长度</li>
+<li>numChildren：子节点数</li>
+</ul>
+</li>
+<li><p>创建节点</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 普通节点</span></span><br><span class="line">create /china</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 普通节点，并保存数据</span></span><br><span class="line">create /ru &quot;pujing&quot;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 多级节点，必须一级一级的创建</span></span><br><span class="line">create /japan</span><br><span class="line">create /japan/Tokyo</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 短暂节点，退出客户端就消失</span></span><br><span class="line">create -e /uk</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 自带序号的节点</span></span><br><span class="line">create -s /ru/city  # 执行三次</span><br><span class="line">ls /ru   #[city0000000000, city0000000001, city0000000002]</span><br></pre></td></tr></table></figure></li>
+<li><p>获得节点的数据值</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">get /ru</span><br></pre></td></tr></table></figure></li>
+<li><p>修改节点的数据值</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">set /ru &quot;aaaa&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>删除节点</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">delete /china</span><br></pre></td></tr></table></figure></li>
+<li><p>递归删除节点 （非空节点，节点下有子节点），节点和子节点全部删除</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">deleteall /ru</span><br></pre></td></tr></table></figure></li>
+<li><p>监听 <strong>节点的值变化</strong> 或 <strong>子节点变化（路径变化）</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1,在server3主机上注册监听/japan节点的数据变化</span></span><br><span class="line">addWatch /japan</span><br><span class="line"><span class="meta">#</span><span class="bash"> 2,在Server1主机上，对/japan节点进行：修改节点数据，创建子节点，删除节点 等操作时</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3，Server3会立刻响应</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="API应用"><a href="#API应用" class="headerlink" title="API应用"></a>API应用</h2><h3 id="IDEA环境搭建"><a href="#IDEA环境搭建" class="headerlink" title="IDEA环境搭建"></a>IDEA环境搭建</h3><ol>
+<li><p>创建一个Maven工程</p>
+</li>
+<li><p>pom文件添加依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.zookeeper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.6.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>在resources下创建log4j.properties日志文件</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">log4j.rootLogger</span>=<span class="string">INFO, stdout</span></span><br><span class="line"><span class="meta">log4j.appender.stdout</span>=<span class="string">org.apache.log4j.ConsoleAppender</span></span><br><span class="line"><span class="meta">log4j.appender.stdout.layout</span>=<span class="string">org.apache.log4j.PatternLayout</span></span><br><span class="line"><span class="meta">log4j.appender.stdout.layout.ConversionPattern</span>=<span class="string">%d %p [%c] - %m%n</span></span><br><span class="line"></span><br><span class="line"><span class="meta">log4j.appender.logfile</span>=<span class="string">org.apache.log4j.FileAppender</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.File</span>=<span class="string">target/zk.log</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.layout</span>=<span class="string">org.apache.log4j.PatternLayout</span></span><br><span class="line"><span class="meta">log4j.appender.logfile.layout.ConversionPattern</span>=<span class="string">%d %p [%c] - %m%n</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="创建ZooKeeper客户端"><a href="#创建ZooKeeper客户端" class="headerlink" title="创建ZooKeeper客户端"></a>创建ZooKeeper客户端</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ZkTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//集群ip</span></span><br><span class="line">    <span class="keyword">private</span> String connStr = </span><br><span class="line">        <span class="string">&quot;192.168.146.128:2181,192.168.146.129:2181,192.168.146.130:2181&quot;</span>;</span><br><span class="line">    <span class="comment">//超时时间:60秒</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sessionTimeout = <span class="number">1000</span> * <span class="number">60</span>;</span><br><span class="line">    <span class="comment">//zk客户端</span></span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zkCli;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建zk客户端</span></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createZkCli</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//监听器</span></span><br><span class="line">        Watcher watcher = <span class="keyword">new</span> Watcher() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent watchedEvent)</span> </span>&#123;</span><br><span class="line">                System.out.println( watchedEvent.getType() );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//创建zk，参数：1集群ip，2超时时间，3监听器</span></span><br><span class="line">        zkCli = <span class="keyword">new</span> ZooKeeper(connStr, sessionTimeout, watcher);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h3><p>节点权限：</p>
+<ul>
+<li>OPEN_ACL_UNSAFE：创建开放节点，允许任意操作 （用的最多，其余的权限用的很少）</li>
+<li>READ_ACL_UNSAFE：创建只读节点</li>
+<li>CREATOR_ALL_ACL：创建者才有全部权限</li>
+</ul>
+<p>节点类型：</p>
+<ul>
+<li>persistent：持久化目录节点</li>
+<li>persistent_sequential：持久化顺序编号目录节点</li>
+<li>ephemeral：临时目录节点</li>
+<li>ephemeral_sequential：临时顺序编号目录节点</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建节点</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createNode</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建zkNode节点，参数：1节点路径，2节点数据，3节点权限，4节点的类型</span></span><br><span class="line">    String node = zkCli.create(<span class="string">&quot;/china&quot;</span>, <span class="string">&quot;good&quot;</span>.getBytes(),</span><br><span class="line">                               ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line"></span><br><span class="line">    System.out.println(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查询节点的值"><a href="#查询节点的值" class="headerlink" title="查询节点的值"></a>查询节点的值</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取节点的值</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getNodeData</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//查询节点数据，参数：1节点路径，2是否监听，3存放到stat</span></span><br><span class="line">    <span class="keyword">byte</span>[] data = zkCli.getData(<span class="string">&quot;/china&quot;</span>, <span class="keyword">false</span>, <span class="keyword">new</span> Stat());</span><br><span class="line">    String s = <span class="keyword">new</span> String(data);</span><br><span class="line">    System.out.println(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改节点的值"><a href="#修改节点的值" class="headerlink" title="修改节点的值"></a>修改节点的值</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//修改节点的值</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateNodeData</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//修改节点数据，参数：1节点路径，2修改数据，3节点版本(ls -s /china可查询到)</span></span><br><span class="line">    Stat stat = zkCli.setData(<span class="string">&quot;/china&quot;</span>, <span class="string">&quot;very good&quot;</span>.getBytes(), <span class="number">0</span>);</span><br><span class="line">    System.out.println(stat);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//删除节点</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//删除节点，参数：1节点路径，2节点版本(ls -s /china可查询到)</span></span><br><span class="line">    zkCli.delete(<span class="string">&quot;/china&quot;</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取子节点"><a href="#获取子节点" class="headerlink" title="获取子节点"></a>获取子节点</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取子节点</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChildren</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取子节点，参数：1节点路径，2是否监听</span></span><br><span class="line">    List&lt;String&gt; childrenList = zkCli.getChildren(<span class="string">&quot;/&quot;</span>, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String children : childrenList) &#123;</span><br><span class="line">        System.out.println(children);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取子节点，并监听"><a href="#获取子节点，并监听" class="headerlink" title="获取子节点，并监听"></a>获取子节点，并监听</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取子节点，并且监听</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getChildren2</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取子节点，参数：1节点路径，2是否监听</span></span><br><span class="line">    List&lt;String&gt; childrenList = zkCli.getChildren(<span class="string">&quot;/&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (String children : childrenList) &#123;</span><br><span class="line">        System.out.println(children);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 让线程不停止，等待监听的响应</span></span><br><span class="line">    System.in.read();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序在运行的过程中，我们在linux的zk客户端下创建一个节点<br>IDEA的控制台就会做出响应，调用监听器，打印：NodeChildrenChanged–/</p>
+<h3 id="判断Znode是否存在"><a href="#判断Znode是否存在" class="headerlink" title="判断Znode是否存在"></a>判断Znode是否存在</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//判断节点是否存在</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exist</span><span class="params">()</span> <span class="keyword">throws</span> KeeperException, InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断节点是否存在，参数：1节点路径，2是否监听</span></span><br><span class="line">    Stat exists = zkCli.exists(<span class="string">&quot;/china&quot;</span>, <span class="keyword">false</span>);</span><br><span class="line">    System.out.println(exists==<span class="keyword">null</span>?<span class="string">&quot;不存在&quot;</span>:<span class="string">&quot;存在&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>案例-模拟美团商家上下线</p>
+<p>需求：<br>模拟美团服务平台，商家营业或打烊，用户会接收到消息<br>提前在根节点下，创建好 /meituan 节点</p>
+<h3 id="商家服务类"><a href="#商家服务类" class="headerlink" title="商家服务类"></a>商家服务类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//商家服务类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShopServer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String connStr = </span><br><span class="line">        <span class="string">&quot;192.168.146.128:2181,192.168.146.129:2181,192.168.146.130:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sessionTimeout = <span class="number">60</span> * <span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接zk客户端（商家联系美团）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getConnect</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        zk = <span class="keyword">new</span> ZooKeeper(connStr, sessionTimeout, <span class="keyword">new</span> Watcher()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent watchedEvent)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将服务器节点注册（商家入住美团）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(String shopName)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//EPHEMERAL_SEQUENTIAL是短暂有序型的节点</span></span><br><span class="line">        zk.create(<span class="string">&quot;/meituan/shop&quot;</span>, shopName.getBytes(),</span><br><span class="line">                ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//业务逻辑处理（做生意）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">business</span><span class="params">(String shopName)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(shopName + <span class="string">&quot;正在营业中。。。&quot;</span>);</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ShopServer shopServer = <span class="keyword">new</span> ShopServer();</span><br><span class="line">        <span class="comment">//连接zk客户端（商家联系美团）</span></span><br><span class="line">        shopServer.getConnect();</span><br><span class="line">        <span class="comment">//将服务器节点注册（商家入住美团）</span></span><br><span class="line">        shopServer.register(args[<span class="number">0</span>]);</span><br><span class="line">        <span class="comment">//业务逻辑处理（商家做生意）</span></span><br><span class="line">        shopServer.business(args[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="顾客类"><a href="#顾客类" class="headerlink" title="顾客类"></a>顾客类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//顾客类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customers</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String connStr = </span><br><span class="line">        <span class="string">&quot;192.168.146.128:2181,192.168.146.129:2181,192.168.146.130:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sessionTimeout = <span class="number">60</span> * <span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//连接zk客户端（客户打开美团）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getConnet</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        zk = <span class="keyword">new</span> ZooKeeper(connStr, sessionTimeout, <span class="keyword">new</span> Watcher()&#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent watchedEvent)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//重新获取所有商家</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    getShopList();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取/meituan的子节点信息，从中获取服务器信息列表，并监听（从美团中获取商家列表）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getShopList</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; shopList = zk.getChildren(<span class="string">&quot;/meituan&quot;</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; shops = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String shop : shopList) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] data = zk.getData(<span class="string">&quot;/meituan/&quot;</span> + shop, <span class="keyword">false</span>, <span class="keyword">new</span> Stat());</span><br><span class="line">            shops.add(<span class="keyword">new</span> String(data));</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;正在印业的商家：&quot;</span> + shops);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//业务进程启动 （对比商家，点餐）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">business</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;顾客正在浏览商家。。。&quot;</span>);</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Customers customers = <span class="keyword">new</span> Customers();</span><br><span class="line">        <span class="comment">//连接zk客户端（客户打开美团）</span></span><br><span class="line">        customers.getConnet();</span><br><span class="line">        <span class="comment">//获取/meituan的子节点信息，从中获取服务器信息列表，并监听（从美团中获取商家列表）</span></span><br><span class="line">        customers.getShopList();</span><br><span class="line">        <span class="comment">//业务进程启动 （对比商家，点餐）</span></span><br><span class="line">        customers.business();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><ol>
+<li><p>运行顾客类，就会得到商家列表</p>
+</li>
+<li><p>首先在linux的客户端中添加或删除商家，然后观察顾客类的控制台输出（商家列表会立刻更新出最新商家）</p>
+</li>
+<li><p>运行商家类（以main方法带参数的形式运行）run –&gt; Edit Configurations命令</p>
+ <img src="https://pic1.imgdb.cn/item/637059db16f2c2beb1446d06.jpg" style="zoom: 67%;" /></li>
+</ol>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>在zookeeper中使用传统的锁引发的 “羊群效应” ：1000个人创建节点，只有一个人能成功，999人需要等待！</p>
+<p>避免“羊群效应”，zookeeper采用分布式锁<br><img src="https://pic1.imgdb.cn/item/63705aa616f2c2beb1454361.jpg" style="zoom: 50%;" /></p>
+<p><strong>原理：</strong></p>
+<ol>
+<li>所有请求进来，在/lock下创建 临时顺序节点 ，放心，zookeeper会帮你编号排序</li>
+<li>判断自己是不是/lock下最小的节点</li>
+<li>是，获得锁（创建节点）</li>
+<li>否，对前面小我一级的节点进行监听</li>
+<li>获得锁请求，处理完业务逻辑，释放锁（删除节点），后一个节点得到通知（比你年轻的死了，你成为最嫩的了）</li>
+<li>重复步骤2</li>
+</ol>
+<p><strong>实现：</strong></p>
+<p>基于zookeeper原生态的客户端类实现分布式是非常麻烦的，我们使用apahce提供了一个zookeeper客户端来实现，<strong>Curator</strong>：<a href="http://curator.apache.org/">http://curator.apache.org/</a></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.curator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>curator-recipes<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span> <span class="comment">&lt;!-- 网友投票最牛逼版本 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在控制层中加入分布式锁的逻辑代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductAction</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProductService productService;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String connectString = </span><br><span class="line">        <span class="string">&quot;192.168.204.141:2181,192.168.204.142:2181,192.168.204.143:2181&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/product/reduce&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">reduce</span><span class="params">( <span class="keyword">int</span> id)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 重试策略 （1000毫秒试1次，最多试3次）</span></span><br><span class="line">        RetryPolicy retryPolicy = <span class="keyword">new</span> ExponentialBackoffRetry(<span class="number">1000</span>, <span class="number">3</span>);</span><br><span class="line">        <span class="comment">//1.创建curator工具对象</span></span><br><span class="line">        CuratorFramework client =</span><br><span class="line">       	CuratorFrameworkFactory.newClient(connectString, retryPolicy);</span><br><span class="line">        client.start();</span><br><span class="line">        <span class="comment">//2.根据工具对象创建“内部互斥锁”</span></span><br><span class="line">        InterProcessMutex lock = <span class="keyword">new</span> InterProcessMutex(client, <span class="string">&quot;/product_&quot;</span>+id);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//3.加锁</span></span><br><span class="line">            lock.acquire();</span><br><span class="line">            productService.reduceStock(id);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            <span class="keyword">if</span>(e <span class="keyword">instanceof</span> RuntimeException)&#123;</span><br><span class="line">            	<span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//4.释放锁</span></span><br><span class="line">            lock.release();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;ok&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
+      <tags>
+        <tag>zookeeper</tag>
       </tags>
   </entry>
 </search>

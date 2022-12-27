@@ -15818,9 +15818,9 @@ c;
       </tags>
   </entry>
   <entry>
-    <title>分布式</title>
+    <title>zookeeper</title>
     <url>/2022/11/12/%E5%88%86%E5%B8%83%E5%BC%8F/</url>
-    <content><![CDATA[<p>zookeeper，dubbo</p>
+    <content><![CDATA[<p>zookeeper</p>
 <span id="more"></span>
 
 <h1 id="zookeeper"><a href="#zookeeper" class="headerlink" title="zookeeper"></a>zookeeper</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>介绍</strong></p>
@@ -16145,6 +16145,182 @@ c;
 <p>在控制层中加入分布式锁的逻辑代码</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductAction</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProductService productService;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String connectString = </span><br><span class="line">        <span class="string">&quot;192.168.204.141:2181,192.168.204.142:2181,192.168.204.143:2181&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/product/reduce&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">reduce</span><span class="params">( <span class="keyword">int</span> id)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 重试策略 （1000毫秒试1次，最多试3次）</span></span><br><span class="line">        RetryPolicy retryPolicy = <span class="keyword">new</span> ExponentialBackoffRetry(<span class="number">1000</span>, <span class="number">3</span>);</span><br><span class="line">        <span class="comment">//1.创建curator工具对象</span></span><br><span class="line">        CuratorFramework client =</span><br><span class="line">       	CuratorFrameworkFactory.newClient(connectString, retryPolicy);</span><br><span class="line">        client.start();</span><br><span class="line">        <span class="comment">//2.根据工具对象创建“内部互斥锁”</span></span><br><span class="line">        InterProcessMutex lock = <span class="keyword">new</span> InterProcessMutex(client, <span class="string">&quot;/product_&quot;</span>+id);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//3.加锁</span></span><br><span class="line">            lock.acquire();</span><br><span class="line">            productService.reduceStock(id);</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            <span class="keyword">if</span>(e <span class="keyword">instanceof</span> RuntimeException)&#123;</span><br><span class="line">            	<span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//4.释放锁</span></span><br><span class="line">            lock.release();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;ok&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
+      <tags>
+        <tag>zookeeper</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RabbitMQ</title>
+    <url>/2022/12/27/RabbitMQ/</url>
+    <content><![CDATA[<p>rabbitMQ</p>
+<span id="more"></span>
+
+<h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>什么是MQ：</strong></p>
+<ul>
+<li>消息队列中间件，是分布式系统中的重要组件</li>
+<li>主要解决，异步处理，应用解耦，流量削峰等问题</li>
+<li>从而实现高性能，高可用，可伸缩和最终一致性的架构</li>
+<li>使用较多的消息队列产品：RabbitMQ，RocketMQ，ActiveMQ，ZeroMQ，Kafka等</li>
+</ul>
+<p><strong>AMQP高级消息队列协议：</strong></p>
+<ul>
+<li>即Advanced Message Queuing Protocol，一个提供统一消息服务的应用层标准高级消息队列协议</li>
+<li>协议：数据在传输的过程中必须要遵守的规则</li>
+<li>基于此协议的客户端可以与消息中间件传递消息</li>
+<li>并不受产品、开发语言等条件的限制</li>
+</ul>
+<p><strong>JMS：</strong></p>
+<ul>
+<li>Java Message Server，Java消息服务应用程序接口， 一种规范，和JDBC担任的角色类似</li>
+<li>是一个Java平台中关于面向消息中间件的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信</li>
+</ul>
+<p>JMS是定义了统一接口，统一消息操作；AMQP通过协议统一数据交互格式<br>JMS必须是java语言；AMQP只是协议，与语言无关</p>
+<p><strong>Erlang语言：</strong></p>
+<ul>
+<li>Erlang（[‘ə:læŋ]）是一种通用的面向<strong>并发</strong>的编程语言，它由瑞典电信设备制造商爱立信所辖的CS-Lab开发，目的是创造一种可以应对大规模并发活动的编程语言和运行环境</li>
+<li>最初是由爱立信专门为<strong>通信应用设计</strong>的，比如控制交换机或者变换协议等，因此非常适合构建分布式，实时软并行计算系统</li>
+<li>Erlang运行时环境是一个<strong>虚拟机</strong>，有点像Java的虚拟机，这样代码一经编译，同样可以随处运行</li>
+</ul>
+<p><strong>为什么选择RabbitMQ：</strong></p>
+<ul>
+<li>Erlang语言开发，AMQP的最佳搭档，安装部署简单，上手门槛低</li>
+<li>企业级消息队列，经过大量实践考验的高可靠，大量成功的应用案例，例如阿里、网易等一线大厂都有使用</li>
+<li>有强大的WEB管理页面</li>
+<li>强大的社区支持，为技术进步提供动力</li>
+<li>支持消息持久化、支持消息确认机制、灵活的任务分发机制等，支持功能非常丰富</li>
+<li>集群扩展很容易，并且可以通过增加节点实现成倍的性能提升</li>
+<li>总结：如果你希望使用一个可靠性高、功能强大、易于管理的消息队列系统那么就选择</li>
+</ul>
+<p><strong>RabbitMQ各组件功能：</strong></p>
+<p><img src="https://pic.imgdb.cn/item/63aab85108b6830163a24d8c.jpg"></p>
+<ul>
+<li><strong>Broker</strong>：消息队列服务器实体</li>
+<li><strong>Virtual Host</strong>：虚拟主机<ul>
+<li>标识一批交换机、消息队列和相关对象，形成的整体</li>
+<li>虚拟主机是共享相同的身份认证和加密环境的独立服务器域</li>
+<li>每个vhost本质上就是一个mini版的RabbitMQ服务器，拥有自己的队列、交换器、绑定和权限机制</li>
+<li>vhost是AMQP概念的基础，RabbitMQ默认的vhost是 /，必须在链接时指定</li>
+</ul>
+</li>
+<li><strong>Exchange</strong>：交换器（路由）<br>用来接收生产者发送的消息并将这些消息路由给服务器中的队列</li>
+<li><strong>Queue</strong>：消息队列<ul>
+<li>用来保存消息直到发送给消费者。</li>
+<li>它是消息的容器，也是消息的终点。</li>
+<li>一个消息可投入一个或多个队列。</li>
+<li>消息一直在队列里面，等待消费者连接到这个队列将其取走。</li>
+</ul>
+</li>
+<li><strong>Banding</strong>：绑定，用于消息队列和交换机之间的关联。</li>
+<li><strong>Channel</strong>：通道（信道）<ul>
+<li>多路复用连接中的一条独立的双向数据流通道。</li>
+<li>信道是建立在真实的TCP连接内的 <strong>虚拟链接</strong></li>
+<li>AMQP命令都是通过信道发出去的，不管是发布消息、订阅队列还是接收消息，都是通过信道完成的</li>
+<li>因为对于操作系统来说，建立和销毁TCP连接都是非常昂贵的开销，所以引入了信道的概念，用来复用TCP连接。</li>
+</ul>
+</li>
+<li><strong>Connection</strong>：网络连接，比如一个TCP连接。</li>
+<li><strong>Publisher</strong>：消息的生产者，也是一个向交换器发布消息的客户端应用程序。</li>
+<li><strong>Consumer</strong>：消息的消费者，表示一个从消息队列中取得消息的客户端应用程序。</li>
+<li><strong>Message</strong>：消息<ul>
+<li>消息是不具名的，它是由消息头和消息体组成。</li>
+<li>消息体是不透明的，而消息头则是由一系列的可选属性组成，这些属性包括routing-key(路由键)、priority(优先级)、delivery-mode(消息可能需要持久性存储[消息的路由模式])等。</li>
+</ul>
+</li>
+</ul>
+<h2 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>想要安装RabbitMQ，必须先安装erlang语言环境，类似安装tomcat，必须先安装JDK</p>
+<p>1，下载好安装包<br>erlang下载：<a href="https://dl.bintray.com/rabbitmq-erlang/rpm/erlang">https://dl.bintray.com/rabbitmq-erlang/rpm/erlang</a><br>socat下载：<a href="http://repo.iotti.biz/CentOS/7/x86_64/socat-1.7.3.2-5.el7.lux.x86_64.rpm">http://repo.iotti.biz/CentOS/7/x86_64/socat-1.7.3.2-5.el7.lux.x86_64.rpm</a><br>RabbitMQ下载：<a href="https://www.rabbitmq.com/install-rpm.html#downloads">https://www.rabbitmq.com/install-rpm.html#downloads</a></p>
+<p>2，将安装包移动到Linux服务器的 /opt/ 目录下</p>
+<p>3，执行安装命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rpm -ivh erlang-21.3.8.16-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh socat-1.7.3.2-5.el7.lux.x86_64.rpm</span><br><span class="line">rpm -ivh rabbitmq-server-3.8.6-1.el7.noarch.rpm</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>启动后台管理插件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+<p>启动RabbitMQ:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl start rabbitmq-server.service</span><br></pre></td></tr></table></figure>
+
+<p>重启RabbitMQ:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl restart rabbitmq-server.service</span><br></pre></td></tr></table></figure>
+
+<p>关闭RabbitMQ:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl stop rabbitmq-server.service</span><br></pre></td></tr></table></figure>
+
+<p>查看RabbitMQ状态:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl status rabbitmq-server.service</span><br></pre></td></tr></table></figure>
+
+<p>查看进程:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ps -ef | grep rabbitmq</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>测试：</strong></p>
+<ol>
+<li>关闭防火墙： <code>systemctl stop firewalld</code></li>
+<li>浏览器输入地址：<code>http://ip地址:15672</code></li>
+<li>默认用户密码：guest，但是guest用户默认不允许远程连接</li>
+</ol>
+<p><strong>用户相关操作</strong></p>
+<p>创建用户：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rabbitmqctl add_user de 123</span><br></pre></td></tr></table></figure>
+
+<p>设置用户的角色：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rabbitmqctl set_user_tags de administrator</span><br></pre></td></tr></table></figure>
+
+<p>设置用户的权限:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rabbitmqctl set_permissions -p &quot;/&quot; de &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br></pre></td></tr></table></figure>
+
+<p>查看所有用户:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rabbitmqctl list_users</span><br></pre></td></tr></table></figure>
+
+<p>修改用户密码：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rabbitmqctl change_password 用户名 密码</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>管理界面介绍</strong>：</p>
+<ul>
+<li>overview：概览</li>
+<li>connections：查看链接情况</li>
+<li>channels：信道（通道）情况</li>
+<li>Exchanges：交换机（路由）情况，默认4类7个</li>
+<li>Queues：消息队列情况</li>
+<li>Admin：管理员列表</li>
+<li>端口：<br><strong>5672</strong>：RabbitMQ提供给编程语言客户端链接的端口<br><strong>15672</strong>：RabbitMQ管理界面的端口<br><strong>25672</strong>：RabbitMQ集群的端口</li>
+</ul>
+]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
+      <tags>
+        <tag>RabbitMQ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dubbo</title>
+    <url>/2022/12/27/dubbo/</url>
+    <content><![CDATA[<p>dubbo</p>
+<span id="more"></span>
+
 <h1 id="dubbo"><a href="#dubbo" class="headerlink" title="dubbo"></a>dubbo</h1><h2 id="分布式系统"><a href="#分布式系统" class="headerlink" title="分布式系统"></a>分布式系统</h2><p>《分布式系统原理与范型》定义：</p>
 <ul>
 <li>“分布式系统是若干独立计算机的集合，这些计算机对于用户来说就像单个相关系统”</li>
@@ -16433,10 +16609,10 @@ c;
 <p><strong>实现方式：</strong></p>
 <p>在 管理控制台配置服务降级：屏蔽和容错</p>
 <ul>
-<li>屏蔽：mock=force:return+null 表示消费方对该服务的方法调用都 直接返回 null 值，不发起远程调用。<pre><code>        用来屏蔽不重要服务不可用时对调用方的影响。
+<li>屏蔽：mock=force:return+null 表示消费方对该服务的方法调用都 直接返回 null 值，不发起远程调用。<pre><code>用来屏蔽不重要服务不可用时对调用方的影响。
 </code></pre>
 </li>
-<li>容错：mock=fail:return+null 表示消费方对该服务的方法调用在 失败后，再返回 null 值，不抛异常。<pre><code>        用来容忍不重要服务不稳定时对调用方的影响。
+<li>容错：mock=fail:return+null 表示消费方对该服务的方法调用在 失败后，再返回 null 值，不抛异常。<pre><code>用来容忍不重要服务不稳定时对调用方的影响。
 </code></pre>
 </li>
 </ul>
@@ -16504,9 +16680,479 @@ c;
 <li>启动服务消费者web层（改为war包）</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
       <tags>
-        <tag>zookeeper</tag>
         <tag>dubbo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis</title>
+    <url>/2022/12/27/Redis/</url>
+    <content><![CDATA[<p>redis</p>
+<span id="more"></span>
+
+<h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><h2 id="互联网架构演变"><a href="#互联网架构演变" class="headerlink" title="互联网架构演变"></a>互联网架构演变</h2><h3 id="第1阶段"><a href="#第1阶段" class="headerlink" title="第1阶段"></a>第1阶段</h3><p>数据访问量不大，简单的架构即可搞定！<br><img src="https://pic.imgdb.cn/item/638c057716f2c2beb103e423.jpg" style="zoom:67%;" /></p>
+<h3 id="第2阶段"><a href="#第2阶段" class="headerlink" title="第2阶段"></a>第2阶段</h3><p>数据访问量大，使用缓存技术来缓解数据库的压力。<br>不同的业务访问不同的数据库|<br><img src="https://pic.imgdb.cn/item/638c05ab16f2c2beb1042a5b.jpg" style="zoom:67%;" /></p>
+<h3 id="第3阶段"><a href="#第3阶段" class="headerlink" title="第3阶段"></a>第3阶段</h3><p>主从读写分离。<br>之前的缓存确实能够缓解数据库的压力，但是写和读都集中在一个数据库上，压力又来了。<br>一个数据库负责写，一个数据库负责读。分工合作。愉快！</p>
+<p>让master（主数据库）来响应事务性<strong>（增删改）</strong>操作，让slave（从数据库）来响应非事务性<strong>（查询）</strong>操作，然后再采用主从复制来把master上的事务性操作同步到slave数据库中</p>
+<p>mysql的master/slave就是网站的标配！<br><img src="https://pic.imgdb.cn/item/638c05f816f2c2beb1049bfa.jpg" style="zoom:67%;" /></p>
+<h3 id="第4阶段"><a href="#第4阶段" class="headerlink" title="第4阶段"></a>第4阶段</h3><p>mysql的主从复制，读写分离的基础上，mysql的主库开始出现瓶颈<br>由于MyISAM使用表锁，所以并发性能特别差<br>分库分表开始流行，mysql也提出了表分区，虽然不稳定，但我们看到了希望<br>开始吧，mysql集群<br><img src="https://pic.imgdb.cn/item/638c065016f2c2beb1052cb3.jpg" style="zoom: 50%;" /></p>
+<h2 id="Redis介绍"><a href="#Redis介绍" class="headerlink" title="Redis介绍"></a>Redis介绍</h2><h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><ul>
+<li>互联网需求的3高<ul>
+<li>高并发，高可扩，高性能</li>
+</ul>
+</li>
+<li>Redis 是一种运行速度很快，并发性能很强，并且运行在内存上的NoSql（not only sql）数据库</li>
+<li>NoSQL数据库 和 传统数据库 相比的优势<ul>
+<li>NoSQL数据库无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式。</li>
+<li>而在关系数据库里，增删字段是一件非常麻烦的事情。如果是非常大数据量的表，增加字段简直就是一个噩梦</li>
+</ul>
+</li>
+<li>Redis的常用使用场景<ul>
+<li>缓存，毫无疑问这是Redis当今最为人熟知的使用场景。在提升服务器性能方面非常有效；一些频繁被访问的数据，经常被访问的数据如果放在关系型数据库，每次查询的开销都会很大，而放在redis中，因为redis 是放在内存中的可以很高效的访问</li>
+<li>排行榜，在使用传统的关系型数据库（mysql oracle 等）来做这个事儿，非常的麻烦，而利用Redis的SortSet(有序集合)数据结构能够简单的搞定；</li>
+<li>计算器/限速器，利用Redis中原子性的自增操作，我们可以统计类似用户点赞数、用户访问数等，这类操作如果用MySQL，频繁的读写会带来相当大的压力；限速器比较典型的使用场景是限制某个用户访问某个API的频率，常用的有抢购时，防止用户疯狂点击带来不必要的压力；</li>
+<li>好友关系，利用集合的一些命令，比如求交集、并集、差集等。可以方便搞定一些共同好友、共同爱好之类的功能；</li>
+<li>简单消息队列，除了Redis自身的发布/订阅模式，我们也可以利用List来实现一个队列机制，比如：到货通知、邮件发送之类的需求，不需要高可靠，但是会带来非常大的DB压力，完全可以用List来完成异步解耦；</li>
+<li>Session共享，以jsp为例，默认Session是保存在服务器的文件中，如果是集群服务，同一个用户过来可能落在不同机器上，这就会导致用户频繁登陆；采用Redis保存Session后，无论用户落在那台机器上都能够获取到对应的Session信息。</li>
+</ul>
+</li>
+</ul>
+<h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><p> Redis/Memcache/MongoDB都是nosql数据库的著名代表，区别：</p>
+<p><strong>Redis和Memcache</strong></p>
+<ul>
+<li>Redis和Memcache都是内存数据库。不过memcache还可用于缓存其他东西，例如图片、视频等等。</li>
+<li>memcache 数据结构单一kv，redis 更丰富一些，还提供 list，set， hash 等数据结构的存储，有效的减少网络 IO 的次数</li>
+<li>虚拟内存–Redis当物理内存用完时，可以将一些很久没用到的value交换到磁盘</li>
+<li>存储数据安全–memcache挂掉后，数据没了（没有持久化机制）；redis可以定期保存到磁盘（持久化）</li>
+<li>灾难恢复–memcache挂掉后，数据不可恢复; redis数据丢失后可以通过RBD或AOF恢复</li>
+</ul>
+<p><strong>Redis和MongoDB</strong></p>
+<ul>
+<li>redis和mongodb并不是竞争关系，更多的是一种<strong>协作共存</strong>的关系。</li>
+<li>mongodb本质上还是硬盘数据库，在复杂查询时仍然会有大量的资源消耗，而且在处理复杂逻辑时仍然要不可避免地进行多次查询。</li>
+<li>这时就需要redis或Memcache这样的内存数据库来作为中间层进行缓存和加速。</li>
+<li>比如在某些复杂页面的场景中，整个页面的内容如果都从mongodb中查询，可能要几十个查询语句，耗时很长。如果需求允许，则可以把整个页面的对象缓存至redis中，定期更新。这样mongodb和redis就能很好地协作起来</li>
+</ul>
+<h3 id="CAP原理"><a href="#CAP原理" class="headerlink" title="CAP原理"></a>CAP原理</h3><h4 id="CAP介绍"><a href="#CAP介绍" class="headerlink" title="CAP介绍"></a>CAP介绍</h4><ul>
+<li>传统的关系型数据库事务具备ACID：<ul>
+<li>A：原子性<br>C：一致性<br>I：独立性<br>D：持久性</li>
+</ul>
+</li>
+<li>分布式数据库的CAP:<ul>
+<li>C（Consistency）：强一致性。<br>“all nodes see the same data at the same time”,所有节点在同一时间的数据完全一致。</li>
+<li>A（Availability）：高可用性。<br>“Reads and writes always succeed”，服务一直可用，而且要是正常的响应时间。</li>
+<li>P（Partition tolerance）：分区容错性。<br>分布式系统在遇到某节点或网络分区故障时，仍然能够对外提供满足一致性或可用性的服务。</li>
+</ul>
+</li>
+</ul>
+<h4 id="CAP理论"><a href="#CAP理论" class="headerlink" title="CAP理论"></a>CAP理论</h4><ul>
+<li>P 必选：<br> CAP理论提出就是针对分布式数据库环境的，所以，P这个属性必须容忍它的存在，而且是必须具备的。</li>
+<li>C 和 A 二选一：（ 因为P是必须的，那么我们需要选择的就是A和C。）<ul>
+<li>选择可用性 A，此时，那个失去联系的节点依然可以向系统提供服务，不过它的数据就不能保证是同步的了（失去了C属性）。</li>
+<li>选择一致性C，为了保证数据库的一致性，我们必须等待失去联系的节点恢复过来，在这个过程中，那个节点是不允许对外提供服务的，这时候系统处于不可用状态(失去了A属性)。</li>
+</ul>
+</li>
+<li> 例如：最常见的例子是读写分离，某个节点负责写入数据，然后将数据同步到其它节点，其它节点提供读取的服务，当两个节点出现通信问题时，你就面临着选择A（继续提供服务，但是数据不保证准确），C（用户处于等待状态，一直等到数据同步完成）。</li>
+</ul>
+<h4 id="CAP总结"><a href="#CAP总结" class="headerlink" title="CAP总结"></a>CAP总结</h4><ul>
+<li>分区是常态，不可避免，三者不可共存</li>
+<li>可用性 和 一致性 是一对冤家<br>一致性高，可用性低<br>一致性低，可用性高</li>
+<li>因此，根据 CAP 原理将 NoSQL 数据库分成了满足 CA 原则、满足 CP 原则和满足 AP 原则三 大类：<br>CA - 单点集群，满足一致性，可用性的系统，通常在可扩展性上不太强大。<br>CP - 满足一致性，分区容忍性的系统，通常性能不是特别高。<br>AP - 满足可用性，分区容忍性的系统，通常可能对一致性要求低一些。</li>
+</ul>
+<h2 id="Redis下载与安装"><a href="#Redis下载与安装" class="headerlink" title="Redis下载与安装"></a>Redis下载与安装</h2><p>redis：<a href="http://www.redis.net.cn/">http://www.redis.net.cn/</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>虽然可以在安装在windows操作系统，但是官方不推荐，所以我们一如既往的安装在linux上</p>
+<ol>
+<li><p>上传tar.gz包到Linux系统，并解压</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-5.0.4.tar.gz</span><br></pre></td></tr></table></figure></li>
+<li><p>安装gcc（必须有网络）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">忘记是否安装过，可以使用 gcc -v 命令查看gcc版本，如果没有安装过，会提示命令不存在</span></span><br><span class="line">yum -y install gcc</span><br></pre></td></tr></table></figure></li>
+<li><p>进入redis目录，进行编译</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure></li>
+<li><p>编译之后，开始安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="安装后配置"><a href="#安装后配置" class="headerlink" title="安装后配置"></a>安装后配置</h3><p>redis默认不会使用后台运行，如果你需要，修改配置文件：daemonize=yes，当你后台服务启动的时候，会写成一个进程文件运行。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /usr/redis/redis.conf  </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">daemonize yes</span><br></pre></td></tr></table></figure>
+
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>在 /usr/local/bin 目录下操作：</p>
+<ul>
+<li><p>启动Redis（以配置文件的方式）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">redis-server /usr/redis/redis.conf</span><br></pre></td></tr></table></figure></li>
+<li><p>关闭Redis</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 单实例关闭</span></span><br><span class="line">redis-cli shutdown</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 多实例关闭</span></span><br><span class="line">redis-cli -p 6379 shutdown</span><br></pre></td></tr></table></figure></li>
+<li><p>检查Redis是否启动</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 检测6379端口是否在监听</span></span><br><span class="line">netstat -lntp | grep 6379</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 检测后台进程是否存在</span></span><br><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure></li>
+<li><p>测试性能<br>执行命令后，命令不会自动停止，需要我们手动ctrl+c停止测试</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">redis-benchmark</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 以下是返回结果</span></span><br><span class="line">====== PING_INLINE ======</span><br><span class="line">100000 requests completed in 1.80 seconds # 1.8秒处理了10万个请求，性能要看笔记</span><br><span class="line">本的配置高低</span><br><span class="line">50 parallel clients</span><br><span class="line">3 bytes payload</span><br><span class="line">keep alive: 1</span><br><span class="line">87.69% &lt;= 1 milliseconds</span><br><span class="line">99.15% &lt;= 2 milliseconds</span><br><span class="line">99.65% &lt;= 3 milliseconds</span><br><span class="line">99.86% &lt;= 4 milliseconds</span><br><span class="line">99.92% &lt;= 5 milliseconds</span><br><span class="line">99.94% &lt;= 6 milliseconds</span><br><span class="line">99.97% &lt;= 7 milliseconds</span><br><span class="line">100.00% &lt;= 7 milliseconds</span><br><span class="line">55524.71 requests per second # 每秒处理的请求数量</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="客户端操作"><a href="#客户端操作" class="headerlink" title="客户端操作"></a>客户端操作</h3><ul>
+<li><p>连接redis客户端，并测试</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">redis-cli</span><br><span class="line">ping   # 返回 pong</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Ctrl + c 快捷键，退出Redis客户端。</span></span><br></pre></td></tr></table></figure></li>
+<li><p>默认16个数据库(0-15)，默认0号库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 选择5号库</span></span><br><span class="line">select 5</span><br></pre></td></tr></table></figure></li>
+<li><p>简单读写数据</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 保存数据</span></span><br><span class="line">set k1 v1</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 获取数据</span></span><br><span class="line">get kl</span><br></pre></td></tr></table></figure></li>
+<li><p>数据库 键 的数量</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">dbsize</span><br></pre></td></tr></table></figure></li>
+<li><p>清空数据库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 清空当前库</span></span><br><span class="line">flushdb</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 清空所有（16个）库，慎用！！</span></span><br><span class="line">flushall</span><br></pre></td></tr></table></figure></li>
+<li><p>模糊查询（key）<br>模糊查询keys命令，有三个通配符：</p>
+<ul>
+<li><p>*：通配任意个字符</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">keys *</span><br><span class="line">keys k*</span><br></pre></td></tr></table></figure></li>
+<li><p>? ：通配单个字符</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">keys k?</span><br></pre></td></tr></table></figure></li>
+<li><p>[]：通配括号内的某一个字符</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">keys r[ae]dis</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>exists key：判断某个key是否存在</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">exists k1</span><br></pre></td></tr></table></figure></li>
+<li><p>move key db：移动（剪切，粘贴）键到几号库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 将k1移动到8号库</span></span><br><span class="line">move k1 8</span><br></pre></td></tr></table></figure></li>
+<li><p>ttl key：查看键还有多久过期</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ttl x1</span><br><span class="line"><span class="meta">#</span><span class="bash"> （-1:永不过期，-2:已过期，正数:过期时间）</span></span><br></pre></td></tr></table></figure></li>
+<li><p>expire key 秒：为键设置过期时间（生命倒计时）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 设置k1的过期时间为10秒（10秒后自动销毁）</span></span><br><span class="line">expire k1 10 </span><br></pre></td></tr></table></figure></li>
+<li><p>type key：查看键的数据类型</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">type k1</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Redis的使用"><a href="#Redis的使用" class="headerlink" title="Redis的使用"></a>Redis的使用</h2><h3 id="五大数据类型"><a href="#五大数据类型" class="headerlink" title="五大数据类型"></a>五大数据类型</h3><p>操作文档：<a href="http://redisdoc.com/">http://redisdoc.com/</a></p>
+<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><ul>
+<li><p>set/get/del/append/strlen</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">set k1 v1 # 保存数据</span><br><span class="line"></span><br><span class="line">get k1  # 获取数据k1</span><br><span class="line"></span><br><span class="line">del k1  # 删除数据k1</span><br><span class="line"></span><br><span class="line">append k1 abc # 往k1的值追加数据abc</span><br><span class="line"></span><br><span class="line">strlen k1  # 返回k1值的长度（字符数量）</span><br></pre></td></tr></table></figure></li>
+<li><p>incr/decr/incrby/decrby：加减操作，操作的必须是数字</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">incr k1  # k1自增1（相当于++）</span><br><span class="line"></span><br><span class="line">decr k1  # k1自减1（相当于--）</span><br><span class="line"></span><br><span class="line">incrby k1 3  # k1自增3（相当于+=3）</span><br><span class="line"></span><br><span class="line">decrby k1 3  # k1自减3（相当于-=3）</span><br></pre></td></tr></table></figure></li>
+<li><p>getrange/setrange：类似between…and…</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">getrange k1 0 -1  # 查询k1全部的值</span><br><span class="line"></span><br><span class="line">getrange k1 0 3  # 查询k1的值，范围是下标0~3（包含0和3）</span><br><span class="line"></span><br><span class="line">setrange k1 2 abc # 替换k1的值，从下标2开始替换为abc</span><br></pre></td></tr></table></figure></li>
+<li><p>setex/setnx</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">setex k1 5 v1  # 添加数据的同时，设置5秒的生命周期</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加数据的时候判断是否已经存在，防止已存在的数据被覆盖掉</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> k1已经存在,则添加失败。 k1不存在,则添加成功</span></span><br><span class="line">setnx k1 v1   </span><br></pre></td></tr></table></figure></li>
+<li><p>mset/mget/msetnx：m即more更多的意思</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mset k1 v1 k2 v2 k3 v3  # mset可以一次添加多条数据</span><br><span class="line"></span><br><span class="line">mget k1 k2 k3  # 一次获取多条数据</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 一次添加多条数据时,并判断是否存在</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果添加的数据中有已经存在的,则失败。 如果添加的数据中都不存在的,则成功</span></span><br><span class="line">msetnx k4 v4 k5 v5 </span><br></pre></td></tr></table></figure></li>
+<li><p>getset：先get后set</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">getset k6 v6   # 先获取k6的值，然后修改k6的值为v6</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><p>push和pop，类似机枪AK47：push，压子弹，pop，射击出子弹</p>
+<ul>
+<li><p>lpush/rpush/lrange<br>l：left 自左向右→添加 （从上往下添加）<br>r：right 自右向左←添加（从下往上添加）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lpush list01 1 2 3 4 5 # 从上往下(从左往右)添加</span><br><span class="line"></span><br><span class="line">rpush list02 1 2 3 4 5 # 从下往上(从右往左)添加</span><br><span class="line"></span><br><span class="line">lrange list01 0 -1  # 查询list01中的全部数据</span><br></pre></td></tr></table></figure></li>
+<li><p>lpop/rpop<br>移除第一个元素（上左下右）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lpop list02 # 从左（上）边移除第一个元素</span><br><span class="line"></span><br><span class="line">rpop list02 # 从右（下）边移除第一个元素</span><br></pre></td></tr></table></figure></li>
+<li><p>lindex<br>根据下标查询元素</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lindex list01 2  # 从上到下数，下标为2的值</span><br></pre></td></tr></table></figure></li>
+<li><p>llen<br>返回集合长度</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">llen list01</span><br></pre></td></tr></table></figure></li>
+<li><p>lrem<br>删除n个value</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lrem list01 2 3   # 从list01中移除2个3</span><br></pre></td></tr></table></figure></li>
+<li><p>ltrim<br>只保存，截取指定范围的值，别的全扔掉</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ltrim list01 3 6 # 保存下标3~6的值，别的全扔掉</span><br></pre></td></tr></table></figure></li>
+<li><p>rpoplpush<br>从一个集合出一个元素，到另一个集合中（右出一个，左进一个）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">rpoplpush list01 list02  # list01右边出一个，从左进入到list02的第一个位置</span><br></pre></td></tr></table></figure></li>
+<li><p>lset<br>改变某个下标的某个值</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lset list01 0 x   # 将list01中下标为0的元素修改成x</span><br></pre></td></tr></table></figure></li>
+<li><p>linsert<br>插入元素（指定某个元素之前/之后）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">linsert list02 before 2 java  # 从左边进入，在list02中的2元素之前插入java</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>性能总结：类似添加火车皮一样，头尾操作效率高，中间操作效率惨；</p>
+<h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a><strong>Set</strong></h4><p>和java中的set特点类似，不允许重复</p>
+<ul>
+<li><p>sadd/smembers/sismember：添加/查看/判断是否存在</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sadd set01 1 2 2 3 3 3 # 添加元素（自动排除重复元素）</span><br><span class="line"></span><br><span class="line">smembers set01    # 查询set01集合</span><br><span class="line"></span><br><span class="line">sismember set01 2  # 判断元素2是否存在</span><br></pre></td></tr></table></figure></li>
+<li><p>scard：获得集合中的元素数量</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scard set01  # 集合set01中有几个元素</span><br></pre></td></tr></table></figure></li>
+<li><p>srem：删除集合中的元素</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">srem set01 2 # 移除set01中的元素2</span><br></pre></td></tr></table></figure></li>
+<li><p>srandmember：从集合中随机获取几个元素</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">srandmember set01 3 # 从set01中随机获取3个元素</span><br></pre></td></tr></table></figure></li>
+<li><p>spop：随机出栈（移除）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">spop set01 # set01中，随机移除一个元素</span><br></pre></td></tr></table></figure></li>
+<li><p>smove：移动元素</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">smove set01 set02 3  # 将set01中的元素3移动到set02中</span><br></pre></td></tr></table></figure></li>
+<li><p>sinter/sunion/sdiff：交集/并集/差集（数学集合类）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sinter set01 set02 # set01和set02共同存在的元素</span><br><span class="line"></span><br><span class="line">sunion set01 set02 # 将set01和set02中所有元素合并起来（排除重复的）</span><br><span class="line"></span><br><span class="line">sdiff set01 set02 # 在set01中存在，在set02中不存在</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h4><p>类似java里面的Map&lt;String,Object&gt;<br>KV模式不变，但V是一个键值对</p>
+<ul>
+<li><p>hset/hget/hmset/hmget/hgetall/hdel：添加/得到/多添加/多得到/得到全部/删除属性</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hset user id 1001  # 添加user，值为id=1001</span><br><span class="line"></span><br><span class="line">hget user id  # 查询user，必须指明具体的字段</span><br><span class="line"></span><br><span class="line">hmset student id 101 name tom age 22  # 添加student，多个属性</span><br><span class="line"></span><br><span class="line">hmget student name age # 获取多属性</span><br><span class="line"></span><br><span class="line">hgetall student  # 获取全部信息</span><br><span class="line"></span><br><span class="line">hdel student age # 删除student的age属性</span><br></pre></td></tr></table></figure></li>
+<li><p>hlen：返回元素的属性个数</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hlen student</span><br></pre></td></tr></table></figure></li>
+<li><p>hexists：判断元素是否存在某个属性</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexists student name # student中是否存在name属性</span><br></pre></td></tr></table></figure></li>
+<li><p>hkeys/hvals：获得属性的所有key / 获得属性的所有value</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hkeys student # 获取student所有的属性名</span><br><span class="line"> </span><br><span class="line">hvals student # 获取student所有属性的值（内容）</span><br></pre></td></tr></table></figure></li>
+<li><p>hincrby/hincrbyfloat：自增（整数）/自增（小数）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hincrby student age 2   # student的age属性，自增整数2</span><br><span class="line"></span><br><span class="line">hincrbyfloat student money 5.5 # student的money属性，自增小数5.5</span><br></pre></td></tr></table></figure></li>
+<li><p>hsetnx：添加的时候，先判断是否存在</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hsetnx student age 18  # 添加时，判断age是否存在</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h4><p>真实需求：<br>充10元可享vip1；<br>充20元可享vip2；<br>充30元可享vip3；<br>以此类推…</p>
+<ul>
+<li><p>zadd/zrange （withscores）：添加/查询</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">zadd zset01 10 vip1 20 vip2 30 vip3 40 vip4</span><br><span class="line"></span><br><span class="line">zrange zset01 0 -1   # 查询数据</span><br><span class="line"></span><br><span class="line">zrange zset01 0 -1 withscores # 带着分数查询数据</span><br></pre></td></tr></table></figure></li>
+<li><p>zrangebyscore：根据分数，模糊查询<br>( ：   不包含<br>limit：跳过几个截取几个</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">zrangebyscore zset01 20 40  # 20 &lt;= score &lt;= 40</span><br><span class="line"></span><br><span class="line">zrangebyscore zset01 20 (40 # 20 &lt;= score &lt; 40</span><br><span class="line"></span><br><span class="line">zrangebyscore zset01 (20 (40 # 20 &lt; score &lt; 40</span><br><span class="line">  </span><br><span class="line">zrangebyscore zset01 10 40 limit 2 2  # 跳过前2个，取2个</span><br></pre></td></tr></table></figure></li>
+<li><p>zrem：删除元素</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">zrem zset01 vip5   # 移除vip5</span><br></pre></td></tr></table></figure></li>
+<li><p>zcard/zcount/zrank/zscore：集合长度/范围内元素个数/得元素下标/通过值得分数</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">zcard zset01  # 集合中元素的个数</span><br><span class="line"></span><br><span class="line">zcount zset01 20 30 # 分数在20~40之间，共有几个元素</span><br><span class="line"></span><br><span class="line">zrank zset01 vip3 # vip3在集合中的下标（从上向下）</span><br><span class="line"></span><br><span class="line">zscore zset01 vip2 # 通过元素获得对应的分数</span><br></pre></td></tr></table></figure></li>
+<li><p>zrevrank/zrevrange/zrevrangebyscore：逆序找下标，逆序查询，逆序范围查找</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">zrevrank zset01 vip3   # 逆序找下标</span><br><span class="line"></span><br><span class="line">zrevrange zset01 0 -1     # 逆序查询</span><br><span class="line"></span><br><span class="line">zrevrangebyscore zset01 30 20 # 逆序查询分数在30~20之间的（注意，先写大值，再写小值）</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><h4 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h4><p>Redis DataBase<br>在指定的时间间隔内，将内存中的数据集的快照写入磁盘；<br>数据默认保存在 /usr/local/bin/dump.rdb 文件内;</p>
+<p><strong>自动备份</strong></p>
+<ul>
+<li><p>/usr/redis/redis.conf 文件中可修改自动备份策略</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> save <span class="string">&quot;&quot;</span></span></span><br><span class="line">save 900 1 # 900秒内，至少变更1次，才会自动备份</span><br><span class="line">save 120 10 # 120秒内，至少变更10次，才会自动备份</span><br><span class="line">save 60 10000 # 60秒内，至少变更10000次，才会自动备份</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果你只是用Redis的缓存功能，不需要持久化，那么你可以注释掉所有的 save 行来停用保存功能。</span></span><br></pre></td></tr></table></figure></li>
+<li><p>当我们使用shutdown关闭命令时，redis会自动将数据库备份</p>
+</li>
+</ul>
+<p><strong>手动备份</strong></p>
+<ul>
+<li>每次操作完成，执行命令 save 就会立刻备份</li>
+</ul>
+<p><strong>RDB相关的配置</strong></p>
+<ul>
+<li>stop-writes-on-bgsave-error：进水口和出水口，出水口发生故障与否<br>yes：当后台备份时候反生错误，前台停止写入<br>no：不管死活，就是往里怼</li>
+<li>rdbcompression：对于存储到磁盘中的快照，是否启动LZF压缩算法，一般都会启动，因为这点性能，多买一台电脑，完全搞定N个来回了。<br>yes：启动<br>no：不启动（不想消耗CPU资源，可关闭）</li>
+<li>rdbchecksum：在存储快照后，是否启动CRC64算法进行数据校验；<br>开启后，大约增加10%左右的CPU消耗；<br>如果希望获得最大的性能提升，可以选择关闭；</li>
+<li>dbfilename：快照备份文件名字</li>
+<li>dir：快照备份文件保存的目录，默认为当前目录</li>
+</ul>
+<p><strong>优缺点</strong></p>
+<ul>
+<li>优：适合大规模数据恢复，对数据完整性和一致行要求不高；</li>
+<li>劣：一定间隔备份一次，意外down掉，就失去最后一次快照的所有修改</li>
+</ul>
+<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h4><p>Append Only File<br>以日志的形式记录每个写操作；<br>将redis执行过的写指令全部记录下来（读操作不记录）；<br>只许追加文件，不可以改写文件；<br>redis在启动之初会读取该文件从头到尾执行一遍，这样来重新构建数据；</p>
+<p><strong>开启AOF</strong></p>
+<p>1，在 /usr/redis/redis.conf 文件内修改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">appendonly yes</span><br><span class="line">appendfilename appendonly.aof</span><br></pre></td></tr></table></figure>
+
+<p>2，重新启动redis，以新配置文件启动</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">redis-server /usr/redis/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>之后redis的 写 操作，都会以 追加形式 保存在 /usr/local/bin/appendonly.aof 文件中。</p>
+<p><strong>RDB 和 AOF 优先级</strong></p>
+<ol>
+<li><p>动手编辑appendonly.aof，胡搞乱码，保存退出</p>
+</li>
+<li><p>启动redis 失败，所以是AOF优先载入来恢复原始数据！因为AOF比RDB数据保存的完整性更高！</p>
+</li>
+<li><p>修复AOF文件，杀光不符合redis语法规范的代码</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">reids-check-aof --fix appendonly.aof</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>AOF相关的配置</strong></p>
+<ul>
+<li>appendonly：开启aof模式</li>
+<li>appendfilename：aof的文件名字，最好别改！</li>
+<li>appendfsync：追写策略<br>always：每次数据变更，就会立即记录到磁盘，性能较差，但数据完整性好<br>everysec：默认设置，异步操作，每秒记录，如果一秒内宕机，会有数据丢失<br>no：不追写</li>
+<li>no-appendfsync-on-rewrite：重写时是否运用Appendfsync追写策略；用默认no即可，保证数据安全性。<br>AOF采用文件追加的方式，文件会越来越大，为了解决这个问题，增加了重写机制，redis会自动记录上一次AOF文件的大小，当AOF文件大小达到预先设定的大小时，redis就会启动AOF文件进行内容压缩，只保留可以恢复数据的最小指令集合</li>
+<li>auto-aof-rewrite-percentage：如果AOF文件大小已经超过原来的100%，也就是一倍，才重写压缩</li>
+<li>auto-aof-rewrite-min-size：如果AOF文件已经超过了64mb，才重写压缩</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li><p>RDB：只用作后备用途，建议15分钟备份一次就好</p>
+</li>
+<li><p>AOF：</p>
+<ul>
+<li>在最恶劣的情况下，也只丢失不超过2秒的数据，数据完整性比较高，但代价太大，会带来持续的IO</li>
+<li>对硬盘的大小要求也高，默认64mb太小了，企业级最少都是5G以上；</li>
+<li>后面要学习的master/slave才是新浪微博的选择！！</li>
+</ul>
+</li>
+</ul>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>可以一次执行多个命令，是一个命令组，一个事务中，所有命令都会序列化（排队），不会被插队；</p>
+<p>一个队列中，一次性，顺序性，排他性的执行一系列命令</p>
+<p><strong>三特性：</strong></p>
+<ul>
+<li>隔离性：所有命令都会按照顺序执行，事务在执行的过程中，不会被其他客户端送来的命令打断</li>
+<li>没有隔离级别：队列中的命令没有提交之前都不会被实际的执行，不存在“事务中查询要看到事务里的更新，事务外查询不能看到”这个头疼的问题</li>
+<li>不保证原子性：冤有头债有主，如果一个命令失败，但是别的命令可能会执行成功，没有回滚</li>
+</ul>
+<p><strong>三步走：</strong></p>
+<ul>
+<li>开启：multi（关系型事务中的 begin）</li>
+<li>入队：queued（加入语句）</li>
+<li>执行：exec（关系型事务中的 commit）</li>
+</ul>
+<p>回滚：discard（关系型事务中的 rollback）</p>
+<h4 id="提交事务"><a href="#提交事务" class="headerlink" title="提交事务"></a>提交事务</h4><p>开启事务，加入队列，一起执行，并成功</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">multi # 开启事务</span><br><span class="line"></span><br><span class="line">set k1 v1  # 加入队列</span><br><span class="line">set k2 v2  # 加入队列</span><br><span class="line"></span><br><span class="line">exec  # 提交</span><br></pre></td></tr></table></figure>
+
+<h4 id="回滚事务"><a href="#回滚事务" class="headerlink" title="回滚事务"></a>回滚事务</h4><p>开启事务，加入队列，回滚。（放弃之前的操作，恢复到原来的值）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">multi # 开启事务</span><br><span class="line"></span><br><span class="line">set k1 v1111   # 加入队列</span><br><span class="line">set k2 v2222   # 加入队列</span><br><span class="line"></span><br><span class="line">discard  # 放弃操作</span><br></pre></td></tr></table></figure>
+
+<h4 id="语法错误"><a href="#语法错误" class="headerlink" title="语法错误"></a>语法错误</h4><p>一句语法报错，全部取消，恢复到原来的值</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">multi  # 开启事务</span><br><span class="line"></span><br><span class="line">set k4 v4   # 加入队列</span><br><span class="line">setlalala   # 加入队列，但是错误语法</span><br><span class="line"></span><br><span class="line">exec   # 提交事务会失败，队列中命令全部取消</span><br></pre></td></tr></table></figure>
+
+<h4 id="逻辑错误"><a href="#逻辑错误" class="headerlink" title="逻辑错误"></a>逻辑错误</h4><p>逻辑错误，谁的错，找谁去，其他正常执行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">multi   # 开启事务</span><br><span class="line"></span><br><span class="line">incr k1    # 虽然v1不能++，但是加入队列并没有报错，类似java中的通过编译</span><br><span class="line">set k4 v4  # 加入队列</span><br><span class="line">set k5 v5  # 加入队列</span><br><span class="line"></span><br><span class="line">exec   # 提交事务</span><br><span class="line">1) (error) ERR value is not an integer or out of range # 真正执行的时候，报错</span><br><span class="line">2) OK # 成功</span><br><span class="line">3) OK # 成功</span><br></pre></td></tr></table></figure>
+
+<h4 id="watch监控"><a href="#watch监控" class="headerlink" title="watch监控"></a>watch监控</h4><p>测试：模拟收入与支出</p>
+<p>正常情况下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">set in 100 # 收入100元</span><br><span class="line">set out 0  # 支出0元</span><br><span class="line"></span><br><span class="line">multi</span><br><span class="line">decrby in 20  # 收入-20</span><br><span class="line">incrby out 20 # 支出+20</span><br><span class="line">exec</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 结果，没问题！</span></span><br><span class="line">1) (integer) 80</span><br><span class="line">2) (integer) 20 </span><br></pre></td></tr></table></figure>
+
+<p>特殊情况下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">set in 100 # 收入100元</span><br><span class="line">set out 0  # 支出0元</span><br><span class="line"></span><br><span class="line">watch in  # 监控收入in</span><br><span class="line"></span><br><span class="line">multi</span><br><span class="line">decrby in 20  # 收入-20</span><br><span class="line">incrby out 20 # 支出+20</span><br><span class="line">exec</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 结果，失败</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 原因：在<span class="built_in">exec</span>之前，我开启了另一个窗口（线程），对监控的<span class="keyword">in</span>做了修改，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 所以：本次的事务将被打断（失效），类似于“乐观锁”</span></span><br></pre></td></tr></table></figure>
+
+<p>unwatch：取消watch对所有key的监控（一旦执行了exec命令，那么之前加的所有监控也自动失效！）</p>
+<h3 id="发布订阅"><a href="#发布订阅" class="headerlink" title="发布订阅"></a>发布订阅</h3><p>进程间的一种消息通信模式：发送者(pub)发布消息，订阅者(sub)接收消息。例如：微信订阅号</p>
+<p>可订阅一个或多个频道</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 窗口1，订阅三个频道</span></span><br><span class="line">subscribe cctv1 cctv5 cctv6 </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 窗口2，发布消息给cctv5频道（订阅了cctv5频道的窗口可以接收到消息）</span></span><br><span class="line">publish cctv5 NBA</span><br></pre></td></tr></table></figure>
+
+<h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><p>就是 redis集群的策略<br>配从（库）不配主（库）：小弟（从库）可以选择谁是大哥（主库），但大哥没有权利去选择小弟<br>读写分离：主库写，从库读</p>
+<h4 id="复制原理"><a href="#复制原理" class="headerlink" title="复制原理"></a>复制原理</h4><img src="https://pic.imgdb.cn/item/6392f5cfb1fccdcd36b3054d.jpg" style="zoom: 50%;" />
+
+<p>完成上面几个步骤后，就完成了从库数据初始化的所有操作，从库此时可以接收来自用户的读请求</p>
+<ul>
+<li>全量复制：Slave初始化阶段，这时Slave需要将Master上的所有数据都复制一份slave接收到数据文件后，存盘，并加载到内存中；（步骤1234）</li>
+<li>增量复制：Slave初始化后，开始正常工作时，Master发生的写操作同步到Slave的过程；（步骤56）</li>
+<li>Redis主从同步策略：<br>主从刚刚连接的时候，进行全量同步；全同步结束后，进行增量同步。<br>当然，如果有需要，slave 在任何时候都可以发起全量同步。<br>redis 策略是，无论如何，首先会尝试进行增量同步，如不成功，要求从机进行全量同步。</li>
+</ul>
+<h4 id="一主二仆"><a href="#一主二仆" class="headerlink" title="一主二仆"></a>一主二仆</h4><ol>
+<li><p>准备三台安装了 redis 的服务器，并修改 /usr/redis/redis.conf 文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bind 0.0.0.0   # 表示可以其他主机访问</span><br></pre></td></tr></table></figure></li>
+<li><p>分别启动三台redis，连接客户端，并查看每台机器的角色，都是master</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">redis-server /usr/redis/redis.conf</span><br><span class="line">redis-cli</span><br><span class="line"></span><br><span class="line">info replication  # 查看机器的角色</span><br></pre></td></tr></table></figure></li>
+<li><p>2号 和 3号 两台机器，复制（找 1号 机器做大哥）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">slaveof 192.168.146.128 6379</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>此时：1号 是主库，2号 和 3号 是从库</p>
+<ul>
+<li>2和3号 只要跟了 1号，数据会立刻同步</li>
+<li>1号主库 可以添加数据，2和3号从库 只能读取数据</li>
+<li>1号主机 shutdown，2和3号从机 仍然是slave，并显示他们的master已离线<br>1号主机 重启，2和3号从机 仍然是slave，并显示他们的master已上线</li>
+<li>3号从机 shutdown，重启。<br>1号主机 没有变化，只是显示少了一个slave<br>3号 成为了master，不和原来的集群在一起了</li>
+</ul>
+<h4 id="血脉相传"><a href="#血脉相传" class="headerlink" title="血脉相传"></a>血脉相传</h4><p>一个主机理论上可以多个从机，但是这样的话，这个主机会很累</p>
+<p>我们可以使用java面向对象继承中的传递性来解决这个问题，减轻主机的负担</p>
+<p>形成祖孙三代：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 2号机执行：2号机 跟随 1号机</span></span><br><span class="line">slaveof 192.168.146.128 6379</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 3号机执行：3号机 跟随 2号机</span></span><br><span class="line">slaveof 192.168.146.129 6379</span><br></pre></td></tr></table></figure>
+
+<h4 id="谋权篡位"><a href="#谋权篡位" class="headerlink" title="谋权篡位"></a>谋权篡位</h4><p>1个主机，2个从机，当主机挂掉了，只能从2个从机中再次选1个主机</p>
+<p>模拟测试：1为master，2和3为slave。当1挂掉后，2篡权为master，3跟2</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 2号机执行，2号机篡权为master</span></span><br><span class="line">slaveof no one </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 3号机执行，3号跟随2号</span></span><br><span class="line">slaveof 192.168.146.129 6379 </span><br></pre></td></tr></table></figure>
+
+<p>当1再次回归，2和3已经形成新的集群，和1没有任何的关系了。所以1成为了光杆司令</p>
+<h4 id="哨兵模式"><a href="#哨兵模式" class="headerlink" title="哨兵模式"></a>哨兵模式</h4><p>自动版的谋权篡位！<br>（有个哨兵一直在巡逻，突然发现！！老大挂了，哨兵们会自动投票，从众小弟中选出新的老大）</p>
+<p>Sentinel是Redis的高可用性解决方案：<br>由一个或多个Sentinel实例组成的Sentinel系统可以监视任意多个主服务器，以及所有从服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。</p>
+<p>哨兵模式开启步骤：</p>
+<ol>
+<li><p>每台服务器中创建该配置文件 /usr/local/bin/sentinel.conf，名字绝不能错，并编辑sentinel.conf</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> sentinel monitor 被监控主机名(自定义) ip地址 端口号 票数</span></span><br><span class="line">sentinel monitor redis128 192.168.146.128 6379 1</span><br></pre></td></tr></table></figure></li>
+<li><p>启动 主 从 redis，1号主，2和3号从</p>
+</li>
+<li><p>启动哨兵（由于测试，开启别的窗口启动哨兵）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">redis-sentinel sentinel.conf</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>此时：<br>1号主库挂掉，哨兵自动发起激烈的投票，3号成为了新的主库，2号还是从库<br>1号再次归来，自己成为了master<br>过了几秒之后，被哨兵检测到了1号机的归来，但是新的主库已经产生了，1号机只能作为从库再次进入集体！</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>由于所有的写操作都是在master上完成的，然后再同步到slave上，所以两台机器之间通信会有延迟；</p>
+<p>当系统很繁忙的时候，延迟问题会加重；</p>
+<p>slave机器数量增加，问题也会加重</p>
+<h2 id="Jedis"><a href="#Jedis" class="headerlink" title="Jedis"></a>Jedis</h2><p>java和redis打交道的API客户端</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 导入依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="连接redis"><a href="#连接redis" class="headerlink" title="连接redis"></a>连接redis</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testConn</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line">    String str = jedis.ping();</span><br><span class="line">    System.out.println(str);  <span class="comment">//返回 pong</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行前：</span></span><br><span class="line"><span class="comment">// 1.关闭防火墙 systemctl stop firewalld.service</span></span><br><span class="line"><span class="comment">// 2.修改redis.conf [ bind 0.0.0.0 ] 允许任何ip访问</span></span><br><span class="line"><span class="comment">// 3.（重启redis）redis-server /usr/redis/redis.conf</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h3><ul>
+<li>String类型操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testString</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    jedis.set(<span class="string">&quot;k1&quot;</span>, <span class="string">&quot;v1&quot;</span>);</span><br><span class="line">    jedis.set(<span class="string">&quot;k2&quot;</span>, <span class="string">&quot;v2&quot;</span>);</span><br><span class="line">    jedis.set(<span class="string">&quot;k3&quot;</span>, <span class="string">&quot;v3&quot;</span>);</span><br><span class="line"></span><br><span class="line">    Set&lt;String&gt; keys = jedis.keys(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (String key : keys) &#123;</span><br><span class="line">        String value = jedis.get(key);</span><br><span class="line">        System.out.println(key + <span class="string">&quot; : &quot;</span> + value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//查看k1是否存在</span></span><br><span class="line">    System.out.println( jedis.exists(<span class="string">&quot;k1&quot;</span>) );</span><br><span class="line">    <span class="comment">//查看k1过期时间</span></span><br><span class="line">    System.out.println( jedis.ttl(<span class="string">&quot;k1&quot;</span>) );</span><br><span class="line"></span><br><span class="line">    jedis.mset(<span class="string">&quot;k4&quot;</span>, <span class="string">&quot;v4&quot;</span>, <span class="string">&quot;k5&quot;</span>, <span class="string">&quot;v5&quot;</span>);</span><br><span class="line">    System.out.println( jedis.mget(<span class="string">&quot;k4&quot;</span>, <span class="string">&quot;k5&quot;</span>) );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>list类型操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testList</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    jedis.lpush(<span class="string">&quot;list01&quot;</span>, <span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>);</span><br><span class="line">    List&lt;String&gt; list01 = jedis.lrange(<span class="string">&quot;list01&quot;</span>, <span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    System.out.println(list01);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>set类型操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSet</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    jedis.sadd(<span class="string">&quot;set01&quot;</span>, <span class="string">&quot;1&quot;</span>, <span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;4&quot;</span>);</span><br><span class="line">    Set&lt;String&gt; set01 = jedis.smembers(<span class="string">&quot;set01&quot;</span>);</span><br><span class="line">    System.out.println(set01);</span><br><span class="line">    <span class="comment">//移除</span></span><br><span class="line">    jedis.srem(<span class="string">&quot;set01&quot;</span>, <span class="string">&quot;2&quot;</span>);</span><br><span class="line">    <span class="comment">//查看长度</span></span><br><span class="line">    System.out.println( jedis.smembers(<span class="string">&quot;set01&quot;</span>).size() );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>hash类型操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHash</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    jedis.hset(<span class="string">&quot;user&quot;</span>, <span class="string">&quot;id&quot;</span>, <span class="string">&quot;001&quot;</span>);</span><br><span class="line">    System.out.println( jedis.hget(<span class="string">&quot;user&quot;</span>, <span class="string">&quot;id&quot;</span>) );</span><br><span class="line"></span><br><span class="line">    HashMap&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    map.put(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;001&quot;</span>);</span><br><span class="line">    map.put(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;bob&quot;</span>);</span><br><span class="line">    map.put(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;18&quot;</span>);</span><br><span class="line"></span><br><span class="line">    jedis.hmset(<span class="string">&quot;student&quot;</span>, map);</span><br><span class="line">    List&lt;String&gt; info = jedis.hmget(<span class="string">&quot;student&quot;</span>, <span class="string">&quot;id&quot;</span>, <span class="string">&quot;name&quot;</span>, <span class="string">&quot;age&quot;</span>);</span><br><span class="line">    System.out.println(info);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>zset类型操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testZset</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    jedis.zadd(<span class="string">&quot;zset01&quot;</span>, <span class="number">10</span>, <span class="string">&quot;vip1&quot;</span>);</span><br><span class="line">    jedis.zadd(<span class="string">&quot;zset01&quot;</span>, <span class="number">20</span>, <span class="string">&quot;vip2&quot;</span>);</span><br><span class="line">    jedis.zadd(<span class="string">&quot;zset01&quot;</span>, <span class="number">30</span>, <span class="string">&quot;vip3&quot;</span>);</span><br><span class="line"></span><br><span class="line">    Set&lt;String&gt; zset01 = jedis.zrange(<span class="string">&quot;zset01&quot;</span>, <span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">    System.out.println(zset01);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="事务-1"><a href="#事务-1" class="headerlink" title="事务"></a>事务</h3><ol>
+<li><p>先在redis中，初始化收入和支出</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">set yue 100</span><br><span class="line">set zhichu 0</span><br></pre></td></tr></table></figure></li>
+<li><p>测试事务相关API</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testTransaction</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">    Integer in = Integer.parseInt( jedis.get(<span class="string">&quot;in&quot;</span>) );  <span class="comment">//从jedis中获取收入in</span></span><br><span class="line">    Integer price = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    jedis.watch(<span class="string">&quot;in&quot;</span>);  <span class="comment">//监听 收入</span></span><br><span class="line">    Thread.sleep(<span class="number">5000</span>);     <span class="comment">//模拟延迟</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(in &lt; price)&#123;</span><br><span class="line">        jedis.unwatch();  <span class="comment">//解除所有监听</span></span><br><span class="line">        System.out.println(<span class="string">&quot;money不足&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        Transaction transaction = jedis.multi();<span class="comment">//开启事务</span></span><br><span class="line">        transaction.decrBy(<span class="string">&quot;in&quot;</span>, price);  <span class="comment">//in减钱</span></span><br><span class="line">        transaction.incrBy(<span class="string">&quot;out&quot;</span>, price); <span class="comment">//out加钱</span></span><br><span class="line">        transaction.exec();  <span class="comment">//提交事务</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    System.out.println( <span class="string">&quot;收入：&quot;</span> + jedis.get(<span class="string">&quot;in&quot;</span>) );</span><br><span class="line">    System.out.println( <span class="string">&quot;支出: &quot;</span> + jedis.get(<span class="string">&quot;out&quot;</span>) );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="JedisPool"><a href="#JedisPool" class="headerlink" title="JedisPool"></a>JedisPool</h3><p>redis的连接池技术<br>详情：<a href="https://help.aliyun.com/document_detail/98726.html">https://help.aliyun.com/document_detail/98726.html</a></p>
+<ul>
+<li><p>导入依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-pool<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Jedis连接池工具类，单例模式进行优化</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisPoolUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">JedisPoolUtil</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> JedisPool jedisPool = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Jedis jedis = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回 jedisPool对象 的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> JedisPool <span class="title">getJedisPool</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 双层检测锁（企业中用的非常频繁）</span></span><br><span class="line">        <span class="keyword">if</span>(jedisPool == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(JedisPoolUtil.class)&#123;</span><br><span class="line">                <span class="keyword">if</span>(jedisPool == <span class="keyword">null</span>)&#123;</span><br><span class="line">                    JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">                    config.setMaxTotal(<span class="number">1000</span>); <span class="comment">// 资源池中的最大连接数</span></span><br><span class="line">                    config.setMaxIdle(<span class="number">30</span>); <span class="comment">// 资源池允许的最大空闲连接数</span></span><br><span class="line">                    config.setMaxWaitMillis(<span class="number">60</span>*<span class="number">1000</span>); <span class="comment">// 当资源池连接用尽后，调用者的最大等待时间（单位为毫秒）</span></span><br><span class="line">                    config.setTestOnBorrow(<span class="keyword">true</span>); <span class="comment">//向资源池借用连接时是否做连接有效性检测(业务量很大时候建议设置为false，减少一次ping的开销)</span></span><br><span class="line">                    jedisPool = <span class="keyword">new</span> JedisPool(config, <span class="string">&quot;192.168.146.128&quot;</span>, <span class="number">6379</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> jedisPool;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回 jedis对象 的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Jedis <span class="title">getJedis</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(jedis == <span class="keyword">null</span>)&#123;</span><br><span class="line">            jedis = getJedisPool().getResource();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> jedis;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>测试</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    Jedis jedis1 = JedisPoolUtil.getJedis();</span><br><span class="line">    Jedis jedis2 = JedisPoolUtil.getJedis();</span><br><span class="line">    System.out.println( jedis1 == jedis2 );</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h3><p>经典案例：秒杀，抢购优惠券等</p>
+<h4 id="无分布式锁"><a href="#无分布式锁" class="headerlink" title="无分布式锁"></a>无分布式锁</h4><p>导入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-webmvc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.7.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--实现分布式锁的工具类--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.redisson<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>redisson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.6.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--spring操作redis的工具类--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.data<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.2.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--redis客户端--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--json解析工具--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">port</span>&gt;</span>8001<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">path</span>&gt;</span>/<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!-- 打包完成后,运行服务 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goal</span>&gt;</span>run<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>web.xml配置文件：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springmvc<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:spring/sping.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springmvc<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>spring.xml配置文件：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--注解扫描--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;controller&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--spring整合redis--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;stringRedisTemplate&quot;</span> </span></span><br><span class="line"><span class="tag">      <span class="attr">class</span>=<span class="string">&quot;org.springframework.data.redis.core.StringRedisTemplate&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;connectionFactory&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;connectionFactory&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;connectionFactory&quot;</span> </span></span><br><span class="line"><span class="tag">      <span class="attr">class</span>=<span class="string">&quot;org.springframework.data.redis.connection.jedis.JedisConnectionFactory&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;hostName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;192.168.146.128&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;port&quot;</span> <span class="attr">value</span>=<span class="string">&quot;6379&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>web层：(没使用分布式锁，用synchronized锁)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestKill</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/kill&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> String <span class="title">kill</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.从redis中获取 手机的库存数量</span></span><br><span class="line">        Integer num = Integer.parseInt(</span><br><span class="line">            stringRedisTemplate.opsForValue().get(<span class="string">&quot;phone&quot;</span>) </span><br><span class="line">        );</span><br><span class="line">        <span class="comment">// 2.判断手机的数量是否够秒杀的</span></span><br><span class="line">        <span class="keyword">if</span>(num &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">// 库存减一后，再将库存的值保存回redis</span></span><br><span class="line">            num--;</span><br><span class="line">            stringRedisTemplate.opsForValue().set(<span class="string">&quot;phone&quot;</span>, String.valueOf(num));</span><br><span class="line">            System.out.println(<span class="string">&quot;库存-1，剩余：&quot;</span> + num);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;库存不足&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;over&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>高并发测试（出现错误）：</p>
+<ol>
+<li><p>启动两次工程，端口号分别8001和8002</p>
+</li>
+<li><p>使用nginx做负载均衡</p>
+</li>
+<li><p>使用 JMeter 模拟1秒内发出100个http请求，会发现同一个商品会被两台服务器同时抢购！</p>
+</li>
+</ol>
+<h4 id="实现分布式锁的思路"><a href="#实现分布式锁的思路" class="headerlink" title="实现分布式锁的思路"></a>实现分布式锁的思路</h4><ol>
+<li>因为redis是单线程的，所以命令也就具备原子性，使用setnx命令实现锁，保存k-v<br>如果k不存在，保存（当前线程加锁），执行完成后，删除k表示释放锁<br>如果k已存在，阻塞线程执行，表示有锁</li>
+<li>如果加锁成功，在执行业务代码的过程中出现异常，导致没有删除k（释放锁失败），那么就会造成死锁（后面的所有线程都无法执行）！<br>设置过期时间，例如10秒后，redis自动删除</li>
+<li>高并发下，由于时间段等因素导致服务器压力过大或过小，每个线程执行的时间不同<br>第一个线程，执行需要13秒，执行到第10秒时，redis自动过期了k（释放锁）<br>第二个线程，执行需要7秒，加锁，执行第3秒（锁 被释放了，为什么，是被第一个线程的finally主动deleteKey释放掉了）<br>。。。连锁反应，当前线程刚加的锁，就被其他线程释放掉了，周而复始，导致锁会永久失效</li>
+<li>给每个线程加上唯一的标识UUID随机生成，释放的时候判断是否是当前的标识即可</li>
+<li>问题又来了，过期时间如果设定？<br>如果10秒太短不够用怎么办？<br>设置60秒，太长又浪费时间<br>可以开启一个定时器线程，当过期时间小于总过期时间的1/3时，增长总过期时间（吃仙丹续命！）</li>
+</ol>
+<p>总结：自己实现分布式锁，太难了！（所以使用官方提供的Redisson）</p>
+<h4 id="Redisson"><a href="#Redisson" class="headerlink" title="Redisson"></a>Redisson</h4><ul>
+<li>Redis 是最流行的 NoSQL 数据库解决方案之一，而 Java 是世界上最流行的编程语言之一。</li>
+<li>虽然两者看起来很自然地在一起“工作”，但是要知道，Redis 其实并没有对 Java 提供原生支持。</li>
+<li>相反，作为 Java 开发人员，我们若想在程序中集成 Redis，必须使用 Redis 的第三方库。</li>
+<li>而 Redisson 就是用于在 Java 程序中操作 Redis 的库，它使得我们可以在程序中轻松地使用Redis。</li>
+<li>Redisson 在 java.util 中常用接口的基础上，为我们提供了一系列具有分布式特性的工具类。</li>
+</ul>
+<p>修改web层代码：（使用Redisson分布式锁）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestKill</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Redisson redisson;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/kill&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> String <span class="title">kill</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//定义商品id</span></span><br><span class="line">        String phoneId = <span class="string">&quot;HUAWEI-p40&quot;</span>;</span><br><span class="line">        <span class="comment">//获取锁</span></span><br><span class="line">        RLock rlock = redisson.getLock(phoneId);</span><br><span class="line">        <span class="comment">//上锁(过期时间为30秒)</span></span><br><span class="line">        rlock.lock(<span class="number">30</span>, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="comment">// 1.从redis中获取 手机的库存数量</span></span><br><span class="line">            Integer num = Integer.parseInt( </span><br><span class="line">                stringRedisTemplate.opsForValue().get(<span class="string">&quot;phone&quot;</span>) </span><br><span class="line">            );</span><br><span class="line">            <span class="comment">// 2.判断手机的数量是否够秒杀的</span></span><br><span class="line">            <span class="keyword">if</span>(num &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="comment">// 库存减一后，再将库存的值保存回redis</span></span><br><span class="line">                num--;</span><br><span class="line">                stringRedisTemplate.opsForValue().set(<span class="string">&quot;phone&quot;</span>, String.valueOf(num));</span><br><span class="line">                System.out.println(<span class="string">&quot;库存-1，剩余：&quot;</span> + num);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;库存不足&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            <span class="comment">//释放锁</span></span><br><span class="line">            rlock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;over&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现分布式锁的方案其实有很多，我们之前用过的zookeeper的特点就是高可靠性，现在我们用的redis特点就是高性能。<br>目前分布式锁，应用最多的仍然是“Redis”</p>
+]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
       </tags>
   </entry>
 </search>
